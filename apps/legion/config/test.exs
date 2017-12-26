@@ -1,5 +1,8 @@
 use Mix.Config
 
+# Use canary configuration as baseline
+import_config "canary.exs"
+
 # Configure your database
 config :legion, Legion.Repo,
   adapter: Ecto.Adapters.Postgres,
