@@ -24,7 +24,7 @@ defmodule Legion.Mixfile do
   def application do
     [
       mod: {Legion.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :ua_inspector]
     ]
   end
 
@@ -39,7 +39,13 @@ defmodule Legion.Mixfile do
     [
       {:postgrex, ">= 0.0.0"},
       {:ecto, "~> 2.1"},
-      {:ecto_enum, "~> 1.1"}
+      {:ecto_enum, "~> 1.1"},
+      {:comeonin, "~> 4.0"},
+      {:argon2_elixir, "~> 1.2"},
+      {:jose, "~> 1.8"},
+      {:ua_inspector, "~> 0.14.0"},
+      {:freegeoip, "~> 0.0.5"},
+      {:inet_cidr, "~> 1.0"}
     ]
   end
 
