@@ -107,7 +107,7 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrantTest do
     assert List.first(changeset.errors) == {:second, {"is equal to grantee_id", [value: 2]}}
   end
 
-  test "valid?/1 returns ok if grant is valid" do
+  test "validate/1 returns ok if grant is valid" do
     grant = 
       %PermissionSetGrant{permission_set_id: 1,
                           grantee_id: 2,
@@ -120,7 +120,7 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrantTest do
     assert PermissionSetGrant.validate(grant) == :ok
   end
 
-  test "valid?/1 returns error if grant is timed out" do
+  test "validate/1 returns error if grant is timed out" do
     grant = 
       %PermissionSetGrant{permission_set_id: 1,
                           grantee_id: 2,
@@ -133,7 +133,7 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrantTest do
     assert PermissionSetGrant.validate(grant) == {:error, :timed_out}
   end
 
-  test "valid?/1 returns error if grant is invalidated manually" do
+  test "validate/1 returns error if grant is invalidated manually" do
     invalidation = 
       %PermissionSetGrant.Invalidation{id: 2,
                                        grant_id: 1,
@@ -152,7 +152,7 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrantTest do
     assert PermissionSetGrant.validate(grant) == {:error, :invalid}
   end
 
-  test "valid?/1 returns error if grant has not gone active yet" do
+  test "validate/1 returns error if grant has not gone active yet" do
     grant = 
       %PermissionSetGrant{permission_set_id: 1,
                           grantee_id: 2,
@@ -165,7 +165,7 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrantTest do
     assert PermissionSetGrant.validate(grant) == {:error, :inactive}
   end
 
-  test "valid?/1 returns ok if grant has no validation deferral" do
+  test "validate/1 returns ok if grant has no validation deferral" do
     grant = 
       %PermissionSetGrant{permission_set_id: 1,
                           grantee_id: 2,
