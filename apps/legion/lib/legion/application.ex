@@ -13,7 +13,7 @@ defmodule Legion.Application do
     import Supervisor.Spec, warn: false
 
     Supervisor.start_link([
-      supervisor(Legion.Repo, []),
+      supervisor(Legion.Repo, [])
     ], strategy: :one_for_one, name: Legion.Supervisor)
   end
 end
