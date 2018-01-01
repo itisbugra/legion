@@ -11,3 +11,7 @@ config :legion, Legion.Repo,
   database: "legion_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :argon2_elixir,
+  t_cost: 2,
+  m_cost: 12
