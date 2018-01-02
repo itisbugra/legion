@@ -8,7 +8,7 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
   alias UAInspector, as: UserAgentParser
   alias FreeGeoIP.Search, as: IPReverseGeocoding
 
-  @user_agent_len 160
+  @user_agent_len 400
 
   schema "passphrase_activities" do
     belongs_to :passphrase, Passphrase
