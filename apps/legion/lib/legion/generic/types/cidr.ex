@@ -41,6 +41,7 @@ defmodule Legion.Types.CIDR do
   @doc """
   Converts from native Ecto representation to a binary.
   """
+  def decode(%Postgrex.CIDR{address: _address, netmask: nil}), do: :error
   def decode(%Postgrex.CIDR{address: address, netmask: netmask}) do
     case :inet.ntoa(address) do
       {:error, _einval} -> :error
