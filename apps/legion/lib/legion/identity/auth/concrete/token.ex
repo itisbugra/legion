@@ -32,24 +32,32 @@ defmodule Legion.Identity.Auth.Concrete.Token do
   @doc """
   Issues a token to given user.
   """
-  @spec issue_token(Registration, Passphrase) :: __MODULE__.t
+  @spec issue_token(Registration, Passphrase) :: 
+    {:ok, __MODULE__.t} |
+    {:error, :invalid} |
+    {:error, :timed_out}
   def issue_token(user, passphrase) do
-    env = Application.get_env(:legion, Legion.Identity.Auth.Concrete.JOSE)
-    issuer = Keyword.fetch!(env, :issuer)
-    expires_after = :os.system_time(:seconds) + Keyword.fetch!(env, :lifetime)
-    sub = Keyword.fetch!(env, :sub)
+    case Passphrase.validate(passphrase) do
+      :ok ->
+        env = Application.get_env(:legion, Legion.Identity.Auth.Concrete.JOSE)
+        issuer = Keyword.fetch!(env, :issuer)
+        expires_after = :os.system_time(:seconds) + Keyword.fetch!(env, :lifetime)
+        sub = Keyword.fetch!(env, :sub)
 
-    payload = generate_payload(user, passphrase, issuer, expires_after, sub)
+        payload = generate_payload(user, passphrase, issuer, expires_after, sub)
 
-    {_, token} =
-      @jwk
-      |> JOSE.JWT.sign(@jws, payload)
-      |> JOSE.JWS.compact()
+        {_, token} =
+          @jwk
+          |> JOSE.JWT.sign(@jws, payload)
+          |> JOSE.JWS.compact()
 
-    %__MODULE__{header_value: token,
-                expires_after: expires_after,
-                jwk: @jwk,
-                jws: @jws}
+        {:ok, %__MODULE__{header_value: token,
+                          expires_after: expires_after,
+                          jwk: @jwk,
+                          jws: @jws}}
+      any ->
+        any
+    end
   end
 
   defp generate_payload(user, passphrase, issuer, expire, sub) do
@@ -59,6 +67,6 @@ defmodule Legion.Identity.Auth.Concrete.Token do
                 exp: expire,
                 sub: sub}
 
-    Poison.encode(payload)
+    Poison.encode!(payload)
   end
 end
