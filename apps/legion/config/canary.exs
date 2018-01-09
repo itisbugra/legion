@@ -21,7 +21,8 @@ config :legion, Legion.Identity.Auth.AccessControl,
 # Concrete authentication basics
 config :legion, Legion.Identity.Auth.Concrete,
   passkey_scaling: 4,
-  passphrase_lifetime: six_months
+  passphrase_lifetime: six_months,
+  user_agent_length: 400
 
 # JSON Object Signing and Encoding (JOSE) settings
 config :legion, Legion.Identity.Auth.Concrete.JOSE,
