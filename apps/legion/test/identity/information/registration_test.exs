@@ -4,7 +4,7 @@ defmodule Legion.Identity.Information.RegistrationTest do
 
   alias Legion.Identity.Information.Registration
 
-  @valid_attrs %{}
+  @valid_attrs %{has_gps_telemetry_consent?: true}
 
   test "changeset with valid attributes" do
     changeset = Registration.changeset(%Registration{}, @valid_attrs)
