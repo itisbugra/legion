@@ -26,7 +26,7 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrant do
   alias Legion.Identity.Auth.AccessControl.PermissionSet
   alias Legion.Identity.Information.Registration
 
-  @immediately 0
+  @immediately 1
 
   schema "permission_set_grants" do
     belongs_to :permission_set, PermissionSet
