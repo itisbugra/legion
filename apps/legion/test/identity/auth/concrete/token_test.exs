@@ -33,7 +33,7 @@ defmodule Legion.Identity.Auth.Concrete.TokenTest do
 
   test "does not issue token if passphrase is invalid" do
     user = %Registration{id: 1}
-    inv = %Invalidation{passphrase_id: 1}
+    inv = %Invalidation{source_passphrase_id: 1, target_passphrase_id: 1}
     passphrase = %Passphrase{id: 1,
                              user_id: 1,
                              passkey_digest: @passkey_digest,
