@@ -41,7 +41,7 @@ defmodule Legion.Types.INET do
   end
 
   defp parse_address(address) do
-    address |> String.to_char_list |> :inet.parse_address
+    address |> String.to_charlist() |> :inet.parse_address
   end
 end
 
