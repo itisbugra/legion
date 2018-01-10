@@ -4,13 +4,13 @@ defmodule Legion.Identity.Information.Registration do
   """
   use Legion.Stereotype, :model
 
-  schema "user_registrations" do
+  schema "users" do
     field :has_gps_telemetry_consent?, :boolean, default: false
     field :inserted_at, :naive_datetime, read_after_writes: true
   end
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [])
+    |> cast(params, [:has_gps_telemetry_consent?])
   end
 end

@@ -11,4 +11,10 @@ defmodule Legion.Identity.Information.RegistrationTest do
 
     assert changeset.valid?
   end
+
+  test "changeset without telemetry consent approval" do
+    changeset = Registration.changeset(%Registration{}, %{})
+
+    assert changeset.valid?
+  end
 end
