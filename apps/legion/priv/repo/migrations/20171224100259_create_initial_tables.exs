@@ -2,6 +2,13 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
   use Ecto.Migration
 
   def change do
+    case direction() do
+      :up ->
+        Legion.Identity.Auth.AccessControl.ControllerAction.create_type()
+      :down ->
+        Legion.Identity.Auth.AccessControl.ControllerAction.drop_type()
+    end
+
     create table(:users) do
       add :has_gps_telemetry_consent?, :boolean, default: false
       add :inserted_at, :naive_datetime, default: fragment("now()"), null: false
@@ -9,24 +16,25 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
 
     create table(:permissions) do
       add :controller_name, :text, null: false
-      add :controller_action, :text, null: false
+      add :controller_action, :controller_action, null: false
       add :type, :text, null: false
     end
 
     create unique_index(:permissions, [:controller_name, :controller_action, :type])
-    create unique_index(:permissions, [:controller_name, :controller_action])
-    create unique_index(:permissions, [:type])
+    create index(:permissions, [:controller_name, :controller_action])
 
     create table(:permission_sets) do
       add :name, :text, null: false
+      add :description, :text, null: false
+      add :user_id, references(:users, on_delete: :restrict, on_update: :update_all), null: false
       add :inserted_at, :naive_datetime, default: fragment("now()"), null: false
     end
 
     create unique_index(:permission_sets, [:name])
 
     create table(:permission_set_permissions) do
-      add :permission_set_id, references(:permission_sets, on_delete: :restrict, on_update: :update_all)
-      add :permission_id, references(:permissions, on_delete: :restrict, on_update: :update_all)
+      add :permission_set_id, references(:permission_sets, on_delete: :restrict, on_update: :update_all), null: false
+      add :permission_id, references(:permissions, on_delete: :restrict, on_update: :update_all), null: false
     end
 
     create unique_index(:permission_set_permissions, [:permission_set_id, :permission_id])
@@ -39,6 +47,8 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :valid_for, :bigint
       add :inserted_at, :naive_datetime, default: fragment("now()"), null: false
     end
+
+    create index(:permission_set_grants, [:grantee_id])
 
     create table(:permission_set_grant_invalidations) do
       add :grant_id, references(:permission_set_grants, on_delete: :delete_all, on_update: :update_all), null: false
@@ -55,6 +65,15 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
 
     create index(:passphrases, [:user_id])
     create index(:passphrases, [:ip_addr])
+
+    create table(:passphrase_invalidations) do
+      add :source_passphrase_id, references(:passphrases, on_delete: :delete_all, on_update: :update_all), null: false
+      add :target_passphrase_id, references(:passphrases, on_delete: :delete_all, on_update: :update_all), null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()"), null: false
+    end
+
+    create unique_index(:passphrase_invalidations, [:target_passphrase_id])
+    create index(:passphrase_invalidations, [:source_passphrase_id])
 
     env = Application.get_env(:legion, Legion.Identity.Auth.Concrete)
     user_agent_length = Keyword.fetch!(env, :user_agent_length)
@@ -85,5 +104,12 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :gps_location, :point
       add :inserted_at, :naive_datetime, default: fragment("now()"), null: false
     end
+
+    create index(:activities, [:passphrase_id])
+    create index(:activities, [:engine])
+    create index(:activities, [:os_name])
+    create index(:activities, [:country_name])
+    create index(:activities, [:country_code])
+    create index(:activities, [:ip_addr])
   end
 end
