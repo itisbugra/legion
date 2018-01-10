@@ -82,8 +82,8 @@ defmodule Legion.Identity.Auth.Concrete.PassphraseTest do
 
   test "returns error if passphrase is invalidated" do
     invalidation = 
-      %Invalidation{passphrase_id: 1,
-                    user_id: 1}
+      %Invalidation{source_passphrase_id: 1,
+                    target_passphrase_id: 1}
     passphrase = 
       %Passphrase{id: 1,
                   user_id: 2,

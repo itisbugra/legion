@@ -19,7 +19,7 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
     field :ip_addr, Legion.Types.INET
     field :inserted_at, :naive_datetime, read_after_writes: true
 
-    has_one :invalidation, Invalidation
+    has_one :invalidation, Invalidation, foreign_key: :target_passphrase_id
     has_many :activities, Activity
   end
 
