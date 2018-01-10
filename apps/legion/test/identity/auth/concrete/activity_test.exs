@@ -3,6 +3,7 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
   use Legion.DataCase
 
   import Legion.Identity.Auth.Concrete.Activity, only: [create_changeset: 4]
+  import NaiveDateTime, only: [utc_now: 0, add: 2]
 
   alias Legion.Identity.Auth.Concrete.Activity
   alias Legion.Identity.Auth.Concrete.Passphrase
@@ -249,6 +250,23 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
                                 %Postgrex.Point{x: 4.2, y: 6.1})
 
       assert result == {:error, :incorrect_ip_range}
+    end
+  end
+
+  describe "last_activity/1" do
+    test "returns nil if user has no activity yet" do
+      user = insert(:user)
+
+      refute Activity.last_activity(user)
+    end
+
+    test "returns activity with highest timestamp" do
+      user = insert(:user)
+      passphrase = insert(:passphrase, user: user)
+      _passed_activities = insert_list(5, :activity, passphrase: passphrase, inserted_at: add(utc_now(), -5))
+      latest_activity = insert(:activity, passphrase: passphrase)
+
+      assert Activity.last_activity(user).id == latest_activity.id
     end
   end
 end

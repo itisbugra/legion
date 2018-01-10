@@ -4,14 +4,16 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
   """
   use Legion.Stereotype, :model
 
+  alias Legion.Identity.Auth.Concrete.Activity
   alias Legion.Identity.Auth.Concrete.Passphrase
+  alias Legion.Identity.Information.Registration, as: User
   alias UAInspector, as: UserAgentParser
   alias FreeGeoIP.Search, as: IPReverseGeocoding
 
   @env Application.get_env(:legion, Legion.Identity.Auth.Concrete)
   @user_agent_len Keyword.fetch!(@env, :user_agent_length)
 
-  schema "passphrase_activities" do
+  schema "activities" do
     belongs_to :passphrase, Passphrase
     field :user_agent, :string
     field :engine, :string
@@ -92,5 +94,31 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
       {:error, %{reason: reason}} ->
         {:error, reason}
     end
+  end
+
+  @doc """
+  Fetches last activity of the user from the database. One can supply either `User` struct or
+  user identifier as an integer as a parameter.
+  """
+  @spec last_activity(User | integer) ::
+    Activity |
+    nil
+  def last_activity(user = %User{}) do
+    last_activity(user.id)
+  end
+  def last_activity(user_id) when is_integer(user_id) do
+    query = from u in User,
+            join: p in Passphrase,
+              on: u.id == p.user_id,
+            join: a1 in Activity,
+              on: a1.passphrase_id == p.id,
+            left_join: a2 in Activity,
+              on: a2.passphrase_id == p.id and a2.id > a1.id,
+            where: u.id == ^user_id and is_nil(a2.id),
+            order_by: [desc: a2.id],
+            limit: 1,
+            select: a1
+
+    Repo.one(query)
   end
 end
