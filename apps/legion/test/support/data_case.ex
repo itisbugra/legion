@@ -21,6 +21,7 @@ defmodule Legion.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import Legion.Factory
       import Legion.DataCase
     end
   end

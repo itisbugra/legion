@@ -45,7 +45,8 @@ defmodule Legion.Mixfile do
       {:jose, "~> 1.8"},
       {:ua_inspector, "~> 0.14.0"},
       {:freegeoip, "~> 0.0.5"},
-      {:inet_cidr, "~> 1.0"}
+      {:inet_cidr, "~> 1.0"},
+      {:ex_machina, "~> 2.1", only: :test}
     ]
   end
 
