@@ -9,6 +9,8 @@ defmodule Legion.Stereotype do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+
+      alias Legion.Repo
     end
   end
 
