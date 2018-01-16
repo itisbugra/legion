@@ -1,8 +1,8 @@
-defmodule Legion.Identity.Auth.Concrete.TokenTest do
+defmodule Legion.Identity.Auth.Abstract.TokenTest do
   @moduledoc false
   use Legion.DataCase
 
-  import Legion.Identity.Auth.Concrete.Token
+  import Legion.Identity.Auth.Abstract.Token
   import NaiveDateTime, only: [utc_now: 0, add: 2]
 
   alias Legion.Identity.Information.Registration

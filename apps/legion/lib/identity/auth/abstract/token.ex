@@ -1,4 +1,4 @@
-defmodule Legion.Identity.Auth.Concrete.Token do
+defmodule Legion.Identity.Auth.Abstract.Token do
   @moduledoc """
   Defines credential-based authentication functions in order to authenticate users.
   """
