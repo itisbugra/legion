@@ -37,7 +37,7 @@ config :legion, Legion.Identity.Auth.Insecure,
   username_length: 6..20,
   username_requires_check: false,
   bypass_concrete_auth: true,
-  password_digestion: :bcrypt,
+  password_digestion: :argon2,
   password_type: :unicode,
   password_length: 8..32,
   password_minimum_security_level: :all
@@ -46,7 +46,7 @@ config :legion, Legion.Identity.Auth.OTC,
   lifetime: three_minutes,
   type: :integer,
   length: 6,
-  enable_zero_padding: false,
   prefix: "L",
   postfix: "",
-  medium: Legion.Identity.Auth.OTC.Adapters.SMS
+  medium: Legion.Identity.Auth.OTC.Adapters.SMS,
+  digestion: :argon2

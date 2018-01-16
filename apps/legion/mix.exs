@@ -42,6 +42,8 @@ defmodule Legion.Mixfile do
       {:ecto_enum, "~> 1.1"},
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},
+      {:bcrypt_elixir, "~> 1.0"},
+      {:pbkdf2_elixir, "~> 0.12.3"},
       {:jose, "~> 1.8"},
       {:ua_inspector, "~> 0.14.0"},
       {:freegeoip, "~> 0.0.5"},
