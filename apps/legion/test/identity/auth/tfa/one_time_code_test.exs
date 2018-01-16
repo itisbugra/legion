@@ -1,8 +1,8 @@
-defmodule Legion.Identity.Auth.Concrete.OneTimeCodeTest do
+defmodule Legion.Identity.Auth.TFA.OneTimeCodeTest do
   @moduledoc false
   use Legion.DataCase
 
-  import Legion.Identity.Auth.Concrete.OneTimeCode
+  import Legion.Identity.Auth.TFA.OneTimeCode
 
   @env Application.get_env(:legion, Legion.Identity.Auth.OTC)
   @prefix Keyword.fetch!(@env, :prefix)
@@ -10,17 +10,23 @@ defmodule Legion.Identity.Auth.Concrete.OneTimeCodeTest do
   @length Keyword.fetch!(@env, :length)
 
   describe "generate/1" do
-    test "generates an integer one time code" do
+    test "generates an integer otc" do
       val = generate(:integer)
 
       assert String.length(val) == String.length(@prefix) + String.length(@postfix) + @length
       assert val =~ Regex.compile!("#{@prefix}[0-9]{#{@length}}#{@postfix}")
     end
 
-    test "generates an alphanumeric one time code" do
+    test "generates an alphanumeric otc" do
       val = generate(:alphanumeric)
 
       assert String.length(val) == @length
+    end
+  end
+
+  describe "generate/0" do
+    test "generates an otc" do
+      assert generate()
     end
   end
 

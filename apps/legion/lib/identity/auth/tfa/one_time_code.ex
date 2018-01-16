@@ -1,4 +1,4 @@
-defmodule Legion.Identity.Auth.Concrete.OneTimeCode do
+defmodule Legion.Identity.Auth.TFA.OneTimeCode do
   @moduledoc """
   One time codes allow users to enable two-factor authentication (2FA). One may decide to use
   OTCs with SMS or e-mail. OTC is server-generated, and it cannot be resembled by any client.
@@ -30,13 +30,6 @@ defmodule Legion.Identity.Auth.Concrete.OneTimeCode do
   @lower_bound round(:math.pow(@base, @length - 1) + 1)
   @rand_bytes_take_integer 8
   @rand_bytes_take_alphanumeric 32
-
-  @doc """
-  Generates a one-time-code in given type, 
-  """
-  @spec bingenerate(format()) :: binary()
-  def bingenerate(type) when is_atom(type), do:
-    type |> generate() |> Integer.to_string()
 
   @doc """
   Generates a one-time-code in given type.
