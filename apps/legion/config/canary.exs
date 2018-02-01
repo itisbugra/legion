@@ -50,3 +50,6 @@ config :legion, Legion.Identity.Auth.OTC,
   postfix: "",
   medium: Legion.Identity.Auth.OTC.Adapters.SMS,
   digestion: :argon2
+
+config :legion, Legion.Identity.Auth.Concrete.TFA,
+  lifetime: three_minutes
