@@ -11,7 +11,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
 
     create table(:users) do
       add :has_gps_telemetry_consent?, :boolean, default: false
-      add :inserted_at, :naive_datetime, default: fragment("now()"), null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
     create table(:permissions) do
@@ -27,7 +27,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :name, :text, null: false
       add :description, :text, null: false
       add :user_id, references(:users, on_delete: :restrict, on_update: :update_all), null: false
-      add :inserted_at, :naive_datetime, default: fragment("now()"), null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
     create unique_index(:permission_sets, [:name])
@@ -45,7 +45,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :authority_id, references(:users, on_delete: :restrict, on_update: :update_all), null: false
       add :valid_after, :bigint
       add :valid_for, :bigint
-      add :inserted_at, :naive_datetime, default: fragment("now()"), null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
     create index(:permission_set_grants, [:grantee_id])
@@ -53,14 +53,14 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
     create table(:permission_set_grant_invalidations) do
       add :grant_id, references(:permission_set_grants, on_delete: :delete_all, on_update: :update_all), null: false
       add :authority_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false
-      add :inserted_at, :naive_datetime, default: fragment("now()"), null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
     create table(:passphrases) do
       add :user_id, references(:users, on_delete: :restrict, on_update: :update_all), null: false
       add :passkey_digest, :string, size: 400
       add :ip_addr, :inet, null: false
-      add :inserted_at, :naive_datetime, default: fragment("now()"), null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
     create index(:passphrases, [:user_id])
@@ -69,7 +69,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
     create table(:passphrase_invalidations) do
       add :source_passphrase_id, references(:passphrases, on_delete: :delete_all, on_update: :update_all), null: false
       add :target_passphrase_id, references(:passphrases, on_delete: :delete_all, on_update: :update_all), null: false
-      add :inserted_at, :naive_datetime, default: fragment("now()"), null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
     create unique_index(:passphrase_invalidations, [:target_passphrase_id])
@@ -102,7 +102,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :time_zone, :text
       add :zip_code, :text
       add :gps_location, :point
-      add :inserted_at, :naive_datetime, default: fragment("now()"), null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
     create index(:activities, [:passphrase_id])
@@ -111,5 +111,15 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
     create index(:activities, [:country_name])
     create index(:activities, [:country_code])
     create index(:activities, [:ip_addr])
+
+    create table(:concrete_tfa_handles) do
+      add :user_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false
+      add :otc_digest, :string, size: 400, null: false
+      add :passphrase_id, references(:passphrases, on_delete: :delete_all, on_update: :update_all)
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
+    end
+
+    create index(:concrete_tfa_handles, [:user_id])
+    create index(:concrete_tfa_handles, [:passphrase_id])
   end
 end
