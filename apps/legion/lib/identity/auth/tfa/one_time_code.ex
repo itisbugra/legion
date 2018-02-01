@@ -85,7 +85,7 @@ defmodule Legion.Identity.Auth.TFA.OneTimeCode do
   Performs a password check on given one-time-code with corresponding hash, returns truthy value
   if check was successful.
   """
-  @spec checkpw(binary(), binary()) :: boolean()
+  @spec checkpw(t(), binary()) :: boolean()
   def checkpw(otc, hash) when is_binary(otc) and is_binary(hash) do
     otc
     |> parse()
