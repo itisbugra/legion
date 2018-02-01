@@ -1,7 +1,10 @@
 defmodule Legion.Factory do
+  @moduledoc """
+  Defines factory models to be used as a seeder in tests.
+  """
   use ExMachina.Ecto, repo: Legion.Repo
 
-  import Comeonin.Argon2, only: [hashpwsalt: 1]
+  import Legion.Identity.Auth.TFA.OneTimeCode
 
   def user_factory do
     %Legion.Identity.Information.Registration{
@@ -39,6 +42,14 @@ defmodule Legion.Factory do
       passphrase: build(:passphrase),
       user_agent: sequence(:user_agent, &"#{&1}th user agent"),
       ip_addr: %Postgrex.INET{address: (1..4 |> Enum.map(&Enum.random(&1..255)) |> List.to_tuple())}
+    }
+  end
+
+  def tfa_handle_factory do
+    %Legion.Identity.Auth.Concrete.TFAHandle{
+      user: build(:user),
+      otc_digest: hashpwsalt("L123456"),
+      otc: "L123456"
     }
   end
 end
