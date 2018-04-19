@@ -46,10 +46,13 @@ defmodule Legion.Factory do
   end
 
   def tfa_handle_factory do
+    otc = generate()
+
     %Legion.Identity.Auth.Concrete.TFAHandle{
       user: build(:user),
-      otc_digest: hashpwsalt("L123456"),
-      otc: "L123456"
+      otc_digest: hashpwsalt(otc),
+      otc: otc,
+      passphrase_id: nil
     }
   end
 end

@@ -46,7 +46,7 @@ config :legion, Legion.Identity.Auth.OTC,
   lifetime: three_minutes,
   type: :integer,
   length: 6,
-  prefix: "L",
+  prefix: "",
   postfix: "",
   medium: Legion.Identity.Auth.OTC.Adapters.SMS,
   digestion: :argon2

@@ -7,23 +7,25 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandleTest do
 
   alias Legion.Identity.Auth.Concrete.TFAHandle
 
-  @otc "L123456"
-  @valid_attrs %{user_id: 1,
-                 otc: @otc,
-                 passphrase_id: 1}
   @env Application.get_env(:legion, Legion.Identity.Auth.Concrete.TFA)
   @lifetime Keyword.fetch!(@env, :lifetime)
+  @blank_otc ""
+  @invalid_otc "π123456"
 
-  test "changeset with valid attributes" do
+  setup do
+    %{otc: generate_otc(), valid_attrs: generate_valid_attrs()}
+  end
+
+  test "changeset with valid attributes", %{valid_attrs: valid_attrs} do
     changeset =
-      TFAHandle.changeset(%TFAHandle{}, @valid_attrs)
+      TFAHandle.changeset(%TFAHandle{}, valid_attrs)
 
     assert changeset.valid?
   end
 
-  test "changeset without user identifier" do
+  test "changeset without user identifier", %{otc: otc} do
     changeset =
-      TFAHandle.changeset(%TFAHandle{}, %{otc: @otc, passphrase_id: 1})
+      TFAHandle.changeset(%TFAHandle{}, %{otc: otc, passphrase_id: 1})
 
     refute changeset.valid?
   end
@@ -35,19 +37,19 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandleTest do
     refute changeset.valid?
   end
 
-  test "changeset without passphrase identifier" do
+  test "changeset without passphrase identifier", %{otc: otc} do
     changeset =
-      TFAHandle.changeset(%TFAHandle{}, %{user_id: 1, otc: @otc})
+      TFAHandle.changeset(%TFAHandle{}, %{user_id: 1, otc: otc})
 
     assert changeset.valid?
   end
 
-  test "hashes otc upon change" do
+  test "hashes otc upon change", %{valid_attrs: valid_attrs} do
     changeset =
-      TFAHandle.changeset(%TFAHandle{}, @valid_attrs)
+      TFAHandle.changeset(%TFAHandle{}, valid_attrs)
 
     assert changeset.changes.otc_digest
-    assert changeset.changes.otc_digest != @valid_attrs.otc
+    assert changeset.changes.otc_digest != valid_attrs.otc
   end
 
   describe "create_handle/1" do
@@ -70,61 +72,68 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandleTest do
   describe "challenge_handle/2" do
     test "challenges a handle with given user identifier and otc" do
       user = insert(:user)
-      _handle = insert(:tfa_handle, user: user)
+      handle = insert(:tfa_handle, user: user)
 
-      result = TFAHandle.challenge_handle(user, "L123456")
+      result = TFAHandle.challenge_handle(user, handle.otc)
 
       assert elem(result, 0) == :ok
     end
 
-    test "refuses challenge if given otc is not true" do
+    test "refuses challenge if given otc is not true", %{otc: otc} do
       user = insert(:user)
       _handle = insert(:tfa_handle, user: user)
 
-      assert TFAHandle.challenge_handle(user, "L111111") == {:error, :bad_code}
+      assert TFAHandle.challenge_handle(user, otc) == {:error, :bad_code}
     end
 
     test "refuses challenge if given otc is blank" do
       user = insert(:user)
       _handle = insert(:tfa_handle, user: user)
 
-      assert TFAHandle.challenge_handle(user, "") == {:error, :bad_code}
+      assert TFAHandle.challenge_handle(user, @blank_otc) == {:error, :bad_code}
     end
 
     test "refuses challenge if given otc is invalid" do
       user = insert(:user)
       _handle = insert(:tfa_handle, user: user)
 
-      assert TFAHandle.challenge_handle(user, "π123456") == {:error, :bad_code}
+      assert TFAHandle.challenge_handle(user, @invalid_otc) == {:error, :bad_code}
     end
 
-    test "refuses challenge if handle is not found" do
+    test "refuses challenge if handle is not found", %{otc: otc} do
       user = insert(:user)
 
-      assert TFAHandle.challenge_handle(user, "L123456")
+      assert TFAHandle.challenge_handle(user, otc)
     end
 
     test "refuses challenge if handle is outdated" do
       user = insert(:user)
-      _outdated_handle = insert(:tfa_handle, user: user, inserted_at: add(utc_now(), @lifetime + 1))
+      outdated_handle = insert(:tfa_handle, user: user, inserted_at: add(utc_now(), (-1) * (@lifetime)))
 
-      assert TFAHandle.challenge_handle(user, "L123456") == {:error, :not_found}
+      assert TFAHandle.challenge_handle(user, outdated_handle.otc) == {:error, :not_found}
     end
 
     test "refuses challenge if handle is already satisfied" do
       user = insert(:user)
       passphrase = insert(:passphrase)
-      _handle = insert(:tfa_handle, user: user, passphrase: passphrase)
+      handle = insert(:tfa_handle, user: user, passphrase: passphrase)
 
-      assert TFAHandle.challenge_handle(user, "L123456") == {:error, :not_found}
+      assert TFAHandle.challenge_handle(user, handle.otc) == {:error, :not_found}
     end
 
     test "refuses challenge if handle is overridden" do
       user = insert(:user)
-      _outdated_handle = insert(:tfa_handle, user: user)
-      _new_handle = insert(:tfa_handle, user: user, otc_digest: hashpwsalt("L654321"))
+      outdated_handle = insert(:tfa_handle, user: user)
+      new_handle = insert(:tfa_handle, user: user)
 
-      assert TFAHandle.challenge_handle(user, "L123456") == {:error, :bad_code}
+      assert TFAHandle.challenge_handle(user, outdated_handle.otc) == {:error, :bad_code}
+      assert TFAHandle.challenge_handle(user, new_handle.otc) |> Kernel.elem(0) == :ok
     end 
   end
+
+  def generate_otc(), do: generate()
+  def generate_valid_attrs(),
+      do: %{user_id: 1,
+            otc: generate_otc(),
+            passphrase_id: 1}
 end

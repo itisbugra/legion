@@ -76,12 +76,12 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
               where: is_nil(th2.id) and
                      th1.user_id == ^user_id and
                      is_nil(th1.passphrase_id) and
-                     th1.inserted_at <= from_now(@lifetime, "second"),
+                     th1.inserted_at > from_now(^((-1) * @lifetime), "second"),
               select: th1
 
       case Repo.one(query) do
         nil ->
-          dummy_checkpw()
+          dummy_checkpw() # a dummy wait to prevent from probing
 
           {:error, :not_found}
         handle ->
