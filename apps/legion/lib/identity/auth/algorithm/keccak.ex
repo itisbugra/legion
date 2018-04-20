@@ -14,9 +14,7 @@ defmodule Legion.Identity.Auth.Algorithm.Keccak do
   Hashes the given binary with given Keccak algorithm.
   """
   @spec hash(algorithm(), binary()) :: binary()
-  # FIXME: Algorithm should be supplied to the hash implementation.
-  # Arguments are duplicated on calls made.
-  def hash(_alg, data), do: :keccakf1600.hash(:sha3_512, data)
+  def hash(algorithm, data), do: :keccakf1600.hash(algorithm, data)
 
   @doc """
   Hashes the given binary with default Keccak algorithm configured.

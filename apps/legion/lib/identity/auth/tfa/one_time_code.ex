@@ -69,7 +69,7 @@ defmodule Legion.Identity.Auth.TFA.OneTimeCode do
   def hash(otc) do
     otc
     |> parse()
-    |> Keccak.hash(otc)
+    |> Keccak.hash()
   end
 
   @doc """
