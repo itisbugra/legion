@@ -89,16 +89,7 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
           nil ->
             Repo.rollback(:not_found)
           handle ->
-            attempts =
-              case handle.attempts do
-                x when x < @allowed_attempts ->
-                  x + 1
-                _ ->
-                  @allowed_attempts
-              end
-
-            IO.inspect handle
-
+            attempts = increment_if_smaller(handle.attempts, @allowed_attempts)
             changeset = TFAHandle.changeset(handle, %{attempts: attempts})
 
             Repo.update!(changeset)
@@ -117,6 +108,15 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
       end
     else 
       {:error, :bad_code}
+    end
+  end
+
+  defp increment_if_smaller(value, compared_to) do
+    case value do
+      x when x < compared_to ->
+        x + 1
+      _ ->
+        compared_to
     end
   end
 

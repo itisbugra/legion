@@ -129,7 +129,7 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandleTest do
       new_handle = insert(:tfa_handle, user: user)
 
       assert TFAHandle.challenge_handle(user, outdated_handle.otc) == {:error, :no_match}
-      assert TFAHandle.challenge_handle(user, new_handle.otc) |> Kernel.elem(0) == :ok
+      assert Kernel.elem(TFAHandle.challenge_handle(user, new_handle.otc), 0) == :ok
     end
 
     test "refuses challenge if handle is attempted more than allowed" do
