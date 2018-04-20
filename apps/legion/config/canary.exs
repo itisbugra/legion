@@ -48,9 +48,11 @@ config :legion, Legion.Identity.Auth.OTC,
   length: 6,
   prefix: "",
   postfix: "",
-  medium: Legion.Identity.Auth.OTC.Adapters.SMS,
-  digestion: :argon2
+  medium: Legion.Identity.Auth.OTC.Adapters.SMS
 
 config :legion, Legion.Identity.Auth.Concrete.TFA,
   lifetime: three_minutes,
   allowed_attempts: 3
+
+config :legion, Legion.Identity.Auth.Algorithm,
+  keccak_variant: :sha3_512

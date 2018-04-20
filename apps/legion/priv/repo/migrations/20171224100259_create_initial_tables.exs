@@ -58,7 +58,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
 
     create table(:passphrases) do
       add :user_id, references(:users, on_delete: :restrict, on_update: :update_all), null: false
-      add :passkey_digest, :string, size: 400
+      add :passkey_digest, :binary, null: false
       add :ip_addr, :inet, null: false
       add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
@@ -114,7 +114,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
 
     create table(:concrete_tfa_handles) do
       add :user_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false
-      add :otc_digest, :string, size: 400, null: false
+      add :otc_digest, :binary, null: false
       add :passphrase_id, references(:passphrases, on_delete: :delete_all, on_update: :update_all)
       add :attempts, :integer, default: 0, null: false
       add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false

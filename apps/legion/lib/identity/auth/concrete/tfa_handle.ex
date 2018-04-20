@@ -96,13 +96,13 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
         end
       end) do
         {:ok, handle} ->
-          if checkpw(otc, handle.otc_digest) do
+          if handle.otc_digest == hash(otc) do
             {:ok, handle}
           else
             {:error, :no_match}
           end
         {:error, :not_found} ->
-          dummy_checkpw() # a dummy wait to prevent from probing
+          stall() # a dummy wait to prevent from probing
 
           {:error, :not_found}
       end
@@ -134,7 +134,7 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
   defp hash_if_required(changeset) do
     if otc = get_change(changeset, :otc) do
       changeset
-      |> put_change(:otc_digest, hashpwsalt(otc))
+      |> put_change(:otc_digest, hash(otc))
     else
       changeset
     end

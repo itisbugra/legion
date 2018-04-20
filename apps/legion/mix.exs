@@ -49,7 +49,8 @@ defmodule Legion.Mixfile do
       {:freegeoip, "~> 0.0.5"},
       {:inet_cidr, "~> 1.0"},
       {:ex_machina, "~> 2.1", only: :test},
-      {:rsa_ex, "~> 0.2.1"}
+      {:rsa_ex, "~> 0.2.1"},
+      {:keccakf1600, "~> 2.0.0"}
     ]
   end
 

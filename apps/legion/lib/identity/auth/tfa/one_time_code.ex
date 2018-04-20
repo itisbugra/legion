@@ -5,6 +5,8 @@ defmodule Legion.Identity.Auth.TFA.OneTimeCode do
   """
   use Legion.Stereotype, :model
 
+  alias Legion.Identity.Auth.Algorithm.Keccak
+
   @typedoc """
   Type of a one-time-code.
   """
@@ -24,7 +26,6 @@ defmodule Legion.Identity.Auth.TFA.OneTimeCode do
   @postfix Keyword.fetch!(@env, :postfix)
   @length Keyword.fetch!(@env, :length)
   @default_type Keyword.fetch!(@env, :type)
-  @digestion Keyword.fetch!(@env, :digestion)
   @base 10
   @upper_bound round(:math.pow(@base, @length))
   @lower_bound round(:math.pow(@base, @length - 1) + 1)
@@ -62,65 +63,23 @@ defmodule Legion.Identity.Auth.TFA.OneTimeCode do
   def generate(), do: generate(@default_type)
 
   @doc """
-  Hashes given one-time-code with the digestion algorithm declared in configuration file.
+  Hashes given one-time-code with the default Keccak variant declared in configuration file.
   """
-  @spec hashpwsalt(t()) :: binary()
-  def hashpwsalt(otc) do
+  @spec hash(t()) :: binary()
+  def hash(otc) do
     otc
     |> parse()
-    |> hashpwsalt(@digestion)
+    |> Keccak.hash(otc)
   end
 
   @doc """
-  Hashes given one-time-code with given algorithm.
-
-  Use `hashpwsalt/1` convenience function to rely on configuration.
+  A dummy stall function in order to prevent from handle enumeration. It always return `false`.
   """
-  @spec hashpwsalt(t(), algorithm()) :: binary()
-  def hashpwsalt(otc, :bcrypt), do: Comeonin.Bcrypt.hashpwsalt(otc)
-  def hashpwsalt(otc, :argon2), do: Comeonin.Argon2.hashpwsalt(otc)
-  def hashpwsalt(otc, :pbkdf2), do: Comeonin.Pbkdf2.hashpwsalt(otc)
-
-  @doc """
-  Performs a password check on given one-time-code with corresponding hash, returns truthy value
-  if check was successful.
-  """
-  @spec checkpw(t(), binary()) :: boolean()
-  def checkpw(otc, hash) when is_binary(otc) and is_binary(hash) do
-    otc
-    |> parse()
-    |> checkpw(hash, @digestion)
+  @spec stall() :: false
+  def stall() do 
+    Keccak.hash("password")
+    false
   end
-
-  @doc """
-  Performs a password check on given one-time-code with given hash checking function, returns 
-  truthy value.
-
-  Use `checkpw/0` convenience function to rely on configuration.
-  """
-  @spec checkpw(t(), binary(), algorithm()) :: boolean()
-  def checkpw(otc, hash, :bcrypt), do: Comeonin.Bcrypt.checkpw(otc, hash)
-  def checkpw(otc, hash, :argon2), do: Comeonin.Argon2.checkpw(otc, hash)
-  def checkpw(otc, hash, :pbkdf2), do: Comeonin.Pbkdf2.checkpw(otc, hash)
-
-  @doc """
-  A dummy password check function in order to prevent from user enumeration.
-
-  See documentations for `Comeonin.Bcrypt.dummy_checkpw/2`, `Comeonin.Argon2.dummy_checkpw/2` and
-  `Comeonin.Pbkdf2.dummy_checkpw/2` functions for *Bcrypt*, *Argon2* and *Pbkdf2*, respectively.
-  """
-  @spec dummy_checkpw() :: false
-  def dummy_checkpw(), do: dummy_checkpw(@digestion)
-
-  @doc """
-  Same as `dummy_checkpw/0`, but uses the algorithm supplied as a parameter.
-
-  Use `dummy_checkpw/0` convenience function to rely on configuration.
-  """
-  @spec dummy_checkpw(algorithm()) :: false
-  def dummy_checkpw(:bcrypt), do: Comeonin.Bcrypt.dummy_checkpw()
-  def dummy_checkpw(:argon2), do: Comeonin.Argon2.dummy_checkpw()
-  def dummy_checkpw(:pbkdf2), do: Comeonin.Pbkdf2.dummy_checkpw()
 
   defp parse(otc) do
     lower_bound = String.length(@prefix)

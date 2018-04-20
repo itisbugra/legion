@@ -15,7 +15,7 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
 
   schema "passphrases" do
     belongs_to :user, Registration
-    field :passkey_digest
+    field :passkey_digest, :binary
     field :ip_addr, Legion.Types.INET
     field :inserted_at, :naive_datetime, read_after_writes: true
 
