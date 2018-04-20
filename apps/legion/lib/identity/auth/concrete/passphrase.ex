@@ -5,7 +5,6 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   use Legion.Stereotype, :model
 
   import NaiveDateTime, only: [utc_now: 0, diff: 2]
-  import Comeonin.Argon2, only: [hashpwsalt: 1]
 
   alias Legion.Identity.Auth.Concrete.Passphrase
   alias Legion.Identity.Auth.Concrete.Passphrase.Invalidation
@@ -21,13 +20,16 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
 
     has_one :invalidation, Invalidation, foreign_key: :target_passphrase_id
     has_many :activities, Activity
+
+    field :passkey, :binary, virtual: true
   end
 
   @spec changeset(Passphrase, map) :: Ecto.Changeset.t
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id, :passkey_digest, :ip_addr])
-    |> validate_required([:user_id, :passkey_digest, :ip_addr])
+    |> cast(params, [:user_id, :passkey_digest, :ip_addr, :passkey])
+    |> validate_required([:user_id, :passkey, :ip_addr])
+    |> hash_if_required()
   end
 
   @doc """
@@ -36,12 +38,11 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   @spec create_changeset(pos_integer, :inet.ip_address) :: {Passkey.t, Ecto.Changeset.t}
   def create_changeset(user_id, ip_addr) when is_integer(user_id) do
     passkey = Passkey.generate()
-    digest = hashpwsalt(passkey)
 
     changeset = 
       Passphrase.changeset(%Passphrase{},
                            %{user_id: user_id,
-                             passkey_digest: digest,
+                             passkey: passkey,
                              ip_addr: %Postgrex.INET{address: ip_addr}})
 
     {passkey, changeset}
@@ -89,5 +90,14 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
     passed = diff(utc_now(), passphrase.inserted_at)
 
     passed > lifetime
+  end
+
+  defp hash_if_required(changeset) do
+    if passkey = get_change(changeset, :passkey) do
+      changeset
+      |> put_change(:passkey_digest, Passkey.hash(passkey))
+    else
+      changeset
+    end
   end
 end

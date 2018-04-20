@@ -1,6 +1,9 @@
 defmodule Legion.Repo.Migrations.CreateInitialTables do
   use Ecto.Migration
 
+  @env Application.get_env(:legion, Legion.Identity.Auth.Concrete.TFA)
+  @allowed_otc_attempts Keyword.fetch!(@env, :allowed_attempts)
+
   def change do
     case direction() do
       :up ->
@@ -120,7 +123,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
-    create index(:concrete_tfa_handles, [:user_id])
     create index(:concrete_tfa_handles, [:passphrase_id])
+    create index(:concrete_tfa_handles, [:user_id], where: "attempts < #{@allowed_otc_attempts}")
   end
 end

@@ -4,6 +4,7 @@ defmodule Legion.Factory do
   """
   use ExMachina.Ecto, repo: Legion.Repo
 
+  alias Legion.Identity.Auth.Concrete.Passkey
   alias Legion.Identity.Auth.TFA.OneTimeCode
 
   def user_factory do
@@ -17,7 +18,7 @@ defmodule Legion.Factory do
 
     %Legion.Identity.Auth.Concrete.Passphrase{
       user: build(:user),
-      passkey_digest: OneTimeCode.hash(passkey),
+      passkey_digest: Passkey.hash(passkey),
       ip_addr: %Postgrex.INET{address: (1..4 |> Enum.map(&Enum.random(&1..255)) |> List.to_tuple())}
     }
   end
