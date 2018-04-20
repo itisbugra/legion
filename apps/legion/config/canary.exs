@@ -52,4 +52,5 @@ config :legion, Legion.Identity.Auth.OTC,
   digestion: :argon2
 
 config :legion, Legion.Identity.Auth.Concrete.TFA,
-  lifetime: three_minutes
+  lifetime: three_minutes,
+  allowed_attempts: 3

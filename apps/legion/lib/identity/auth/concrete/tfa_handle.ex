@@ -12,6 +12,7 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
 
   @tfa_env Application.get_env(:legion, Legion.Identity.Auth.Concrete.TFA)
   @lifetime Keyword.fetch!(@tfa_env, :lifetime)
+  @allowed_attempts Keyword.fetch!(@tfa_env, :allowed_attempts)
 
   @otc_env Application.get_env(:legion, Legion.Identity.Auth.OTC)
   @prefix Keyword.fetch!(@otc_env, :prefix)
@@ -23,6 +24,7 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
     belongs_to :user, Registration
     field :otc_digest, :string
     belongs_to :passphrase, Passphrase
+    field :attempts, :integer, default: 0
     field :inserted_at, :naive_datetime, read_after_writes: true
 
     field :otc, :string, virtual: true
@@ -34,8 +36,9 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
   @spec changeset(TFAHandle, map) :: Ecto.Changeset.t()
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id, :otc, :passphrase_id])
-    |> validate_required([:user_id, :otc])
+    |> cast(params, [:user_id, :otc, :passphrase_id, :attempts])
+    |> validate_required([:user_id])
+    |> validate_either_required(:otc_digest, :otc)
     |> foreign_key_constraint(:user_id)
     |> foreign_key_constraint(:passphrase_id)
     |> hash_if_required()
@@ -66,33 +69,65 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
   @spec challenge_handle(integer() | Registration, OneTimeCode.t()) ::
     {:ok, TFAHandle} |
     {:error, :not_found} |
-    {:error, :bad_code}
+    {:error, :bad_code} |
+    {:error, :no_match}
   def challenge_handle(user = %Registration{}, otc), do: challenge_handle(user.id, otc)
   def challenge_handle(user_id, otc) when is_integer(user_id) do
     if otc =~ @regex do
-      query = from th1 in TFAHandle,
-              left_join: th2 in TFAHandle,
-                on: th1.user_id == th2.user_id and th1.id < th2.id,
-              where: is_nil(th2.id) and
-                     th1.user_id == ^user_id and
-                     is_nil(th1.passphrase_id) and
-                     th1.inserted_at > from_now(^((-1) * @lifetime), "second"),
-              select: th1
+      case Repo.transaction(fn ->
+        query = from th1 in TFAHandle,
+                     left_join: th2 in TFAHandle,
+                     on: th1.user_id == th2.user_id and th1.id < th2.id,
+                     where: is_nil(th2.id) and
+                            th1.user_id == ^user_id and
+                            is_nil(th1.passphrase_id) and
+                            th1.attempts < @allowed_attempts and
+                            th1.inserted_at > from_now(^((-1) * @lifetime), "second"),
+                     select: th1
 
-      case Repo.one(query) do
-        nil ->
-          dummy_checkpw() # a dummy wait to prevent from probing
+        case Repo.one(query) do
+          nil ->
+            Repo.rollback(:not_found)
+          handle ->
+            attempts =
+              case handle.attempts do
+                x when x < @allowed_attempts ->
+                  x + 1
+                _ ->
+                  @allowed_attempts
+              end
 
-          {:error, :not_found}
-        handle ->
+            IO.inspect handle
+
+            changeset = TFAHandle.changeset(handle, %{attempts: attempts})
+
+            Repo.update!(changeset)
+        end
+      end) do
+        {:ok, handle} ->
           if checkpw(otc, handle.otc_digest) do
             {:ok, handle}
           else
-            {:error, :bad_code}
+            {:error, :no_match}
           end
+        {:error, :not_found} ->
+          dummy_checkpw() # a dummy wait to prevent from probing
+
+          {:error, :not_found}
       end
     else 
       {:error, :bad_code}
+    end
+  end
+
+  defp validate_either_required(changeset, first, second) do
+    cond do
+      get_field(changeset, first) ->
+        changeset
+      get_field(changeset, second) ->
+        changeset
+      true ->
+        add_error(changeset, :first, "can't be blank", either: "second be not blank at least")
     end
   end
 

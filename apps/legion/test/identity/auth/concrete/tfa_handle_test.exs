@@ -9,6 +9,7 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandleTest do
 
   @env Application.get_env(:legion, Legion.Identity.Auth.Concrete.TFA)
   @lifetime Keyword.fetch!(@env, :lifetime)
+  @allowed_attempts Keyword.fetch!(@env, :allowed_attempts)
   @blank_otc ""
   @invalid_otc "π123456"
 
@@ -83,7 +84,7 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandleTest do
       user = insert(:user)
       _handle = insert(:tfa_handle, user: user)
 
-      assert TFAHandle.challenge_handle(user, otc) == {:error, :bad_code}
+      assert TFAHandle.challenge_handle(user, otc) == {:error, :no_match}
     end
 
     test "refuses challenge if given otc is blank" do
@@ -95,9 +96,10 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandleTest do
 
     test "refuses challenge if given otc is invalid" do
       user = insert(:user)
-      _handle = insert(:tfa_handle, user: user)
+      handle = insert(:tfa_handle, user: user)
 
-      assert TFAHandle.challenge_handle(user, @invalid_otc) == {:error, :bad_code}
+      assert TFAHandle.challenge_handle(user, @invalid_otc) == {:error, :no_match}
+      assert Repo.get!(TFAHandle, handle.id).attempts == 1
     end
 
     test "refuses challenge if handle is not found", %{otc: otc} do
@@ -126,9 +128,16 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandleTest do
       outdated_handle = insert(:tfa_handle, user: user)
       new_handle = insert(:tfa_handle, user: user)
 
-      assert TFAHandle.challenge_handle(user, outdated_handle.otc) == {:error, :bad_code}
+      assert TFAHandle.challenge_handle(user, outdated_handle.otc) == {:error, :no_match}
       assert TFAHandle.challenge_handle(user, new_handle.otc) |> Kernel.elem(0) == :ok
-    end 
+    end
+
+    test "refuses challenge if handle is attempted more than allowed" do
+      user = insert(:user)
+      handle = insert(:tfa_handle, user: user, attempts: @allowed_attempts)
+
+      assert TFAHandle.challenge_handle(user, handle.otc) == {:error, :not_found}
+    end
   end
 
   def generate_otc(), do: generate()
