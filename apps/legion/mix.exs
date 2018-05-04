@@ -24,7 +24,7 @@ defmodule Legion.Mixfile do
   def application do
     [
       mod: {Legion.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ua_inspector]
+      extra_applications: [:logger, :runtime_tools, :ua_inspector, :liquid]
     ]
   end
 
@@ -50,7 +50,8 @@ defmodule Legion.Mixfile do
       {:inet_cidr, "~> 1.0"},
       {:ex_machina, "~> 2.1", only: :test},
       {:rsa_ex, "~> 0.2.1"},
-      {:keccakf1600, "~> 2.0.0"}
+      {:keccakf1600, "~> 2.0.0"},
+      {:liquid, "~> 0.8.0"}
     ]
   end
 
@@ -62,7 +63,7 @@ defmodule Legion.Mixfile do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/registry/messaging.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "test": ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
