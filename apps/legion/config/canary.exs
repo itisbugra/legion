@@ -56,3 +56,32 @@ config :legion, Legion.Identity.Auth.Concrete.TFA,
 
 config :legion, Legion.Identity.Auth.Algorithm,
   keccak_variant: :sha3_512
+
+config :legion, Legion.Messaging.Medium.APM,
+  subject_length: 2..40,
+  body_length: 5..255,
+  is_enabled?: true
+
+config :legion, Legion.Messaging.Medium.Push,
+  subject_length: 2..40,
+  body_length: 5..255,
+  is_enabled?: true
+
+config :legion, Legion.Messaging.Medium.Mailing,
+  subject_length: 2..40,
+  body_length: 5..255,
+  is_enabled?: true
+
+config :legion, Legion.Messaging.Medium.SMS,
+  subject_length: 2..40,
+  body_length: 5..255,
+  is_enabled?: true
+
+config :legion, Legion.Messaging.Medium.Platform,
+  subject_length: 2..40,
+  body_length: 5..255,
+  is_enabled?: true
+
+config :legion, Legion.Messaging.Templatization,
+  template_name_length: 5..50
+
