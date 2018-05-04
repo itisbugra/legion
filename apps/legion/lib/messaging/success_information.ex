@@ -6,10 +6,8 @@ defmodule Legion.Messaging.Message.SuccessInformation do
 
   alias Legion.Messaging.Message
 
-  @primary_key {:message_id, :id, autogenerate: false}
-
   schema "message_success_informations" do
-    belongs_to :message, Message, define_field: false
+    belongs_to :message, Message, primary_key: true
     field :inserted_at, :naive_datetime, read_after_writes: true
   end
 
