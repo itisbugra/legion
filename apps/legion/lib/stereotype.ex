@@ -14,6 +14,28 @@ defmodule Legion.Stereotype do
     end
   end
 
+  def singleton do
+    quote do
+      use Ecto.Schema
+
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query
+
+      alias Legion.Repo
+    end
+  end
+
+  def service do
+    quote do
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query
+
+      alias Legion.Repo
+    end
+  end
+
   @doc """
   When used, dispatch to the appropriate controller/view/etc.
   """
