@@ -56,4 +56,18 @@ defmodule Legion.Factory do
       passphrase_id: nil
     }
   end
+
+  def messaging_settings_register_factory do
+    %Legion.Messaging.Settings.Register{
+      key: sequence(:messaging_setting_register_key, &"Some.key#{&1}")
+    }
+  end
+
+  def messaging_settings_registry_entry_factory do
+    %Legion.Messaging.Settings.RegistryEntry{
+      key: build(:messaging_settings_register),
+      authority: build(:user),
+      value: %{"field" => "value"}
+    }
+  end
 end

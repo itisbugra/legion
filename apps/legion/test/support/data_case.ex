@@ -17,6 +17,7 @@ defmodule Legion.DataCase do
   using do
     quote do
       alias Legion.Repo
+      alias Legion.Factory
 
       import Ecto
       import Ecto.Changeset

@@ -7,8 +7,9 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
   import Legion.Identity.Auth.TFA.OneTimeCode
 
   alias __MODULE__, as: TFAHandle
-  alias Legion.Identity.Information.Registration
+  alias Legion.Identity.Information.Registration, as: User
   alias Legion.Identity.Auth.Concrete.Passphrase
+  alias Legion.Identity.Information.UserNotFoundError
 
   @tfa_env Application.get_env(:legion, Legion.Identity.Auth.Concrete.TFA)
   @lifetime Keyword.fetch!(@tfa_env, :lifetime)
@@ -21,7 +22,7 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
   @regex Regex.compile!("#{@prefix}[0-9]{#{@length}}#{@postfix}")
 
   schema "concrete_tfa_handles" do
-    belongs_to :user, Registration
+    belongs_to :user, User
     field :otc_digest, :string
     belongs_to :passphrase, Passphrase
     field :attempts, :integer, default: 0
@@ -45,12 +46,30 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
   end
 
   @doc """
-  Creates a handle with generated OTC in database and returns it.
+  Same as `create_handle/1`, but throws a `Legion.Identity.Information.UserNotFoundError` if user with
+  given identifier cannot be found.
   """
-  @spec create_handle(integer() | Registration) :: 
+  @spec create_handle!(integer() | User) :: 
+    TFAHandle | 
+    no_return
+  def create_handle!(user = %User{}), do: create_handle!(user.id)
+  def create_handle!(user_id) when is_integer(user_id) do
+    case create_handle(user_id) do
+      {:ok, handle} ->
+        handle
+      {:error, :not_found} ->
+        raise UserNotFoundError, user_id: user_id
+    end
+  end
+
+  @doc """
+  Creates a handle with generated OTC in database and returns it. If user was not found,
+  it returns `{:error, :not_found}`.
+  """
+  @spec create_handle(integer() | User) :: 
     {:ok, TFAHandle} |
     {:error, :not_found}
-  def create_handle(user = %Registration{}), do: create_handle(user.id)
+  def create_handle(user = %User{}), do: create_handle(user.id)
   def create_handle(user_id) when is_integer(user_id) do
     changes = changeset(%TFAHandle{}, %{user_id: user_id, otc: generate()})
 
@@ -66,24 +85,24 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
   Challenges a handle of a user with given one time code, returns the subject handle if challenge
   was successful.
   """
-  @spec challenge_handle(integer() | Registration, OneTimeCode.t()) ::
+  @spec challenge_handle(integer() | User, OneTimeCode.t()) ::
     {:ok, TFAHandle} |
     {:error, :not_found} |
     {:error, :bad_code} |
     {:error, :no_match}
-  def challenge_handle(user = %Registration{}, otc), do: challenge_handle(user.id, otc)
+  def challenge_handle(user = %User{}, otc), do: challenge_handle(user.id, otc)
   def challenge_handle(user_id, otc) when is_integer(user_id) do
     if otc =~ @regex do
       case Repo.transaction(fn ->
         query = from th1 in TFAHandle,
-                     left_join: th2 in TFAHandle,
-                     on: th1.user_id == th2.user_id and th1.id < th2.id,
-                     where: is_nil(th2.id) and
-                            th1.user_id == ^user_id and
-                            is_nil(th1.passphrase_id) and
-                            th1.attempts < @allowed_attempts and
-                            th1.inserted_at > from_now(^((-1) * @lifetime), "second"),
-                     select: th1
+                 left_join: th2 in TFAHandle,
+                 on: th1.user_id == th2.user_id and th1.id < th2.id,
+                 where: is_nil(th2.id) and
+                        th1.user_id == ^user_id and
+                        is_nil(th1.passphrase_id) and
+                        th1.attempts < @allowed_attempts and
+                        th1.inserted_at > from_now(^((-1) * @lifetime), "second"),
+                 select: th1
 
         case Repo.one(query) do
           nil ->

@@ -8,8 +8,10 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
     case direction() do
       :up ->
         Legion.Identity.Auth.AccessControl.ControllerAction.create_type()
+        Legion.Messaging.Message.Medium.create_type()
       :down ->
         Legion.Identity.Auth.AccessControl.ControllerAction.drop_type()
+        Legion.Messaging.Message.Medium.drop_type()
     end
 
     create table(:users) do
@@ -125,5 +127,57 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
 
     create index(:concrete_tfa_handles, [:passphrase_id])
     create index(:concrete_tfa_handles, [:user_id], where: "attempts < #{@allowed_otc_attempts}")
+
+    create table(:messages) do
+      add :sender_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false
+      add :subject, :text
+      add :body, :text, null: false
+      add :medium, :messaging_medium, null: false
+      add :send_after, :integer, null: false, default: 0
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
+    end
+
+    create table(:messaging_settings_registers, primary_key: false) do
+      add :key, :text, null: false, primary_key: true
+    end
+
+    create table(:messaging_settings_registry_entries) do
+      add :key, references(:messaging_settings_registers, on_delete: :delete_all, on_update: :update_all, column: :key, type: :text), null: false
+      add :value, :jsonb, null: false
+      add :authority_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
+    end
+
+    create index(:messaging_settings_registry_entries, [:key])
+    create index(:messaging_settings_registry_entries, [:authority_id])
+
+    create table(:message_recipients, primary_key: false) do
+      add :message_id, references(:messages, on_delete: :delete_all, on_update: :update_all), null: false
+      add :recipient_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false
+    end
+
+    create unique_index(:message_recipients, [:message_id, :recipient_id])
+
+    create table(:message_success_informations) do
+      add :message_id, references(:messages, on_delete: :delete_all, on_update: :update_all), null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false 
+    end
+
+    create table(:messaging_templates) do
+      add :user_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false
+      add :name, :text, null: false
+      add :subject_template, :text, null: false
+      add :subject_params, {:array, :text}, null: false
+      add :body_template, :text, null: false
+      add :body_params, {:array, :text}, null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false 
+    end
+
+    create table(:message_template_usages) do
+      add :message_id, references(:messages, on_delete: :delete_all, on_update: :update_all), null: false, primary_key: true
+      add :template_id, references(:messaging_templates, on_delete: :delete_all, on_update: :update_all), null: false
+      add :subject_params, :jsonb, null: false
+      add :body_params, :jsonb, null: false
+    end
   end
 end
