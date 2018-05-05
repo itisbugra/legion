@@ -160,7 +160,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
 
     create table(:message_success_informations) do
       add :message_id, references(:messages, on_delete: :delete_all, on_update: :update_all), null: false
-      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false 
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
     create table(:messaging_templates) do
@@ -170,7 +170,12 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :subject_params, {:array, :text}, null: false
       add :body_template, :text, null: false
       add :body_params, {:array, :text}, null: false
-      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false 
+      add :is_available_for_apm?, :boolean, null: false
+      add :is_available_for_push?, :boolean, null: false
+      add :is_available_for_mailing?, :boolean, null: false
+      add :is_available_for_sms?, :boolean, null: false
+      add :is_available_for_platform?, :boolean, null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
     create table(:message_template_usages) do

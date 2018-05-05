@@ -1,4 +1,4 @@
-defmodule Legion.Messaging.Templatization.Render do
+defmodule Legion.Messaging.Templatization.RenderingResult do
   @moduledoc """
   Represents the rendering result of templatized text.
   """
