@@ -6,24 +6,26 @@ defmodule Legion.Identity.Auth.Concrete.Passkey do
 
   @env Application.get_env(:legion, Legion.Identity.Auth.Concrete)
   @scale Keyword.fetch!(@env, :passkey_scaling)
+  @cofactor 1024
 
   @typedoc """
-  A passkey is simply a concatenation of #{@scale} UUIDs (Version 4).
+  A passkey is simply a random string consisting of #{@scale * @cofactor} bits.
   """
   @type t :: binary
 
   @doc """
-  Generates a string passkey with an absolute length of #{@scale * 22}.
+  Generates a string passkey with an absolute length of #{@scale * @cofactor}.
   """
   @spec generate() :: String.t
-  def generate(), do: Base.encode64(bingenerate(), padding: true)
+  def generate(), do: EntropyString.random(@scale * @cofactor, :charset64)
 
   @doc """
   Generates a binary passkey.
   """
-  @spec bingenerate() :: binary
+  @deprecated "Use generate/0 instead"
+  @spec bingenerate() :: binary()
   def bingenerate() do
-    Enum.map_join(1..@scale, fn(_) -> Ecto.UUID.bingenerate() end)
+    <<generate()>>
   end
 
   @doc """
@@ -36,7 +38,7 @@ defmodule Legion.Identity.Auth.Concrete.Passkey do
   A dummy stall function in order to prevent from handle enumeration. It always return `false`.
   """
   @spec stall() :: false
-  def stall() do 
+  def stall() do
     Keccak.hash("password")
     false
   end
