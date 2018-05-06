@@ -51,7 +51,8 @@ defmodule Legion.Mixfile do
       {:ex_machina, "~> 2.1", only: :test},
       {:rsa_ex, "~> 0.2.1"},
       {:keccakf1600, "~> 2.0.0"},
-      {:liquid, "~> 0.8.0"}
+      {:liquid, "~> 0.8.0"},
+      {:entropy_string, "~> 1.3"}
     ]
   end
 
