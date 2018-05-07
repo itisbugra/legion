@@ -13,4 +13,10 @@ defmodule Legion.Identity.Generic.PasskeyTest do
   test "generates a base64 passkey with absolute length of #{@scale * 1024}" do
     assert Passkey.generate()
   end
+
+  test "sleeps for a while in order to prevent from probing" do
+    Passkey.stall()
+
+    assert true
+  end
 end
