@@ -9,12 +9,12 @@ defmodule Legion.Identity.Auth.Concrete.Passkey do
   @cofactor 1024
 
   @typedoc """
-  A passkey is simply a random string consisting of #{@scale * @cofactor} bits.
+  A passkey is simply a random string consisting of #{@scale * @cofactor} entropy bits.
   """
   @type t :: binary
 
   @doc """
-  Generates a string passkey with an absolute length of #{@scale * @cofactor}.
+  Generates a string passkey with an entropy size of #{@scale * @cofactor}.
   """
   @spec generate() :: String.t
   def generate(), do: EntropyString.random(@scale * @cofactor, :charset64)
@@ -22,11 +22,8 @@ defmodule Legion.Identity.Auth.Concrete.Passkey do
   @doc """
   Generates a binary passkey.
   """
-  @deprecated "Use generate/0 instead"
   @spec bingenerate() :: binary()
-  def bingenerate() do
-    <<generate()>>
-  end
+  def bingenerate(), do: Base.url_decode64!(generate(), padding: false)
 
   @doc """
   Hashes given passkey with the default Keccak variant declared in configuration file.
