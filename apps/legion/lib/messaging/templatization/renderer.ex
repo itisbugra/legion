@@ -1,9 +1,9 @@
-defmodule Legion.Messaging.Templatization.RenderingResulter do
+defmodule Legion.Messaging.Templatization.Renderer do
   @moduledoc """
   Provides business logic to RenderingResult parametric message templates.
   """
-  alias Legion.Messaging.Templatization.RenderingResult
-  alias Legion.Messaging.Templatization.Template
+  alias Legion.Messaging.Templatization.{Template, RenderingResult}
+  alias Legion.Templating.Renderer
 
   @doc """
   Generates a message with given template and template parameters.
@@ -12,8 +12,15 @@ defmodule Legion.Messaging.Templatization.RenderingResulter do
     {:ok, RenderingResult.t} |
     {:error, {:param_is_missing, atom()}}
   def generate_message(template, subject_params, body_params) do
-    with {:ok, subject} <- eval_template(template.subject_template, template.subject_params, subject_params),
-         {:ok, body} <- eval_template(template.body_template, template.body_params, body_params) do
+    with {:ok, subject} <- eval_template(template.subject_template,
+                                         template.engine,
+                                         template.subject_params,
+                                         subject_params),
+         {:ok, body} <- eval_template(template.body_template,
+                                      template.engine,
+                                      template.body_params,
+                                      body_params)
+    do
       {:ok, %RenderingResult{subject: subject, body: body}}
     else
       {:error, desc} ->
@@ -21,11 +28,12 @@ defmodule Legion.Messaging.Templatization.RenderingResulter do
     end
   end
 
-  defp eval_template(template, available_params, supplied_params) do
+  defp eval_template(template, engine, available_params, supplied_params) do
     with :ok <- check_params(available_params, supplied_params),
-         params <- scrub_params(available_params, supplied_params)
+         params <- scrub_params(available_params, supplied_params),
+         engine <- Renderer.provide_implementation(engine)
     do
-      {:ok, Liquid.Template.render(template, params)}
+      engine.render(template, params)
     else
       {:error, desc} ->
         {:error, desc}
@@ -44,8 +52,8 @@ defmodule Legion.Messaging.Templatization.RenderingResulter do
   end
 
   defp scrub_params(availables, candidates) do
-    available_params = Enum.map(availables, fn x -> Atom.to_string(x) end)
+    keys = Enum.filter(Map.keys(candidates), fn x -> not Enum.member?(availables, x) end)
 
-    Enum.filter(candidates, fn x -> Enum.member?(available_params, x) end)
+    Map.drop(candidates, keys)
   end
 end

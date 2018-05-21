@@ -9,13 +9,23 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       :up ->
         Legion.Identity.Auth.AccessControl.ControllerAction.create_type()
         Legion.Messaging.Message.Medium.create_type()
+        Legion.Templating.Renderer.Engine.create_type()
       :down ->
         Legion.Identity.Auth.AccessControl.ControllerAction.drop_type()
         Legion.Messaging.Message.Medium.drop_type()
+        Legion.Templating.Renderer.Engine.drop_type()
+    end
+
+    create table(:locales, primary_key: false) do
+      add :rfc1766, :text, primary_key: true, default: "en-us"
+      add :language, :text
+      add :abbreviation, :text
+      add :variant, :text
     end
 
     create table(:users) do
       add :has_gps_telemetry_consent?, :boolean, default: false
+      add :locale, references(:locales, on_delete: :restrict, on_update: :update_all, column: :rfc1766, type: :text)
       add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
@@ -166,6 +176,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
     create table(:messaging_templates) do
       add :user_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false
       add :name, :text, null: false
+      add :engine, :template_rendering_engine, null: false
       add :subject_template, :text, null: false
       add :subject_params, {:array, :text}, null: false
       add :body_template, :text, null: false

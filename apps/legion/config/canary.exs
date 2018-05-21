@@ -7,7 +7,7 @@ three_minutes = 180
 config :ua_inspector,
   database_path: Path.join(Mix.Utils.mix_home, "ua_inspector")
 
-config :freegeoip, 
+config :freegeoip,
   base_url: "http://localhost:8080"
 
 # Access control basics
@@ -73,7 +73,6 @@ config :legion, Legion.Messaging.Medium.Mailing,
   is_enabled?: true
 
 config :legion, Legion.Messaging.Medium.SMS,
-  subject_length: 2..40,
   body_length: 5..255,
   is_enabled?: true
 
@@ -84,4 +83,3 @@ config :legion, Legion.Messaging.Medium.Platform,
 
 config :legion, Legion.Messaging.Templatization,
   template_name_length: 5..50
-

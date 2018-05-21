@@ -23,7 +23,6 @@ defmodule Legion.Messaging.Message do
   @mailing_body_len Keyword.fetch!(@mailing_env, :body_length)
 
   @sms_env Application.get_env(:legion, Legion.Messaging.Medium.SMS)
-  @sms_subject_len Keyword.fetch!(@sms_env, :subject_length)
   @sms_body_len Keyword.fetch!(@sms_env, :body_length)
 
   @platform_env Application.get_env(:legion, Legion.Messaging.Medium.Platform)
@@ -36,8 +35,8 @@ defmodule Legion.Messaging.Message do
   A medium to send the message by.
 
   ## Values
-  - `:apm`: Platform-native push services (i.e. Apple Push Notification Service - APNS, Google Cloud 
-  Messaging - GCM, Microsoft Push Notification Service - MPNS, Windows Push Notification Services - 
+  - `:apm`: Platform-native push services (i.e. Apple Push Notification Service - APNS, Google Cloud
+  Messaging - GCM, Microsoft Push Notification Service - MPNS, Windows Push Notification Services -
   WPN). See `Legion.Messaging.Medium.APM` for more information.
   - `:push`: Pseudo-push using local push APIs of devices. Might not be supported on all devices.
   - `:mailing`: Sends email using email services.
@@ -148,25 +147,22 @@ defmodule Legion.Messaging.Message do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:subject, :body, :medium])
-    |> validate_required([:body, :medium])
+    |> cast(params, [:subject, :body, :medium, :send_after])
+    |> validate_required([:body, :medium, :send_after])
     |> validate_subject()
     |> validate_body()
     |> validate_number(:send_after, greater_than_or_equal_to: @zero)
   end
 
   defp validate_subject(changeset) do
-    subject = get_field(changeset, :subject, nil)
     medium = get_field(changeset, :medium, nil)
 
-    if medium == :sms and not is_nil(subject) do
-      add_error(changeset, :subject, "subject should be nil if medium is sms")
-    else
-      validate_subject_for_medium(changeset, medium)
-    end
+    if medium == :sms,
+      do: changeset,
+    else: validate_subject_for_medium(changeset, medium)
   end
 
-  for type <- @available_pushes do
+  for type <- List.delete(@available_pushes, :sms) do
     defp validate_subject_for_medium(changeset, unquote(type)) do
       min = unquote(Enum.min(Module.get_attribute(__MODULE__, :"#{Atom.to_string(type)}_subject_len")))
       max = unquote(Enum.max(Module.get_attribute(__MODULE__, :"#{Atom.to_string(type)}_subject_len")))

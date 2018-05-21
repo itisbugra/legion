@@ -3,6 +3,7 @@ defmodule Legion.Factory do
   Defines factory models to be used as a seeder in tests.
   """
   use ExMachina.Ecto, repo: Legion.Repo
+  use Legion.TemplateFactory
 
   alias Legion.Identity.Auth.Concrete.Passkey
   alias Legion.Identity.Auth.TFA.OneTimeCode

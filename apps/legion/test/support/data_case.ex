@@ -24,6 +24,7 @@ defmodule Legion.DataCase do
       import Ecto.Query
       import Legion.Factory
       import Legion.DataCase
+      import Legion.Testing.Random
     end
   end
 

@@ -1,19 +1,4 @@
-# Script for populating messaging setting registers. You can run it as:
-#
-#.    mix run priv/repo/registry/messaging.exs
-#
-# Inside the script, you can read and write to the registry repo directly:
-#
-#.    Repo.insert!(%Registry{key: "Some.Module.key"})
-#
-# We use the following convention for naming keys:
-#
-#.    Messaging.Switching.Globals.some_key_about_anything
-#
-# If the key has a boolean value, we postfix the key with a "?".
-#
-#.    Messaging.Switching.Globals.am_i_hungry?
-defmodule Legion.Repo.Registry.Messaging do
+defmodule Mix.Tasks.Legion.Reg.Messaging do
   require Logger
 
   alias Legion.Repo
@@ -38,7 +23,7 @@ defmodule Legion.Repo.Registry.Messaging do
     end
   end
 
-  def change do
+  def run(_args) do
     put_key "Messaging.Switching.Globals.is_apm_enabled?"
     put_key "Messaging.Switching.Globals.is_push_enabled?"
     put_key "Messaging.Switching.Globals.is_sms_enabled?"
@@ -46,5 +31,3 @@ defmodule Legion.Repo.Registry.Messaging do
     put_key "Messaging.Switching.Globals.is_platform_enabled?"
   end
 end
-
-Legion.Repo.Registry.Messaging.change()

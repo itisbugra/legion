@@ -8,15 +8,11 @@ defmodule Legion.Messaging.Templatization.TemplateTest do
   @base_path Path.join(__DIR__, "resources")
   @subject_template File.read!(Path.join(@base_path, "subject_template.liquid"))
   @body_template File.read!(Path.join(@base_path, "body_template.liquid"))
-  @subject_params ["surname"]
-  @body_params ["cool_products", "all_products", "section", "description"]
   @valid_params %{user_id: 1,
                   name: @name,
                   engine: :liquid,
                   subject_template: @subject_template,
                   body_template: @body_template,
-                  subject_params: @subject_params,
-                  body_params: @body_params,
                   is_available_for_apm?: true,
                   is_available_for_push?: true,
                   is_available_for_mailing?: true,
@@ -27,6 +23,19 @@ defmodule Legion.Messaging.Templatization.TemplateTest do
     changeset = Template.changeset(%Template{}, @valid_params)
 
     assert changeset.valid?
+  end
+
+  test "template params are derived during changeset" do
+    changeset = Template.changeset(%Template{}, @valid_params)
+
+    assert changeset.changes.body_params == ["description", "products", "section", "cool_products", "product.name", "product.price", "product.description"]
+    assert changeset.changes.subject_params == ["surname"]
+  end
+
+  test "template params are not duplicated on derive" do
+    changeset = Template.changeset(%Template{}, @valid_params)
+
+    assert Enum.count(changeset.changes.body_params, fn x -> x == "description" end) == 1
   end
 
   test "changeset without user identifier" do
@@ -50,25 +59,11 @@ defmodule Legion.Messaging.Templatization.TemplateTest do
     refute changeset.valid?
   end
 
-  test "changeset without subject params" do
-    changeset =
-      Template.changeset(%Template{}, params_without_field(:subject_params))
-
-    assert changeset.valid?
-  end
-
   test "changeset without body template" do
     changeset =
       Template.changeset(%Template{}, params_without_field(:body_template))
 
     refute changeset.valid?
-  end
-
-  test "changeset without body params" do
-    changeset =
-      Template.changeset(%Template{}, params_without_field(:body_params))
-
-    assert changeset.valid?
   end
 
   test "changeset without availability for apm" do
@@ -113,8 +108,6 @@ defmodule Legion.Messaging.Templatization.TemplateTest do
                            name: @name,
                            engine: :liquid,
                            body_template: @body_template,
-                           subject_params: @subject_params,
-                           body_params: @body_params,
                            is_available_for_apm?: true,
                            is_available_for_push?: true,
                            is_available_for_mailing?: true,
@@ -130,8 +123,6 @@ defmodule Legion.Messaging.Templatization.TemplateTest do
                            name: @name,
                            engine: :liquid,
                            body_template: @body_template,
-                           subject_params: @subject_params,
-                           body_params: @body_params,
                            is_available_for_apm?: false,
                            is_available_for_push?: false,
                            is_available_for_mailing?: false,
@@ -149,8 +140,6 @@ defmodule Legion.Messaging.Templatization.TemplateTest do
                            engine: :liquid,
                            subject_template: @subject_template,
                            body_template: @body_template,
-                           subject_params: @subject_params,
-                           body_params: @body_params,
                            is_available_for_apm?: false,
                            is_available_for_push?: false,
                            is_available_for_mailing?: false,
@@ -168,8 +157,6 @@ defmodule Legion.Messaging.Templatization.TemplateTest do
                            engine: :liquid,
                            subject_template: @subject_template,
                            body_template: @body_template,
-                           subject_params: @subject_params,
-                           body_params: @body_params,
                            is_available_for_apm?: true,
                            is_available_for_push?: false,
                            is_available_for_mailing?: false,

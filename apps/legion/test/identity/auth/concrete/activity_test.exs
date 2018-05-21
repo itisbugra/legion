@@ -206,15 +206,15 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
 
   describe "create_changeset/4" do
     test "creates changeset with valid attrs" do
-      passphrase = 
+      passphrase =
         %Passphrase{id: 1,
                     user_id: 1,
                     passkey_digest: @passkey_digest,
                     ip_addr: @ipv4}
 
-      result = create_changeset(passphrase, 
-                                @user_agent, 
-                                @ipv4.address, 
+      result = create_changeset(passphrase,
+                                @user_agent,
+                                @ipv4.address,
                                 %Postgrex.Point{x: 4.2, y: 6.1})
 
       assert elem(result, 0) == :ok
@@ -222,14 +222,14 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
     end
 
     test "creates changeset with loopback address" do
-      passphrase = 
+      passphrase =
         %Passphrase{id: 1,
                     user_id: 1,
                     passkey_digest: @passkey_digest,
                     ip_addr: @ipv4}
 
-      result = create_changeset(passphrase, 
-                                @user_agent, 
+      result = create_changeset(passphrase,
+                                @user_agent,
                                 {127, 0, 0, 1},
                                 %Postgrex.Point{x: 4.2, y: 6.1})
 
@@ -238,15 +238,15 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
     end
 
     test "fails with improper ip address" do
-      passphrase = 
+      passphrase =
         %Passphrase{id: 1,
                     user_id: 1,
                     passkey_digest: @passkey_digest,
                     ip_addr: @ipv4}
 
-      result = create_changeset(passphrase, 
-                                @user_agent, 
-                                {500, 22, 1100, 34}, 
+      result = create_changeset(passphrase,
+                                @user_agent,
+                                {500, 22, 1100, 34},
                                 %Postgrex.Point{x: 4.2, y: 6.1})
 
       assert result == {:error, :incorrect_ip_range}

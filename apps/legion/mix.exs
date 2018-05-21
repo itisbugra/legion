@@ -64,8 +64,9 @@ defmodule Legion.Mixfile do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/registry/messaging.exs"],
+      "ecto.setup": ["ecto.create", "ecto.migrate", "legion.reg"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
+      "legion.reg.all": ["legion.reg.locale", "legion.reg.messaging"],
       "test": ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end

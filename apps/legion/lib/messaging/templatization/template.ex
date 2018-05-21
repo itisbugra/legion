@@ -12,10 +12,6 @@ defmodule Legion.Messaging.Templatization.Template do
   schema "messaging_templates" do
     belongs_to :user, User
     field :name, :string
-    field :subject_template, :string
-    field :subject_params, {:array, :string}, default: []
-    field :body_template, :string
-    field :body_params, {:array, :string}, default: []
     field :is_available_for_apm?, :boolean, default: true
     field :is_available_for_push?, :boolean, default: true
     field :is_available_for_mailing?, :boolean, default: true
@@ -26,29 +22,13 @@ defmodule Legion.Messaging.Templatization.Template do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id, :name, :subject_template, :subject_params,
-                     :body_template, :body_params, :is_available_for_apm?,
+    |> cast(params, [:user_id, :engine, :name, :is_available_for_apm?,
                      :is_available_for_push?, :is_available_for_mailing?,
                      :is_available_for_sms?, :is_available_for_platform?])
-    |> validate_required([:user_id, :name, :body_template])
+    |> validate_required([:user_id, :engine, :name])
     |> validate_length(:name, min: Enum.min(@name_len), max: Enum.max(@name_len))
-    |> validate_sms_constraint()
     |> validate_availability_constraint()
     |> foreign_key_constraint(:user_id)
-  end
-
-  defp validate_sms_constraint(changeset) do
-    is_available_for_apm? = get_field(changeset, :is_available_for_apm?)
-    is_available_for_push? = get_field(changeset, :is_available_for_push?)
-    is_available_for_mailing? = get_field(changeset, :is_available_for_mailing?)
-    is_available_for_platform? = get_field(changeset, :is_available_for_platform?)
-
-    if is_available_for_apm? or
-       is_available_for_mailing? or
-       is_available_for_push? or
-       is_available_for_platform?,
-      do: validate_required(changeset, [:subject_template]),
-    else: changeset
   end
 
   defp validate_availability_constraint(changeset) do
