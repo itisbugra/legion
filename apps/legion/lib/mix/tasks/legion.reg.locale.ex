@@ -1,5 +1,7 @@
-defmodule Mix.Tasks.Legion.Gen.Locale do
+defmodule Mix.Tasks.Legion.Reg.Locale do
   require Logger
+
+  import Mix.Ecto
 
   alias Legion.Repo
   alias Legion.Internationalization.Locale
@@ -29,11 +31,22 @@ defmodule Mix.Tasks.Legion.Gen.Locale do
             "cannot add locale #{rfc1766}, it is already loaded"
           end
       end
-
     end
   end
 
   def run(_args) do
+    {:ok, pid, _apps} = ensure_started(Repo, [])
+    sandbox? = Repo.config[:pool] == Ecto.Adapters.SQL.Sandbox
+
+    if sandbox? do
+      Ecto.Adapters.SQL.Sandbox.checkin(Repo)
+      Ecto.Adapters.SQL.Sandbox.checkout(Repo, sandbox: false)
+    end
+
+    Logger.info fn ->
+      "== Synchronizing locales"
+    end
+
     put_locale "Afrikaans", "af", nil
     put_locale "Arabic (U.A.E.)", "ar", "ae"
     put_locale "Arabic (Kingdom of Bahrain)", "ar", "bh"
@@ -185,5 +198,13 @@ defmodule Mix.Tasks.Legion.Gen.Locale do
     put_locale "Chinese (Taiwan)", "zh", "tw"
     put_locale "Chinese", "zh", nil
     put_locale "Zulu", "zu", nil
+
+    sandbox? && Ecto.Adapters.SQL.Sandbox.checkin(Repo)
+
+    pid && Repo.stop(pid)
+
+    Logger.info fn ->
+      "== Finished synchronizing locales"
+    end
   end
 end

@@ -1,6 +1,8 @@
 defmodule Mix.Tasks.Legion.Reg.Messaging do
   require Logger
 
+  import Mix.Ecto
+
   alias Legion.Repo
   alias Legion.Messaging.Settings.Register
 
@@ -24,10 +26,30 @@ defmodule Mix.Tasks.Legion.Reg.Messaging do
   end
 
   def run(_args) do
+    {:ok, pid, _apps} = ensure_started(Repo, [])
+    sandbox? = Repo.config[:pool] == Ecto.Adapters.SQL.Sandbox
+
+    if sandbox? do
+      Ecto.Adapters.SQL.Sandbox.checkin(Repo)
+      Ecto.Adapters.SQL.Sandbox.checkout(Repo, sandbox: false)
+    end
+
+    Logger.info fn ->
+      "== Adding messaging registers"
+    end
+
     put_key "Messaging.Switching.Globals.is_apm_enabled?"
     put_key "Messaging.Switching.Globals.is_push_enabled?"
     put_key "Messaging.Switching.Globals.is_sms_enabled?"
     put_key "Messaging.Switching.Globals.is_mailing_enabled?"
     put_key "Messaging.Switching.Globals.is_platform_enabled?"
+
+    sandbox? && Ecto.Adapters.SQL.Sandbox.checkin(Repo)
+
+    pid && Repo.stop(pid)
+
+    Logger.info fn ->
+      "== Finished migrating messaging registers"
+    end
   end
 end

@@ -8,9 +8,9 @@ defmodule Legion.Umbrella.Mixfile do
       deps: deps(),
       aliases: aliases(),
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: ["coveralls": :test, 
-                          "coveralls.detail": :test, 
-                          "coveralls.post": :test, 
+      preferred_cli_env: ["coveralls": :test,
+                          "coveralls.detail": :test,
+                          "coveralls.post": :test,
                           "coveralls.html": :test]
     ]
   end
@@ -37,6 +37,7 @@ defmodule Legion.Umbrella.Mixfile do
                     "ecto.migrate",
                     "run apps/legion/priv/repo/seeds.exs"],
      "ecto.reset": ["ecto.drop",
-                    "ecto.setup"],]
+                    "ecto.setup"],
+     "legion.reg": ["legion.reg.locale", "legion.reg.messaging"]]
   end
 end
