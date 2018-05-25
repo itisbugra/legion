@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Legion.Gen.Locale do
+defmodule Mix.Tasks.Legion.Reg.Locale do
   require Logger
 
   alias Legion.Repo

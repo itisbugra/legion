@@ -29,5 +29,10 @@ defmodule Mix.Tasks.Legion.Reg.Messaging do
     put_key "Messaging.Switching.Globals.is_sms_enabled?"
     put_key "Messaging.Switching.Globals.is_mailing_enabled?"
     put_key "Messaging.Switching.Globals.is_platform_enabled?"
+    put_key "Messaging.Switching.Globals.apm_redirection"
+    put_key "Messaging.Switching.Globals.push_redirection"
+    put_key "Messaging.Switching.Globals.sms_redirection"
+    put_key "Messaging.Switching.Globals.mailing_redirection"
+    put_key "Messaging.Switching.Globals.platform_redirection"
   end
 end

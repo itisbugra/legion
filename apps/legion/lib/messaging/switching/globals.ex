@@ -2,15 +2,17 @@ defmodule Legion.Messaging.Switching.Globals do
   @moduledoc """
   Provides functions for altering/retrieving global switches to messaging.
 
+  **This module is NOT transactionally safe.**
+
   ## Enabling/disabling mediums
-  
+
   Suppose you need to disable the a medium globally. You might use `enable_medium/2` and
   `disable_medium/2` functions to alter the runtime configuration.
 
       enable_medium(some_user_or_id, :apm)
       disable_medium(some_user_or_id, :apm)
 
-  Or, rather you can use convenience macros if `require` them in your module.
+  Or, rather you can use convenience macros if you `require` them in your module.
 
       require Legion.Messaging.Switching.Globals
 
@@ -19,7 +21,31 @@ defmodule Legion.Messaging.Switching.Globals do
 
   Notice that, the underlying implementation will not insert a new registry entry if value for the
   setting has not changed. Hence, calling those functions multiple times will not perform any write
-  operations.
+  operation.
+
+  ## Redirecting a medium to another medium
+
+  Sometimes you may want to redirect a messaging medium to another medium, probably due to cost
+  reduction and integration maintenance.
+
+  You can redirect a medium to another medium with the following call.
+
+      redirect_medium(some_user_or_id, :mailing, :apm, for: 3_600)
+
+  The above API call will redirect all mailing messages to APM medium.
+  However, while sending a message, you might opt for restricting redirections on such operations.
+
+      send_sms_message(some_user_or_id, "this is the message", redirection: :restrict)
+
+  The message will not be sent to the user no matter what, what is more, it will throw an error to the user.
+
+  Some messages, like one-time-codes, should not be redirected to another medium.
+  The user of the messaging API can also force the actual medium to be run instead of redirection.
+
+      send_sms_message(some_user_or_id, "some pretty otc", redirection: :ignore)
+
+  If there was a redirection, it will be ignored, although the same rules for enabling/disabling medium for the actual
+  medium will be still applied.
   """
   import Legion.Messaging.Message, only: :macros
   import Legion.Messaging.Settings
@@ -127,7 +153,7 @@ defmodule Legion.Messaging.Switching.Globals do
   @doc """
   Enables given medium globally.
   """
-  @spec enable_medium(User.id() | User, Medium.t()) ::
+  @spec enable_medium(User.user_or_id(), Medium.t()) ::
     :ok |
     :error
   def enable_medium(user_or_id, medium) when is_medium(medium),
@@ -136,7 +162,7 @@ defmodule Legion.Messaging.Switching.Globals do
   @doc """
   Disables given medium globally.
   """
-  @spec disable_medium(User.id() | User, Medium.t()) ::
+  @spec disable_medium(User.user_or_id(), Medium.t()) ::
     :ok |
     :error
   def disable_medium(user_or_id, medium) when is_medium(medium),
@@ -159,7 +185,7 @@ defmodule Legion.Messaging.Switching.Globals do
   end
 
   defp set_medium_availability(user, medium, availability)
-    when is_boolean(availability) and is_medium(medium) do
+  when is_boolean(availability) and is_medium(medium) do
     if is_medium_enabled?(medium) == availability do
       :ok
     else
@@ -169,6 +195,80 @@ defmodule Legion.Messaging.Switching.Globals do
     end
   end
 
+  @doc """
+  Redirects a medium to another medium.
+
+  ## Examples
+
+      redirect_medium(user_id, :apm, :push) # redirects APM medium to push medium
+      redirect_medium(user_id, :apm, :platform) # redirects APM medium to platform medium
+
+  ## Timed redirections
+
+  You may also redirect a medium to another medium for a given amount of time.
+
+      redirect_medium(user_id, :apm, :push, for: 3_600) # redirects APM medium to push medium for an hour
+
+  ## Deferring redirections
+
+  Redirections could be also deferred for a given amount of time.
+
+      redirect_medium(user_id, :apm, :push, after: 3_600) # redirects APM medium to push medium after an hour
+
+  Redirections could be both deferred and timed.
+  The following usage implies both applications.
+
+      redirect_medium(user_id, :apm, :push, after: 3_600, for: 6_400) # same redirection, but active after an hour for two hours
+
+  Note that redirections can override each other.
+  The user interface for performing redirections should prompt whether the user is aware of overriding an existing redirection.
+
+      redirect_medium(user_id, :apm, :push) # redirects APM medium to push medium
+      redirect_medium(user_id, :apm, :mailing, for: 3_600) # redirects APM medium to mailing medium for an hour, afterwards push redirection will be active until further cancellation
+
+  See `cancel_redirection_for_medium/3` for cancelling redirections.
+  """
+  @spec redirect_medium(User.user_or_id(), Medium.t(), Medium.t(), Keyword.t()) ::
+    :ok
+  def redirect_medium(user_or_id, from, to, options \\ [])
+  when is_medium(from) and is_medium(to) do
+    key = medium_redirection_key(from)
+    valid_for = Keyword.get(options, :for, 0)
+    valid_after = Keyword.get(options, :after, 0)
+
+    put(user_or_id, key, %{action: :redirect, to: to, valid_for: valid_for, valid_after: valid_after})
+  end
+
+  @doc """
+  Cancels redirection setting currently applied for specified medium.
+
+  ## Examples
+
+      redirect_medium(user_or_id, :apm, :mailing, for: 3_600) # redirects APM medium to mailing medium for an hour
+      cancel_redirection_for_medium(user_or_id, :apm) # all redirections for the APM medium are now cancelled
+
+  See `redirect_medium/4` for making redirections.
+  """
+  @spec cancel_redirection_for_medium(User.user_or_id(), Medium.t()) ::
+    :ok
+  def cancel_redirection_for_medium(user_or_id, medium)
+  when is_medium(medium) do
+    key = medium_redirection_key(medium)
+
+    put(user_or_id, key, %{action: :cancel})
+  end
+
+  @doc """
+  Returns true if given medium is redirected currently, otherwise false.
+  """
+  @spec is_medium_redirected?(Medium.t) :: boolean()
+  def is_medium_redirected?(medium) do
+
+  end
+
   defp medium_availability_key(medium) when is_medium(medium),
     do: "Messaging.Switching.Globals.is_#{Atom.to_string(medium)}_enabled?"
+
+  defp medium_redirection_key(medium) when is_medium(medium),
+    do: "Messaging.Switching.Globals.#{Atom.to_string(medium)}_redirection"
 end
