@@ -31,8 +31,7 @@ defmodule Legion.Messaging.Settings do
     case Repo.insert(changeset) do
       {:ok, _setting} ->
         :ok
-      {:error, changeset} ->
-        IO.inspect changeset
+      {:error, _changeset} ->
         :error
     end
   end
