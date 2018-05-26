@@ -31,7 +31,8 @@ defmodule Legion.Messaging.Settings do
     case Repo.insert(changeset) do
       {:ok, _setting} ->
         :ok
-      {:error, _changeset} ->
+      {:error, changeset} ->
+        IO.inspect changeset
         :error
     end
   end
@@ -52,5 +53,21 @@ defmodule Legion.Messaging.Settings do
       select: re1.value
 
     if value = Repo.one(query), do: value, else: default
+  end
+
+  @doc """
+  Takes the last `quantity` entries for the given `key`.
+  """
+  @spec take(String.t, pos_integer()) ::
+    term()
+  def take(key, quantity) when is_binary(key) do
+    query =
+      from re in RegistryEntry,
+      where: re.key == ^key,
+      limit: ^quantity,
+      order_by: [desc: re.id],
+      select: {re.value, re.inserted_at}
+
+    Repo.all(query)
   end
 end

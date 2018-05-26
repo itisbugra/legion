@@ -22,10 +22,10 @@ defmodule Legion.Messaging.Templatization.Template do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id, :engine, :name, :is_available_for_apm?,
+    |> cast(params, [:user_id, :name, :is_available_for_apm?,
                      :is_available_for_push?, :is_available_for_mailing?,
                      :is_available_for_sms?, :is_available_for_platform?])
-    |> validate_required([:user_id, :engine, :name])
+    |> validate_required([:user_id, :name])
     |> validate_length(:name, min: Enum.min(@name_len), max: Enum.max(@name_len))
     |> validate_availability_constraint()
     |> foreign_key_constraint(:user_id)

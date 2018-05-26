@@ -5,6 +5,7 @@ defmodule Legion.Messaging.Switching.GlobalsTest do
   import Legion.Messaging.Switching.Globals
 
   alias Legion.Messaging.Message.Medium
+  alias Legion.Messaging.Settings.RegistryEntry
 
   @available_pushes Medium.__enum_map__()
 
@@ -85,6 +86,21 @@ defmodule Legion.Messaging.Switching.GlobalsTest do
       test "retrieves status for the #{Atom.to_string(@push)} medium" do
         assert is_medium_enabled?(@push)
       end
+    end
+  end
+
+  describe "redirect_medium?/4" do
+    test "redirects medium to another medium", %{user: user} do
+      assert redirect_medium(user, :apm, :push) == :ok
+      assert Repo.get_by!(RegistryEntry, key: "Messaging.Switching.Globals.apm_redirection")
+    end
+
+    test "does not redirect medium with negative duration", %{user: user} do
+      assert redirect_medium(user, :apm, :push, for: -1) == {:error, :invalid_duration}
+    end
+
+    test "does not redirect medium with negative deferral", %{user: user} do
+      assert redirect_medium(user, :apm, :push, after: -1) == {:error, :invalid_deferral}
     end
   end
 end

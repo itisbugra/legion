@@ -27,17 +27,17 @@ defmodule Legion.Messaging.Templatization.RendererTest do
 
 
 
-  def insert_template do
-    Factory.insert(:template, subject_template: @subject_template, body_template: @body_template)
-    |> Template.changeset()
-    |> Repo.update!()
-  end
+  # def insert_template do
+  #   Factory.insert(:template, subject_template: @subject_template, body_template: @body_template)
+  #   |> Template.changeset()
+  #   |> Repo.update!()
+  # end
 
-  describe "generate_message/3" do
-    test "generates rendering result with given template" do
-      result = Renderer.generate_message(insert_template(), @valid_subject_params, @valid_body_params)
-
-      IO.inspect result
-    end
-  end
+  # describe "generate_message/3" do
+  #   test "generates rendering result with given template" do
+  #     result = Renderer.generate_message(insert_template(), @valid_subject_params, @valid_body_params)
+  #
+  #     IO.inspect result
+  #   end
+  # end
 end

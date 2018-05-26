@@ -57,6 +57,9 @@ config :legion, Legion.Identity.Auth.Concrete.TFA,
 config :legion, Legion.Identity.Auth.Algorithm,
   keccak_variant: :sha3_512
 
+config :legion, Legion.Messaging.Switching.Globals,
+  history_buffer_length: 5
+
 config :legion, Legion.Messaging.Medium.APM,
   subject_length: 2..40,
   body_length: 5..255,

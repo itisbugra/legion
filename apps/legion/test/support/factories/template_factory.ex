@@ -10,9 +10,6 @@ defmodule Legion.TemplateFactory do
         %Template{
           user: build(:user),
           name: sequence(:template_name, &"the-template-#{&1}"),
-          engine: :liquid,
-          subject_template: sequence(:subject_template, &"subject-template-#{&1}"),
-          body_template: sequence(:body_template, &"body-template-#{&1}"),
           is_available_for_apm?: sequence(:medium_availability, [true, false]),
           is_available_for_push?: sequence(:medium_availability, [true, false]),
           is_available_for_mailing?: sequence(:medium_availability, [true, false]),

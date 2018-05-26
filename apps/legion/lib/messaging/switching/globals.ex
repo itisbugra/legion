@@ -68,6 +68,9 @@ defmodule Legion.Messaging.Switching.Globals do
   @platform_env Application.get_env(:legion, Legion.Messaging.Medium.Platform)
   @platform_state Keyword.fetch!(@platform_env, :is_enabled?)
 
+  @env Application.get_env(:legion, Legion.Messaging.Switching.Globals)
+  @history_buffer_len Keyword.fetch!(@env, :history_buffer_length)
+
   @available_pushes Medium.__enum_map__()
 
   @doc """
@@ -229,14 +232,23 @@ defmodule Legion.Messaging.Switching.Globals do
   See `cancel_redirection_for_medium/3` for cancelling redirections.
   """
   @spec redirect_medium(User.user_or_id(), Medium.t(), Medium.t(), Keyword.t()) ::
-    :ok
+    :ok |
+    {:error, :invalid_duration} |
+    {:error, :invalid_deferral}
   def redirect_medium(user_or_id, from, to, options \\ [])
   when is_medium(from) and is_medium(to) do
     key = medium_redirection_key(from)
     valid_for = Keyword.get(options, :for, 0)
     valid_after = Keyword.get(options, :after, 0)
 
-    put(user_or_id, key, %{action: :redirect, to: to, valid_for: valid_for, valid_after: valid_after})
+    cond do
+      valid_for < 0 ->
+        {:error, :invalid_duration}
+      valid_after < 0 ->
+        {:error, :invalid_deferral}
+      true ->
+        put(user_or_id, key, %{action: :redirect, to: to, valid_for: valid_for, valid_after: valid_after})
+    end
   end
 
   @doc """
@@ -262,8 +274,36 @@ defmodule Legion.Messaging.Switching.Globals do
   Returns true if given medium is redirected currently, otherwise false.
   """
   @spec is_medium_redirected?(Medium.t) :: boolean()
-  def is_medium_redirected?(medium) do
+  def is_medium_redirected?(medium)
+  when is_medium(medium) do
+    key = medium_redirection_key(medium)
 
+    entries = take(key, @history_buffer_len)
+
+    find_affecting_redirection(entries) != nil
+  end
+
+  defp find_affecting_redirection([head | tail]) do
+    if is_redirection_active(head),
+      do: head,
+    else: find_affecting_redirection(tail)
+  end
+  defp find_affecting_redirection([]), do: nil
+
+  defp is_redirection_active({entry, inserted_at}) do
+    valid_for = Map.get(entry, :valid_for, 1000)
+    valid_after = Map.get(entry, :valid_after, 0)
+
+    activation_time = NaiveDateTime.add(inserted_at, valid_after)
+    valid_until = NaiveDateTime.add(activation_time, valid_for)
+    now = NaiveDateTime.utc_now()
+
+    case NaiveDateTime.compare(now, activation_time) do
+      :gt ->
+        NaiveDateTime.compare(now, valid_until) == :lt
+      _ ->
+        false
+    end
   end
 
   defp medium_availability_key(medium) when is_medium(medium),
