@@ -66,7 +66,6 @@ defmodule Legion.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "legion.reg"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "legion.reg.all": ["legion.reg.locale", "legion.reg.messaging"],
       "test": ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end

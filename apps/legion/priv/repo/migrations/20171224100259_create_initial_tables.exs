@@ -25,7 +25,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
 
     create table(:users) do
       add :has_gps_telemetry_consent?, :boolean, default: false
-      add :locale, references(:locales, on_delete: :restrict, on_update: :update_all, column: :rfc1766, type: :text)
+      add :locale, references(:locales, on_delete: :restrict, on_update: :update_all, column: :rfc1766, type: :text), default: "en-us", null: false
       add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
