@@ -32,7 +32,7 @@ defmodule Legion.Messaging.Settings do
       {:ok, _setting} ->
         :ok
       {:error, _changeset} ->
-        :error
+        {:error, :unavailable}
     end
   end
 

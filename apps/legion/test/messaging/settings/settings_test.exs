@@ -27,7 +27,7 @@ defmodule Legion.Messaging.SettingsTest do
     test "returns error if user does not exist", %{key: key} do
       result = put(-1, key, @value)
 
-      assert result == :error
+      assert result == {:error, :unavailable}
     end
   end
 

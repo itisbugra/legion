@@ -103,4 +103,16 @@ defmodule Legion.Messaging.Switching.GlobalsTest do
       assert redirect_medium(user, :apm, :push, after: -1) == {:error, :invalid_deferral}
     end
   end
+
+  describe "cancel_redirection_for_medium/2" do
+    test "cancels existing redirection", %{user: user} do
+      redirect_medium(user, :apm, :push)
+
+      assert cancel_redirection_for_medium(user, :apm) == :ok
+    end
+
+    test "returns error if there was no redirection", %{user: user} do
+      assert cancel_redirection_for_medium(user, :apm) == {:error, :no_entry}
+    end
+  end
 end

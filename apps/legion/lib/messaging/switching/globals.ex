@@ -234,11 +234,12 @@ defmodule Legion.Messaging.Switching.Globals do
   @spec redirect_medium(User.user_or_id(), Medium.t(), Medium.t(), Keyword.t()) ::
     :ok |
     {:error, :invalid_duration} |
-    {:error, :invalid_deferral}
+    {:error, :invalid_deferral} |
+    {:error, :unavailable}
   def redirect_medium(user_or_id, from, to, options \\ [])
   when is_medium(from) and is_medium(to) do
     key = medium_redirection_key(from)
-    valid_for = Keyword.get(options, :for, 0)
+    valid_for = Keyword.get(options, :for, nil)
     valid_after = Keyword.get(options, :after, 0)
 
     cond do
@@ -262,12 +263,18 @@ defmodule Legion.Messaging.Switching.Globals do
   See `redirect_medium/4` for making redirections.
   """
   @spec cancel_redirection_for_medium(User.user_or_id(), Medium.t()) ::
-    :ok
+    :ok |
+    {:error, :no_entry} |
+    {:error, :unavailable}
   def cancel_redirection_for_medium(user_or_id, medium)
   when is_medium(medium) do
-    key = medium_redirection_key(medium)
+    if is_medium_redirected?(medium) do
+      key = medium_redirection_key(medium)
 
-    put(user_or_id, key, %{action: :cancel})
+      put(user_or_id, key, %{action: :cancel})
+    else
+      {:error, :no_entry}
+    end
   end
 
   @doc """
@@ -291,16 +298,20 @@ defmodule Legion.Messaging.Switching.Globals do
   defp find_affecting_redirection([]), do: nil
 
   defp is_redirection_active({entry, inserted_at}) do
-    valid_for = Map.get(entry, :valid_for, 1000)
+    valid_for = Map.get(entry, :valid_for)
     valid_after = Map.get(entry, :valid_after, 0)
 
     activation_time = NaiveDateTime.add(inserted_at, valid_after)
-    valid_until = NaiveDateTime.add(activation_time, valid_for)
     now = NaiveDateTime.utc_now()
 
     case NaiveDateTime.compare(now, activation_time) do
       :gt ->
-        NaiveDateTime.compare(now, valid_until) == :lt
+        if valid_for do
+          valid_until = NaiveDateTime.add(activation_time, valid_for)
+          NaiveDateTime.compare(now, valid_until) == :lt
+        else
+          true
+        end
       _ ->
         false
     end
