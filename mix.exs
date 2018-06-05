@@ -30,6 +30,7 @@ defmodule Legion.Umbrella.Mixfile do
                     "legion.reg.messaging"],
      "legion.bootstrap": ["legion.reg",
                           "ua_inspector.download.short_code_maps",
-                          "ua_inspector.download.short_code_maps"]]
+                          "ua_inspector.download.short_code_maps",
+                          "ecto.setup"]]
   end
 end
