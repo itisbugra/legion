@@ -178,9 +178,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :name, :text, null: false
       add :engine, :template_rendering_engine, null: false
       add :subject_template, :text, null: false
-      add :subject_params, {:array, :text}, null: false
       add :body_template, :text, null: false
-      add :body_params, {:array, :text}, null: false
       add :is_available_for_apm?, :boolean, null: false
       add :is_available_for_push?, :boolean, null: false
       add :is_available_for_mailing?, :boolean, null: false
