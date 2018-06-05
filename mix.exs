@@ -31,6 +31,7 @@ defmodule Legion.Umbrella.Mixfile do
      "legion.setup": ["ecto.setup",
                       "legion.reg",
                       "ua_inspector.download.databases",
-                      "ua_inspector.download.short_code_maps"]]
+                      "ua_inspector.download.short_code_maps"],
+     "legion.reset": ["ecto.reset", "legion.reg"]]
   end
 end
