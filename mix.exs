@@ -28,9 +28,9 @@ defmodule Legion.Umbrella.Mixfile do
                     "ecto.setup"],
      "legion.reg": ["legion.reg.locale",
                     "legion.reg.messaging"],
-     "legion.bootstrap": ["legion.reg",
-                          "ua_inspector.download.short_code_maps",
-                          "ua_inspector.download.short_code_maps",
-                          "ecto.setup"]]
+     "legion.setup": ["ecto.setup",
+                      "legion.reg",
+                      "ua_inspector.download.databases",
+                      "ua_inspector.download.short_code_maps"]]
   end
 end
