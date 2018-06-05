@@ -118,7 +118,7 @@ defmodule Legion.Messaging.Message do
     def changeset(struct, params \\ %{}) do
       struct
       |> cast(params, [:template_id, :message_id, :subject_params, :body_params])
-      |> validate_required(:template_id, :message_id)
+      |> validate_required([:template_id, :message_id])
       |> foreign_key_constraint(:template_id)
       |> foreign_key_constraint(:message_id)
       |> unique_constraint(:message_id)
