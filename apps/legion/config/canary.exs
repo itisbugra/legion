@@ -7,9 +7,6 @@ three_minutes = 180
 config :ua_inspector,
   database_path: Path.join(Mix.Utils.mix_home, "ua_inspector")
 
-config :freegeoip,
-  base_url: "http://localhost:8080"
-
 # Access control basics
 config :legion, Legion.Identity.Auth.AccessControl,
   permission_set_name_length: 4..28,

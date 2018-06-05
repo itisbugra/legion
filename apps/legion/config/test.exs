@@ -15,3 +15,7 @@ config :legion, Legion.Repo,
 config :argon2_elixir,
   t_cost: 2,
   m_cost: 12
+
+# fiorix/freegeoip container in Docker to IP Reverse Geocoding
+config :freegeoip,
+  base_url: "http://localhost:8080"

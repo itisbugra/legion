@@ -11,3 +11,7 @@ config :legion, Legion.Repo,
   database: "legion_dev",
   hostname: "localhost",
   pool_size: 10
+
+# fiorix/freegeoip container in Docker to IP Reverse Geocoding
+config :freegeoip,
+  base_url: "http://localhost:8080"
