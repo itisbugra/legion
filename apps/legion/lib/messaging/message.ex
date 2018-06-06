@@ -172,13 +172,9 @@ defmodule Legion.Messaging.Message do
   end
 
   defp validate_subject_for_min_max_length(changeset, medium, min, max) do
-    if medium == :sms do
-      changeset
-    else
-      changeset
-      |> validate_required([:subject])
-      |> validate_length(:subject, min: min, max: max)
-    end
+    changeset
+    |> validate_required([:subject])
+    |> validate_length(:subject, min: min, max: max)
   end
 
   defp validate_body(changeset) do
