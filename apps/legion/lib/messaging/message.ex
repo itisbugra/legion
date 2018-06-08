@@ -167,11 +167,11 @@ defmodule Legion.Messaging.Message do
       min = unquote(Enum.min(Module.get_attribute(__MODULE__, :"#{Atom.to_string(type)}_subject_len")))
       max = unquote(Enum.max(Module.get_attribute(__MODULE__, :"#{Atom.to_string(type)}_subject_len")))
 
-      validate_subject_for_min_max_length(changeset, unquote(type), min, max)
+      validate_subject_for_min_max_length(changeset, min, max)
     end
   end
 
-  defp validate_subject_for_min_max_length(changeset, medium, min, max) do
+  defp validate_subject_for_min_max_length(changeset, min, max) do
     changeset
     |> validate_required([:subject])
     |> validate_length(:subject, min: min, max: max)
