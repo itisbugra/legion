@@ -297,7 +297,7 @@ defmodule Legion.Messaging.Switching.Globals do
 
     entries = take(key, @history_buffer_len)
 
-    case find_affecting_redirection(entries) do
+    case find_affecting_redirection(entries, timestamp) do
       nil ->
         nil
       {%{"to" => medium}, _inserted_at} ->
@@ -305,29 +305,28 @@ defmodule Legion.Messaging.Switching.Globals do
     end
   end
 
-  defp find_affecting_redirection([head | tail]) do
-    if is_redirection_active(head),
+  defp find_affecting_redirection([head | tail], timestamp) do
+    if is_redirection_active(head, timestamp),
       do: head,
-    else: find_affecting_redirection(tail)
+    else: find_affecting_redirection(tail, timestamp)
   end
-  defp find_affecting_redirection([]), do: nil
+  defp find_affecting_redirection([], _), do: nil
 
-  defp is_redirection_active({entry, inserted_at}, timestamp \\ NaiveDateTime.utc_now()) do
-    valid_for = Map.get(entry, :valid_for)
-    valid_after = Map.get(entry, :valid_after, 0)
+  defp is_redirection_active({entry, inserted_at}, timestamp) do
+    valid_for = Map.get(entry, "valid_for")
+    valid_after = Map.get(entry, "valid_after", 0)
 
     activation_time = NaiveDateTime.add(inserted_at, valid_after)
 
-    case NaiveDateTime.compare(activation_time, timestamp) do
-      :gt ->
-        if valid_for do
-          valid_until = NaiveDateTime.add(activation_time, valid_for)
-          NaiveDateTime.compare(timestamp, valid_until) == :lt
-        else
-          true
-        end
-      _ ->
-        false
+    if NaiveDateTime.compare(timestamp, activation_time) in [:gt, :eq] do
+      if valid_for do
+        valid_until = NaiveDateTime.add(activation_time, valid_for)
+        NaiveDateTime.compare(timestamp, valid_until) == :lt
+      else
+        true
+      end
+    else
+      false
     end
   end
 
