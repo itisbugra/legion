@@ -28,10 +28,14 @@ defmodule Legion.Umbrella.Mixfile do
                     "ecto.setup"],
      "legion.reg": ["legion.reg.locale",
                     "legion.reg.messaging"],
-     "legion.setup": ["ecto.setup",
+     "legion.check": ["legion.check.timezone"],
+     "legion.setup": ["legion.check",
+                      "ecto.setup",
                       "legion.reg",
                       "ua_inspector.download.databases",
                       "ua_inspector.download.short_code_maps"],
-     "legion.reset": ["ecto.reset", "legion.reg"]]
+     "legion.reset": ["legion.check",
+                      "ecto.reset",
+                      "legion.reg"]]
   end
 end
