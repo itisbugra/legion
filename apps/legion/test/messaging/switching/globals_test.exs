@@ -105,8 +105,46 @@ defmodule Legion.Messaging.Switching.GlobalsTest do
   end
 
   describe "cancel_redirection_for_medium/2" do
+    test "cancels an existing redirection", %{user: user} do
+      Factory.insert(:messaging_settings_registry_entry, key: "Messaging.Switching.Globals.apm_redirection",
+                                                         value: %{"action" => "redirect",
+                                                                  "to" => "sms",
+                                                                  "valid_after" => 0})
+
+      assert cancel_redirection_for_medium(user, :apm) == :ok
+    end
+
     test "returns error if there was no redirection", %{user: user} do
       assert cancel_redirection_for_medium(user, :apm) == {:error, :no_entry}
+    end
+  end
+
+  describe "is_medium_redirected?/1" do
+    for push <- @available_pushes do
+      @push push
+
+      test "retrieves status for the #{Atom.to_string(@push)} medium" do
+        refute is_medium_redirected?(@push)
+      end
+    end
+  end
+
+  describe "redirection_for_medium/1" do
+    for push <- @available_pushes do
+      @push push
+
+      test "returns nil if #{Atom.to_string(@push)} medium is not redirected" do
+        refute redirection_for_medium(@push)
+      end
+    end
+
+    test "returns redirection if medium is redirected" do
+      Factory.insert(:messaging_settings_registry_entry, key: "Messaging.Switching.Globals.apm_redirection",
+                                                         value: %{"action" => "redirect",
+                                                                  "to" => "sms",
+                                                                  "valid_after" => 0})
+
+      assert redirection_for_medium(:apm) == :sms
     end
   end
 end
