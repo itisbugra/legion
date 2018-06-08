@@ -21,6 +21,7 @@
     "test/support",
     "lib/stereotype.ex",
     "priv",
-    "lib/mix"
+    "lib/mix",
+    "lib/logger"
   ]
 }
