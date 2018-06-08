@@ -20,6 +20,7 @@
   "skip_files": [
     "test/support",
     "lib/stereotype.ex",
-    "priv"
+    "priv",
+    "lib/mix"
   ]
 }
