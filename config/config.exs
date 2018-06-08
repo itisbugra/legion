@@ -11,7 +11,7 @@ import_config "../apps/*/config/config.exs"
 
 # Configures Elixir's Logger
 config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
+  format: {Legion.Logger.Verbose, :format},
   metadata: [:request_id]
 
 # Import environment specific config. This must remain at the bottom
