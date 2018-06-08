@@ -283,11 +283,26 @@ defmodule Legion.Messaging.Switching.Globals do
   @spec is_medium_redirected?(Medium.t) :: boolean()
   def is_medium_redirected?(medium)
   when is_medium(medium) do
+    redirection_for_medium(medium) != nil
+  end
+
+  @doc """
+  Returns the redirection medium for given medium, if it is redirected.
+  Otherwise, returns `nil`.
+  """
+  @spec redirection_for_medium(Medium.t) :: Medium.t() | nil
+  def redirection_for_medium(medium)
+  when is_medium(medium) do
     key = medium_redirection_key(medium)
 
     entries = take(key, @history_buffer_len)
 
-    find_affecting_redirection(entries) != nil
+    case find_affecting_redirection(entries) do
+      nil ->
+        nil
+      {%{"to" => medium}, _inserted_at} ->
+        String.to_existing_atom(medium)
+    end
   end
 
   defp find_affecting_redirection([head | tail]) do
@@ -304,7 +319,7 @@ defmodule Legion.Messaging.Switching.Globals do
     activation_time = NaiveDateTime.add(inserted_at, valid_after)
     now = NaiveDateTime.utc_now()
 
-    case NaiveDateTime.compare(now, activation_time) do
+    case NaiveDateTime.compare(activation_time, now) do
       :gt ->
         if valid_for do
           valid_until = NaiveDateTime.add(activation_time, valid_for)
