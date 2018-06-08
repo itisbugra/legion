@@ -287,11 +287,11 @@ defmodule Legion.Messaging.Switching.Globals do
   end
 
   @doc """
-  Returns the redirection medium for given medium, if it is redirected.
+  Returns the redirection medium for the medium in given timestamp, if it is redirected.
   Otherwise, returns `nil`.
   """
-  @spec redirection_for_medium(Medium.t) :: Medium.t() | nil
-  def redirection_for_medium(medium)
+  @spec redirection_for_medium(Medium.t, NaiveDateTime.t) :: Medium.t() | nil
+  def redirection_for_medium(medium, timestamp \\ NaiveDateTime.utc_now())
   when is_medium(medium) do
     key = medium_redirection_key(medium)
 
@@ -312,18 +312,17 @@ defmodule Legion.Messaging.Switching.Globals do
   end
   defp find_affecting_redirection([]), do: nil
 
-  defp is_redirection_active({entry, inserted_at}) do
+  defp is_redirection_active({entry, inserted_at}, timestamp \\ NaiveDateTime.utc_now()) do
     valid_for = Map.get(entry, :valid_for)
     valid_after = Map.get(entry, :valid_after, 0)
 
     activation_time = NaiveDateTime.add(inserted_at, valid_after)
-    now = NaiveDateTime.utc_now()
 
-    case NaiveDateTime.compare(activation_time, now) do
+    case NaiveDateTime.compare(activation_time, timestamp) do
       :gt ->
         if valid_for do
           valid_until = NaiveDateTime.add(activation_time, valid_for)
-          NaiveDateTime.compare(now, valid_until) == :lt
+          NaiveDateTime.compare(timestamp, valid_until) == :lt
         else
           true
         end
