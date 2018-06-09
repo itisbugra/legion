@@ -1,6 +1,6 @@
 defmodule Legion.Logger.Verbose do
   @moduledoc """
-
+  A module for logging into the console in verbose form.
   """
   import Kernel, except: [apply: 2]
 
