@@ -1,8 +1,17 @@
 # Configuration
 
+Author: Buğra Ekuklu, bekuklu@stcpay.com.sa
+
+## Preface
+
 Legion presents a completely opinionated authentication/authorization mechanism,
 using best-practices as much as possible, however it also supports configuring
 by supplying various configuration parameters in configuration files.
+
+## Subsystems
+
+1. [Identity/Access Management (IAM)](#identityaccess-management-iam)
+2. [Messaging/Push Gateway (MPB)](#messagingpush-gateway-mpb)
 
 ## Identity/Access Management (IAM)
 
