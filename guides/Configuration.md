@@ -2,6 +2,12 @@
 
 Author: [Buğra Ekuklu](mailto:bekuklu@stcpay.com.sa)
 
+### Revision history
+
+1. Initial draft, 18-06-11, Buğra Ekuklu.
+
+---
+
 ## Preface
 
 Legion presents a completely opinionated authentication/authorization mechanism,
