@@ -1,6 +1,6 @@
-# Configuration
+# Configuring the application
 
-Author: Buğra Ekuklu, bekuklu@stcpay.com.sa
+Author: [Buğra Ekuklu](mailto:bekuklu@stcpay.com.sa)
 
 ## Preface
 
@@ -13,15 +13,19 @@ by supplying various configuration parameters in configuration files.
 1. [Identity/Access Management (IAM)](#identityaccess-management-iam)
 2. [Messaging/Push Gateway (MPB)](#messagingpush-gateway-mpb)
 
-## Identity/Access Management (IAM)
+### 1. Identity/Access Management (IAM)
 
-### Access control
+1. [Access control](#access-control)
+2. [Concrete authentication](#concrete-authentication)
+3. [JSON Object Signing and Encoding (JOSE)](#json-object-signing-and-encoding-jose)
+4. [Insecure authentication](#insecure-authentication)
+5. [OTC](#otc)
+6. [Two-factor authentication](#two-factor-authentication)
+7. [Persistence algorithm](#persistence-algorithm)
 
-##### Path
+#### Access control
 
-`Legion.Identity.Auth.AccessControl`
-
-##### Parameters
+The module is configured using namespace `Legion.Identity.Auth.AccessControl`, with the following attributes.
 
 Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
@@ -31,13 +35,9 @@ Parameter name | Data Type | Units | Description | Default
 `maximum_granting_lifetime` | `pos_integer()` | seconds | Determines the maximum duration of a granting action. | `15_552_000`
 `allow_infinite_lifetime` | `boolean()` | - | Allows infinite lifetime on a permission set grant. Grants with infinite lifetimes can only be invalidated manually. | `true`
 
-### Concrete authentication
+#### Concrete authentication
 
-##### Path
-
-`Legion.Identity.Auth.Concrete`
-
-##### Parameters
+The module is configured using namespace `Legion.Identity.Auth.Concrete`, with the following attributes.
 
 Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
@@ -45,13 +45,9 @@ Parameter name | Data Type | Units | Description | Default
 `passphrase_lifetime` | `pos_integer()` | seconds | Duration of a passphrase without being invalidated. | `15_552_000`
 `user_agent_length` | `pos_integer()` | - | Maximum length of the user agent string sent by the client. | `400`
 
-### JSON Object Signing and Encoding (JOSE)
+#### JSON Object Signing and Encoding (JOSE)
 
-##### Path
-
-`Legion.Identity.Auth.Concrete.JOSE`
-
-##### Parameters
+The module is configured using namespace `Legion.Identity.Auth.Concrete.JOSE`, with the following attributes.
 
 Key | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
@@ -60,13 +56,9 @@ Key | Data Type | Units | Description | Default
 `lifetime` | `pos_integer()` | - | Valid duration for the JWT. | `300`
 `sub` | [`String.t()`] | - | Purpose of the issue. | `access`
 
-### Insecure authentication
+#### Insecure authentication
 
-##### Path
-
-`Legion.Identity.Auth.Insecure`
-
-##### Parameters
+The module is configured using namespace `Legion.Identity.Auth.Insecure`, with the following attributes.
 
 Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
@@ -79,13 +71,9 @@ Parameter name | Data Type | Units | Description | Default
 `password_length` | [`Range.t()`] | - | Length of the password. | `8..32`
 `password_minimum_security_level` | [`t() :: :length ǀ :chartypes ǀ :all`] | - | Password security level threshold. | `:all`
 
-### OTC
+#### OTC
 
-##### Path
-
-`Legion.Identity.Auth.OTC`
-
-##### Parameters
+The module is configured using namespace `Legion.Identity.Auth.OTC`, with the following attributes.
 
 Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
@@ -95,52 +83,44 @@ Parameter name | Data Type | Units | Description | Default
 `postfix` | [`String.t()`] | - | Postfix of the one time code. | *λ*
 `medium` | *See note (3).* | - | Medium adapter to be used in sending one time code. | `Legion.Identity.Auth.OTC.Adapters.SMS`
 
-### Two-factor authentication
+#### Two-factor authentication
 
-##### Path
-
-`Legion.Identity.Auth.Concrete.TFA`
-
-##### Parameters
+The module is configured using namespace `Legion.Identity.Auth.Concrete.TFA`, with the following attributes.
 
 Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
 `lifetime` | `pos_integer()` | seconds | Duration of the two-factor authentication handle. | `180`
 `allowed_attempts` | `pos_integer()` | - | Number of attempts to invalidate the handle. | `3`
 
-### Algorithm
+#### Persistence algorithm
 
-##### Path
-
-`Legion.Identity.Auth.Algorithm`
-
-##### Parameters
+The module is configured using namespace `Legion.Identity.Auth.Algorithm`, with the following attributes.
 
 Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
 `keccak_variant` | `t() :: :sha3_224 ǀ :sha3_256 ǀ :sha3_384 ǀ :sha3_512` | - | Keccak variant to be used in hashing passkeys. | `:sha3_512`
 
-## Messaging/Push Gateway (MPB)
+### 2. Messaging/Push Gateway (MPB)
 
-### Global switches
+1. [Global switches](#global-switches)
+2. [APM medium](#apm-medium)
+3. [Push medium](#push-medium)
+4. [Mailing medium](#mailing-medium)
+5. [SMS medium](#sms-medium)
+6. [Platform medium](#platform-medium)
+7. [Templatization](#templatization)
 
-##### Path
+#### Global switches
 
-`Legion.Messaging.Switching.Globals`
-
-##### Parameters
+The module is configured using namespace `Legion.Messaging.Switching.Globals`, with the following attributes.
 
 Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
 `history_buffer_length` | [`Range.t()`] | - | Number of entries in history buffer rollback. | `5`
 
-### APM medium
+#### APM medium
 
-##### Path
-
-`Legion.Messaging.Medium.APM`
-
-##### Parameters
+The module is configured using namespace `Legion.Messaging.Medium.APM`, with the following attributes.
 
 Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
@@ -148,13 +128,9 @@ Parameter name | Data Type | Units | Description | Default
 `body_length` | [`Range.t()`] | - | Length of the body of the message. | `5..255`
 `is_enabled` | `boolean()` | - | Compile-time switch to enable the medium. | `true`
 
-### Push medium
+#### Push medium
 
-##### Path
-
-`Legion.Messaging.Medium.Push`
-
-##### Parameters
+The module is configured using namespace `Legion.Messaging.Medium.Push`, with the following attributes.
 
 Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
@@ -162,13 +138,9 @@ Parameter name | Data Type | Units | Description | Default
 `body_length` | [`Range.t()`] | - | Length of the body of the message. | `5..255`
 `is_enabled` | `boolean()` | - | Compile-time switch to enable the medium. | `true`
 
-### Mailing medium
+#### Mailing medium
 
-##### Path
-
-`Legion.Messaging.Medium.Mailing`
-
-##### Parameters
+The module is configured using namespace `Legion.Messaging.Medium.Mailing`, with the following attributes.
 
 Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
@@ -176,26 +148,18 @@ Parameter name | Data Type | Units | Description | Default
 `body_length` | [`Range.t()`] | - | Length of the body of the message. | `5..255`
 `is_enabled` | `boolean()` | - | Compile-time switch to enable the medium. | `true`
 
-### SMS medium
+#### SMS medium
 
-##### Path
-
-`Legion.Messaging.Medium.SMS`
-
-##### Parameters
+The module is configured using namespace `Legion.Messaging.Medium.SMS`, with the following attributes.
 
 Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
 `body_length` | [`Range.t()`] | - | Length of the body of the message. | `5..255`
 `is_enabled` | `boolean()` | - | Compile-time switch to enable the medium. | `true`
 
-### Platform medium
+#### Platform medium
 
-##### Path
-
-`Legion.Messaging.Medium.Platform`
-
-##### Parameters
+The module is configured using namespace `Legion.Messaging.Medium.Platform`, with the following attributes.
 
 Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
@@ -203,17 +167,39 @@ Parameter name | Data Type | Units | Description | Default
 `body_length` | [`Range.t()`] | - | Length of the body of the message. | `5..255`
 `is_enabled` | `boolean()` | - | Compile-time switch to enable the medium. | `true`
 
-### Templatization
+#### Templatization
 
-##### Path
-
-`Legion.Messaging.Templatization`
-
-##### Parameters
+The modules is configured using namespace `Legion.Messaging.Templatization`, with the following attributes.
 
 Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
 `template_name_length` | [`Range.t()`] | - | Length of the name of the template. | `5..50`
+
+## Footnotes
+
+1. The secret key should be generated using secure random generator with increased entropy.
+
+Quoting from [*Quickstart documentation for Flask 0.12.4*](http://flask.pocoo.org/docs/0.12/quickstart/),
+
+> **How to generate good secret keys**
+>
+> The problem with random is that it’s hard to judge what is truly random. And a secret key should be as random as possible.
+> Your operating system has ways to generate pretty random stuff based on a cryptographic
+> random generator which can be used to get such a key (in Python REPL):
+>
+> `import os`
+>
+> `os.urandom(24)`
+>
+> Just take that thing and copy/paste it into your code and you're done.
+
+2. Passphrases are meant to be stored by the client-side program. Sometimes one might not need to save
+the authentication information on the device, such as public computers. This functionality is generally
+provided by a checkbox *'Remember me'*, which will save the session information on cookies, or local
+storage etc. When this checkbox is enabled, the server-side should not generate a passkey, but instead
+return a JWT immediately, to implement the correct behavior. Hence, the client-side program should be
+aware of deserialization of response sent by this application, since it may respond with either passkey
+or a token, directly.
 
 [`Range.t()`]: https://hexdocs.pm/elixir/Range.html#t:t/0
 [`String.t()`]: https://hexdocs.pm/elixir/String.html#t:t/0
