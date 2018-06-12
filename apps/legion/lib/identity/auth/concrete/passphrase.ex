@@ -9,11 +9,11 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   alias Legion.Identity.Auth.Concrete.Passphrase
   alias Legion.Identity.Auth.Concrete.Passphrase.Invalidation
   alias Legion.Identity.Auth.Concrete.Passkey
-  alias Legion.Identity.Auth.Concrete.Activity 
-  alias Legion.Identity.Information.Registration
+  alias Legion.Identity.Auth.Concrete.Activity
+  alias Legion.Identity.Information.Registration, as: User
 
   schema "passphrases" do
-    belongs_to :user, Registration
+    belongs_to :user, User
     field :passkey_digest, :binary
     field :ip_addr, Legion.Types.INET
     field :inserted_at, :naive_datetime, read_after_writes: true
@@ -35,11 +35,12 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   @doc """
   Generates a new passphrase changeset and returns it with the passkey itself in a tuple.
   """
-  @spec create_changeset(pos_integer, :inet.ip_address) :: {Passkey.t, Ecto.Changeset.t}
+  @spec create_changeset(User.user_or_id(), :inet.ip_address) ::
+    { Passkey.t, Ecto.Changeset.t }
   def create_changeset(user_id, ip_addr) when is_integer(user_id) do
     passkey = Passkey.generate()
 
-    changeset = 
+    changeset =
       Passphrase.changeset(%Passphrase{},
                            %{user_id: user_id,
                              passkey: passkey,
@@ -47,7 +48,6 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
 
     {passkey, changeset}
   end
-  @spec create_changeset(Registration, :inet.ip_address) :: {Passkey.t, Ecto.Changeset.t}
   def create_changeset(user, ip_addr) when is_map(user),
     do: create_changeset(user.id, ip_addr)
 
@@ -65,7 +65,7 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   performed against the `:invalidation` field of the struct, it would see the association as
   non-nil since `Ecto.Association.NotLoaded` struct will be there.
   """
-  @spec validate(Passphrase) :: 
+  @spec validate(Passphrase) ::
     :ok |
     {:error, :invalid} |
     {:error, :timed_out}
