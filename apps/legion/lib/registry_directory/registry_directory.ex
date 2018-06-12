@@ -1,4 +1,4 @@
-defmodule Legion.Settings.RegistryDirectory do
+defmodule Legion.RegistryDirectory do
   @moduledoc """
   Provides metaprogramming tools to register singleton directories.
 
@@ -20,7 +20,7 @@ defmodule Legion.Settings.RegistryDirectory do
   one may use the `defregdir/2` provided by this module.
 
   ```elixir
-  import Legion.Settings.RegistryDirectory
+  import Legion.RegistryDirectory
 
   defregdir SomeSettings, "messaging_settings"
   ```

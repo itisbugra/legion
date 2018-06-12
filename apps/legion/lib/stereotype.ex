@@ -39,7 +39,6 @@ defmodule Legion.Stereotype do
   @doc """
   When used, dispatch to the appropriate stereotype.
   """
-  defmacro __using__(which) when is_atom(which) do
-    apply(__MODULE__, which, [])
-  end
+  defmacro __using__(which) when is_atom(which),
+    do: apply(__MODULE__, which, [])
 end

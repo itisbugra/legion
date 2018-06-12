@@ -1,62 +1,49 @@
-if Code.ensure_loaded?(Legion.Messaging.Settings) do
-  defmodule Mix.Tasks.Legion.Reg.Messaging do
-    require Logger
+defmodule Mix.Tasks.Legion.Reg.Messaging do
+  @moduledoc """
+  Synchronizes messaging subsystem registers, such as global switches
+  and redirection keys.
 
-    import Mix.Ecto
+  Redirection keys are formatted in
+  `"Messaging.Switching.Globals.{medium}_redirection"`, whereas
+  switching keys are formatted in
+  `"Messaging.Switching.Globals.is_{medium}_enabled?"` pattern.
+  """
+  use Legion.RegistryDirectory.Synchronization, site: Legion.Messaging.Settings, repo: Legion.Repo
 
-    alias Legion.Repo
-    alias Legion.Messaging.Settings.Register
+  @shortdoc "Synchronizes messaging subsystem registers"
 
-    Logger.configure level: :info
+  require Logger
 
-    defmacrop put_key(key) do
-      quote do
-        try do
-          register = Repo.insert!(%Register{key: unquote(key)})
+  alias Legion.Repo
+  alias Legion.Messaging.Settings.Register
 
-          Logger.info fn ->
-            "added register #{register.key}"
-          end
-        rescue
-          Ecto.ConstraintError ->
-            Logger.warn fn ->
-              "cannot add register #{unquote(key)}, it is already added"
-            end
+  Logger.configure level: :info
+
+  def register(key) do
+    try do
+      register = Repo.insert!(%Register{key: key})
+
+      Logger.info fn ->
+        "added register #{register.key}"
+      end
+    rescue
+      Ecto.ConstraintError ->
+        Logger.warn fn ->
+          "cannot add register #{key}, it is already added"
         end
-      end
     end
+  end
 
-    def run(_args) do
-      {:ok, pid, _apps} = ensure_started(Repo, [])
-      sandbox? = Repo.config[:pool] == Ecto.Adapters.SQL.Sandbox
-
-      if sandbox? do
-        Ecto.Adapters.SQL.Sandbox.checkin(Repo)
-        Ecto.Adapters.SQL.Sandbox.checkout(Repo, sandbox: false)
-      end
-
-      Logger.info fn ->
-        "== Adding messaging registers"
-      end
-
-      put_key "Messaging.Switching.Globals.is_apm_enabled?"
-      put_key "Messaging.Switching.Globals.is_push_enabled?"
-      put_key "Messaging.Switching.Globals.is_sms_enabled?"
-      put_key "Messaging.Switching.Globals.is_mailing_enabled?"
-      put_key "Messaging.Switching.Globals.is_platform_enabled?"
-      put_key "Messaging.Switching.Globals.apm_redirection"
-      put_key "Messaging.Switching.Globals.push_redirection"
-      put_key "Messaging.Switching.Globals.sms_redirection"
-      put_key "Messaging.Switching.Globals.mailing_redirection"
-      put_key "Messaging.Switching.Globals.platform_redirection"
-
-      sandbox? && Ecto.Adapters.SQL.Sandbox.checkin(Repo)
-
-      pid && Repo.stop(pid)
-
-      Logger.info fn ->
-        "== Finished migrating messaging registers"
-      end
-    end
+  def sync do
+    register "Messaging.Switching.Globals.is_apm_enabled?"
+    register "Messaging.Switching.Globals.is_push_enabled?"
+    register "Messaging.Switching.Globals.is_sms_enabled?"
+    register "Messaging.Switching.Globals.is_mailing_enabled?"
+    register "Messaging.Switching.Globals.is_platform_enabled?"
+    register "Messaging.Switching.Globals.apm_redirection"
+    register "Messaging.Switching.Globals.push_redirection"
+    register "Messaging.Switching.Globals.sms_redirection"
+    register "Messaging.Switching.Globals.mailing_redirection"
+    register "Messaging.Switching.Globals.platform_redirection"
   end
 end
