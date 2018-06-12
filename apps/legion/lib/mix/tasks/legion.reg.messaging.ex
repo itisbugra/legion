@@ -1,4 +1,4 @@
-if Code.ensure_loaded?(Legion.Messaging.Settings.Register) do
+if Code.ensure_loaded?(Legion.Messaging.Settings) do
   defmodule Mix.Tasks.Legion.Reg.Messaging do
     require Logger
 
