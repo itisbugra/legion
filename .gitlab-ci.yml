@@ -3,6 +3,7 @@ image: elixir:latest
 
 services:
   - postgres:latest
+  - fiorix/freegeoip:latest
 
 variables:
   MIX_ENV: "test"
