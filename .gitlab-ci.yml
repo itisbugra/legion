@@ -94,14 +94,18 @@ elixir:docs:ex_doc:
   tags:
     - legion
     - stms
+  variables:
+    MIX_ENV: "dev"
   before_script:
     - mix local.hex --force
     - mix local.rebar --force
     - mix legion.setup
   script:
-    - mix docs
+    - mix docs --output public
   dependencies:
     - elixir:build
   artifacts:
     paths:
-      - doc
+      - public
+  only:
+    - master
