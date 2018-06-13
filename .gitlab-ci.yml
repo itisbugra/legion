@@ -46,7 +46,6 @@ elixir:build:
     - mix local.rebar --force
   script:
     - mix compile
-    - mix legion.setup
   dependencies:
     - elixir:deps
   artifacts:
@@ -64,6 +63,7 @@ elixir:test:ex_unit:
   before_script:
     - mix local.hex --force
     - mix local.rebar --force
+    - mix legion.setup
   script:
     - mix test --cover
   coverage: '/\[TOTAL\]\s+(\d+\.\d+)%/'
