@@ -19,7 +19,7 @@ elixir:deps:
   stage: deps
   image: elixir:1.6.5
   tags:
-    - docker
+    - legion
     - stms
   before_script:
     - mix local.hex --force
@@ -39,7 +39,7 @@ elixir:build:
   stage: build
   image: elixir:1.6.5
   tags:
-    - docker
+    - legion
     - stms
   before_script:
     - mix local.hex --force
@@ -58,7 +58,7 @@ elixir:test:ex_unit:
   stage: test
   image: elixir:1.6.5
   tags:
-    - docker
+    - legion
     - stms
   before_script:
     - mix local.hex --force
@@ -73,7 +73,7 @@ elixir:coverage:coveralls:
   stage: coverage
   image: elixir:1.6.5
   tags:
-    - docker
+    - legion
     - stms
   before_script:
     - mix local.hex --force
@@ -90,7 +90,7 @@ elixir:docs:ex_doc:
   stage: docs
   image: elixir:1.6.5
   tags:
-    - docker
+    - legion
     - stms
   before_script:
     - mix local.hex --force
