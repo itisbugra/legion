@@ -2,7 +2,6 @@
 image: elixir:latest
 
 services:
-  - redis:latest
   - postgres:latest
 
 variables:
