@@ -11,6 +11,7 @@ variables:
 stages:
   - deps
   - build
+  - setup
   - test
   - coverage
   - docs
@@ -53,6 +54,17 @@ elixir:build:
       - mix.lock
       - _build
       - deps
+
+elixir:setup:
+  state: build
+  image: elixir:1.6.5
+  tags:
+    - legion
+    - stms
+  script:
+    - legion.setup
+  dependencies:
+    - elixir:build
 
 elixir:test:ex_unit:
   stage: test
