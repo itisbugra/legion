@@ -1,6 +1,3 @@
-
-image: elixir:latest
-
 services:
   - postgres:latest
   - fiorix/freegeoip:latest
@@ -11,12 +8,97 @@ variables:
   POSTGRES_USER: "postgres"
   POSTGRES_PASSWORD: "postgres"
 
-before_script:
-  - mix local.rebar --force
-  - mix local.hex --force
-  - mix deps.get
-  - mix legion.setup
+stages:
+  - deps
+  - build
+  - test
+  - coverage
+  - docs
 
-mix:
+elixir:deps:
+  stage: deps
+  image: elixir:1.6.5
+  tags:
+    - docker
+    - stms
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
   script:
-  - mix coveralls --umbrella
+    - mix deps.get
+  dependencies: []
+  artifacts:
+    paths:
+      - mix.lock
+      - deps
+  cache:
+    paths:
+    - ~/.hex/
+
+elixir:build:
+  stage: build
+  image: elixir:1.6.5
+  tags:
+    - docker
+    - stms
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+  script:
+    - mix compile
+  dependencies:
+    - elixir:deps
+  artifacts:
+    paths:
+      - mix.lock
+      - _build
+      - deps
+
+elixir:test:ex_unit:
+  stage: test
+  image: elixir:1.6.5
+  tags:
+    - docker
+    - stms
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+  script:
+    - mix test --cover
+  coverage: '/\[TOTAL\]\s+(\d+\.\d+)%/'
+  dependencies:
+    - elixir:build
+
+elixir:coverage:coveralls:
+  stage: coverage
+  image: elixir:1.6.5
+  tags:
+    - docker
+    - stms
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+  script:
+    - mix coveralls.html
+  dependencies:
+    - elixir:build
+  artifacts:
+    paths:
+      - cover
+
+elixir:docs:ex_doc:
+  stage: docs
+  image: elixir:1.6.5
+  tags:
+    - docker
+    - stms
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+  script:
+    - mix docs
+  dependencies:
+    - elixir:build
+  artifacts:
+    paths:
+      - doc
