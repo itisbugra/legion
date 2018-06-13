@@ -9,7 +9,7 @@ config :legion, Legion.Repo,
   username: "postgres",
   password: "postgres",
   database: "legion_dev",
-  hostname: "localhost",
+  hostname: "postgres",
   pool_size: 10
 
 # fiorix/freegeoip container in Docker to IP Reverse Geocoding

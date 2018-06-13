@@ -9,7 +9,7 @@ config :legion, Legion.Repo,
   username: "postgres",
   password: "postgres",
   database: "legion_test",
-  hostname: "localhost",
+  hostname: "postgres",
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :argon2_elixir,

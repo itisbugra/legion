@@ -6,6 +6,9 @@ services:
 
 variables:
   MIX_ENV: "test"
+  POSTGRES_DB: "legion_test"
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "postgres"
 
 before_script:
   - mix local.rebar --force
