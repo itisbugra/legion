@@ -20,18 +20,12 @@ defmodule Mix.Tasks.Legion.Reg.Messaging do
   Logger.configure level: :info
 
   def register(key) do
-    try do
-      register = Repo.insert!(%Register{key: key})
+    register = Repo.insert!(%Register{key: key})
 
-      Logger.info fn ->
-        "added register #{register.key}"
-      end
-    rescue
-      Ecto.ConstraintError ->
-        Logger.warn fn ->
-          "cannot add register #{key}, it is already added"
-        end
-    end
+    Logger.info "added register #{register.key}"
+  rescue
+    Ecto.ConstraintError ->
+      Logger.warn "cannot add register #{key}, it is already added"
   end
 
   def sync do

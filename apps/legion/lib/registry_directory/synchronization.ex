@@ -1,6 +1,39 @@
 defmodule Legion.RegistryDirectory.Synchronization do
   @moduledoc """
-  Provides synchronization support for managing registry keys.
+  Synchronization support for managing registry keys.
+
+  ### Creating a synchronization task
+
+  A synchronization module can help for creating keys, and checking them at
+  the time of the migration. If all keys do exist, running the task should be
+  no-op.
+
+  ```
+  defmodule Mix.Tasks.Foo.Reg.Birds do
+    use Legion.RegistryDirectory.Synchronization, site: Foo.Birds, repo: Foo.Repo
+
+    @shortdoc "Synchronizes bird registers"
+
+    require Logger
+
+    alias Foo.Repo
+    alias Foo.Birds.Register
+
+    def register(key),
+      do: Repo.insert(%Register{key: key})
+
+    def sync do
+      register "hummingbird"
+      register "auk"
+      register "blackbird"
+      register "chickadee"
+      register "dove"
+      register "duck"
+      register "nuthatch"
+      register "seabird"
+    end
+  end
+  ```
   """
 
   @doc false
@@ -39,8 +72,6 @@ defmodule Legion.RegistryDirectory.Synchronization do
             "== Finished migrating #{@site} registers"
           end
         end
-      else
-        raise "zaa"
       end
     end
   end

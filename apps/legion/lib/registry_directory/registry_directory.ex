@@ -56,6 +56,8 @@ defmodule Legion.RegistryDirectory do
   referenced by the other tables. The macro does not perform
   a migration for the database, indeed, but you can prepare
   migrations for both key registration and table creation.
+
+  For synchronization of the keys, see `Legion.RegistryDirectory.Synchronization`.
   """
 
   @doc """
