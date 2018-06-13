@@ -56,7 +56,7 @@ elixir:build:
       - deps
 
 elixir:setup:
-  state: build
+  stage: build
   image: elixir:1.6.5
   tags:
     - legion
