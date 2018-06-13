@@ -79,6 +79,7 @@ elixir:coverage:coveralls:
   before_script:
     - mix local.hex --force
     - mix local.rebar --force
+    - mix legion.setup
   script:
     - mix coveralls.html
   dependencies:
@@ -96,6 +97,7 @@ elixir:docs:ex_doc:
   before_script:
     - mix local.hex --force
     - mix local.rebar --force
+    - mix legion.setup
   script:
     - mix docs
   dependencies:
