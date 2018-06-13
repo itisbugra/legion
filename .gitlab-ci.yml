@@ -99,7 +99,7 @@ elixir:docs:ex_doc:
   before_script:
     - mix local.hex --force
     - mix local.rebar --force
-    - mix legion.setup
+    - mix compile
   script:
     - mix docs --output public
   dependencies:
