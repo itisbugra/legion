@@ -1,0 +1,19 @@
+
+image: elixir:latest
+
+services:
+  - redis:latest
+  - postgres:latest
+
+variables:
+  MIX_ENV: "test"
+
+before_script:
+  - mix local.rebar --force
+  - mix local.hex --force
+  - mix deps.get
+  - mix legion.setup
+
+mix:
+  script:
+  - mix test
