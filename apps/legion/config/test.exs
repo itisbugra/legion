@@ -18,4 +18,4 @@ config :argon2_elixir,
 
 # fiorix/freegeoip container in Docker to IP Reverse Geocoding
 config :freegeoip,
-  base_url: "http://freegeoip:8080"
+  base_url: "http://fiorix-freegeoip:8080"
