@@ -1,4 +1,4 @@
-# IAM
+# Configuration
 
 Author: [Buğra Ekuklu](mailto:bekuklu@stcpay.com.sa)
 

@@ -57,19 +57,19 @@ defmodule Legion.Umbrella.Mixfile do
       "guides/introduction/Up and Running.md",
       "guides/introduction/Configuration.md",
 
-      "guides/subsystems/Identity and Access Control.md",
-      "guides/subsystems/Messaging Relay and Push.md",
+      "guides/iam/Preface-IAM.md",
+      "guides/iam/Configuration-IAM.md",
 
-      "guides/configuration/IAM.md",
-      "guides/configuration/MPB.md"
+      "guides/mpb/Preface-MPB.md",
+      "guides/mpb/Configuration-MPB.md"
     ]
   end
 
   def groups_for_extras do
     [
       "Getting Started": ~r/guides\/introduction\/.?/,
-      "Subsystems": ~r/guides\/subsystems\/.?/,
-      "Configuration": ~r/guides\/configuration\/.?/
+      "Identity & Access Management": ~r/guides\/iam\/.?/,
+      "Messaging Relay & Push": ~r/guides\/mpb\/.?/
     ]
   end
 
