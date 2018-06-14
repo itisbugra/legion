@@ -43,6 +43,7 @@ defmodule Legion.Umbrella.Mixfile do
   def docs do
     [
       name: "Legion",
+      main: "up-and-running",
       source_url: "http://95.177.215.207/STMS/Chat/Legion",
       extra_section: "GUIDES",
       extras: extras(),
