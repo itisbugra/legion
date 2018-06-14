@@ -2,7 +2,7 @@ defmodule Legion.Messaging.Switching.Globals do
   @moduledoc """
   Provides functions for altering/retrieving global switches to messaging.
 
-  **This module is NOT transactionally safe.**
+  **This module is NOT transaction-safe.**
 
   ## Enabling/disabling mediums
 

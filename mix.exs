@@ -7,6 +7,7 @@ defmodule Legion.Umbrella.Mixfile do
       start_permanent: Mix.env == :prod,
       deps: deps(),
       aliases: aliases(),
+      docs: docs(),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: ["coveralls": :test,
                           "coveralls.detail": :test,
@@ -37,5 +38,50 @@ defmodule Legion.Umbrella.Mixfile do
      "legion.reset": ["legion.check",
                       "ecto.reset",
                       "legion.reg"]]
+  end
+
+  def docs do
+    [
+      name: "Legion",
+      source_url: "http://95.177.215.207/STMS/Chat/Legion",
+      extra_section: "GUIDES",
+      extras: extras(),
+      groups_for_extras: groups_for_extras(),
+      groups_for_modules: groups_for_modules()
+    ]
+  end
+
+  def extras do
+    [
+      "guides/introduction/Up and Running.md",
+      "guides/introduction/Configuration.md",
+
+      "guides/subsystems/Identity and Access Control.md",
+      "guides/subsystems/Messaging Relay and Push.md",
+
+      "guides/configuration/IAM.md",
+      "guides/configuration/MPB.md"
+    ]
+  end
+
+  def groups_for_extras do
+    [
+      "Getting Started": ~r/guides\/introduction\/.?/,
+      "Subsystems": ~r/guides\/subsystems\/.?/,
+      "Configuration": ~r/guides\/configuration\/.?/
+    ]
+  end
+
+  def groups_for_modules do
+    [
+      "Identity and Access Control": [
+        Legion.Identity.Auth.AccessControl.ControllerAction,
+        Legion.Identity.Auth.AccessControl.Permission,
+        Legion.Identity.Auth.AccessControl.PermissionSet,
+        Legion.Identity.Auth.AccessControl.PermissionSetCache,
+        Legion.Identity.Auth.AccessControl.PermissionSetGrant,
+        Legion.Identity.Auth.AccessControl.PermissionSetCacheEntry
+      ]
+    ]
   end
 end
