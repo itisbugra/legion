@@ -1,4 +1,5 @@
 defmodule Legion.Identity.Auth.Insecure.PairTest do
+  @moduledoc false
   use Legion.DataCase
   
   import Ecto.Changeset, only: [get_change: 3]

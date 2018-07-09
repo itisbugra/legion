@@ -25,7 +25,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
 
     create table(:users) do
       add :has_gps_telemetry_consent?, :boolean, default: false
-      add :locale, references(:locales, on_delete: :restrict, on_update: :update_all, column: :rfc1766, type: :text), default: "en-us", null: false
+      add :locale_rfc1766, references(:locales, on_delete: :restrict, on_update: :update_all, column: :rfc1766, type: :text), default: "en-us", null: false
       add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
@@ -193,5 +193,14 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :subject_params, :jsonb, null: false
       add :body_params, :jsonb, null: false
     end
+
+    create table(:insecure_authentication_pairs) do
+      add :user_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false
+      add :username, :string, null: false
+      add :password_digest, :string, null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
+    end
+
+    create unique_index(:insecure_authentication_pairs, [:username])
   end
 end
