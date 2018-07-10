@@ -42,7 +42,7 @@ defmodule Legion.Identity.Auth do
       end
     end) do
       {:ok, pair} ->
-        {:ok, pair.user_id} 
+        {:ok, pair.user_id, pair.inserted_at} 
       {:error, field} ->
         {:error, field}
     end

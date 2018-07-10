@@ -10,12 +10,12 @@ defmodule Legion.Identity.AuthTest do
 
   describe "registers_internal_user" do
     setup do
-      %{username: random_string(10), 
-        password: random_string(12)}
+      %{username: random_string(Enum.min(@username_length)), 
+        password: random_string(@password_length)}
     end
 
     test "registers a user", %{username: username, password: password} do
-      {:ok, user_id} = register_internal_user username, password
+      {:ok, user_id, _inserted_at} = register_internal_user username, password
 
       assert is_integer(user_id)
     end
@@ -38,14 +38,8 @@ defmodule Legion.Identity.AuthTest do
       assert register_internal_user(username, password)  |> elem(0) == :error
     end
 
-    test "does not register the user if password is short", %{username: username} do
-      password = random_string(Enum.min(@password_length) - 1)
-
-      assert register_internal_user(username, password) |> elem(0) == :error
-    end
-
-    test "does not register the user if password is long", %{username: username} do
-      password = random_string(Enum.max(@password_length) + 1)
+    test "does not register the user if password is not in predetermined length", %{username: username} do
+      password = random_string(@password_length + 1)
 
       assert register_internal_user(username, password) |> elem(0) == :error
     end

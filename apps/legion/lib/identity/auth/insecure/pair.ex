@@ -21,7 +21,7 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
     |> cast(params, [:user_id, :username, :password])
     |> validate_required([:user_id, :username, :password])
     |> validate_length(:username, min: Enum.min(@username_length), max: Enum.max(@username_length))
-    |> validate_length(:password, min: Enum.min(@password_length), max: Enum.max(@password_length))
+    |> validate_length(:password, is: @password_length)
     |> unique_constraint(:username)
     |> foreign_key_constraint(:user_id)
     |> hash_pw()

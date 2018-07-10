@@ -11,8 +11,8 @@ defmodule Legion.Identity.Auth.Insecure.PairTest do
   @password_length Keyword.fetch!(@env, :password_length)
 
   @valid_attrs %{user_id: 1,
-                 username: "username",
-                 password: "password"}
+                 username: random_string(@username_length),
+                 password: random_string(@password_length)}
 
   test "changeset with valid attributes" do
     changeset = Pair.changeset(%Pair{}, @valid_attrs)
@@ -63,16 +63,8 @@ defmodule Legion.Identity.Auth.Insecure.PairTest do
     refute changeset.valid?
   end
 
-  test "changeset with short password" do
-    password = random_string(Enum.min(@password_length) - 1)
-    params = params_by_updating_key(@valid_attrs, :password, password)
-    changeset = Pair.changeset(%Pair{}, params)
-
-    refute changeset.valid?
-  end
-
-  test "changeset with long password" do
-    password = random_string(Enum.max(@password_length) + 1)
+  test "changeset with password having unknown length" do
+    password = random_string(@password_length + 1)
     params = params_by_updating_key(@valid_attrs, :password, password)
     changeset = Pair.changeset(%Pair{}, params)
 
