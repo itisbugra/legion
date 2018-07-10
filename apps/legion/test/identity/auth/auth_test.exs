@@ -23,31 +23,31 @@ defmodule Legion.Identity.AuthTest do
     test "does not register the user if username is already taken", %{username: username, password: password} do
       register_internal_user username, password     # save the user for once
 
-      assert register_internal_user(username, password) == {:error, :username}
+      assert register_internal_user(username, password) |> elem(0) == :error
     end
 
     test "does not register the user if username is short", %{password: password} do
       username = random_string(Enum.min(@username_length) - 1)
 
-      assert register_internal_user(username, password) == {:error, :username}
+      assert register_internal_user(username, password) |> elem(0) == :error
     end
 
     test "does not register the user if username is long", %{password: password} do
       username = random_string(Enum.max(@username_length) + 1)
 
-      assert register_internal_user(username, password) == {:error, :username}
+      assert register_internal_user(username, password)  |> elem(0) == :error
     end
 
     test "does not register the user if password is short", %{username: username} do
       password = random_string(Enum.min(@password_length) - 1)
 
-      assert register_internal_user(username, password) == {:error, :password}
+      assert register_internal_user(username, password) |> elem(0) == :error
     end
 
     test "does not register the user if password is long", %{username: username} do
       password = random_string(Enum.max(@password_length) + 1)
 
-      assert register_internal_user(username, password) == {:error, :password}
+      assert register_internal_user(username, password) |> elem(0) == :error
     end
   end
 end

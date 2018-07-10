@@ -38,11 +38,7 @@ defmodule Legion.Identity.Auth do
         {:ok, pair} ->
           pair
         {:error, changeset} ->
-          changeset
-          |> Map.get(:errors)
-          |> List.first()
-          |> Kernel.elem(0)
-          |> Repo.rollback()    # rollback with the name of the field
+          Repo.rollback(changeset)    # rollback with the name of the field
       end
     end) do
       {:ok, pair} ->
