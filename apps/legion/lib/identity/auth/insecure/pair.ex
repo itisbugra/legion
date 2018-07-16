@@ -2,6 +2,7 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
   use Legion.Stereotype, :model
 
   alias Legion.Identity.Information.Registration, as: User
+  alias Legion.Identity.Auth.Algorithm.Digestion
 
   @env Application.get_env(:legion, Legion.Identity.Auth.Insecure)
   @username_length Keyword.fetch!(@env, :username_length)
@@ -13,6 +14,7 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
     field :username, :string
     field :password, :string, virtual: true
     field :password_digest, :string
+    field :digestion_algorithm, Digestion, default: @password_digestion
     field :inserted_at, :naive_datetime, read_after_writes: true
   end
 
@@ -22,7 +24,6 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
     |> validate_required([:user_id, :username, :password])
     |> validate_length(:username, min: Enum.min(@username_length), max: Enum.max(@username_length))
     |> validate_length(:password, is: @password_length)
-    |> unique_constraint(:username)
     |> foreign_key_constraint(:user_id)
     |> hash_pw()
   end
@@ -38,7 +39,7 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
     end
   end
 
-  defp hashpwsalt(password) do
+  def hashpwsalt(password) do
     case @password_digestion do
       :argon2 ->
         Comeonin.Argon2.hashpwsalt(password)

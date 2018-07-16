@@ -12,6 +12,11 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   alias Legion.Identity.Auth.Concrete.Activity
   alias Legion.Identity.Information.Registration, as: User
 
+  @typedoc """
+  Type of the IP address.
+  """
+  @type inet() :: :inet.ip_address()
+
   schema "passphrases" do
     belongs_to :user, User
     field :passkey_digest, :binary

@@ -19,7 +19,8 @@ config :legion, Legion.Identity.Auth.AccessControl,
 config :legion, Legion.Identity.Auth.Concrete,
   passkey_scaling: 4,
   passphrase_lifetime: six_months,
-  user_agent_length: 400
+  user_agent_length: 400,
+  maximum_allowed_passphrases: 5
 
 config :legion, Legion.Identity.Auth.Concrete.JOSE,
   secret_key_base: "secret_key_base",

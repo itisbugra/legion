@@ -5,8 +5,13 @@ defmodule Legion.Factory do
   use ExMachina.Ecto, repo: Legion.Repo
   use Legion.TemplateFactory
 
+  import Legion.Testing.Random
+
   alias Legion.Identity.Auth.Concrete.Passkey
   alias Legion.Identity.Auth.TFA.OneTimeCode
+
+  @insecure_env Application.get_env(:legion, Legion.Identity.Auth.Insecure)
+  @password_digestion Keyword.fetch!(@insecure_env, :password_digestion)
 
   def user_factory do
     %Legion.Identity.Information.Registration{
@@ -69,6 +74,19 @@ defmodule Legion.Factory do
       key: build(:messaging_settings_register),
       authority: build(:user),
       value: %{"field" => "value"}
+    }
+  end
+
+  def pair_factory do
+    password = sequence(:pair_password_key, &"some_password#{&1}")
+    password_hash = Legion.Identity.Auth.Algorithm.Keccak.hash(password)
+
+    %Legion.Identity.Auth.Insecure.Pair{
+      user: build(:user),
+      username: sequence(:pair_username_key, &"some_username#{&1}"),
+      password: password,
+      password_digest: Legion.Identity.Auth.Insecure.Pair.hashpwsalt(password_hash),
+      digestion_algorithm: @password_digestion
     }
   end
 end

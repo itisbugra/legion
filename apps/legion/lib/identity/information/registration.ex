@@ -5,7 +5,7 @@ defmodule Legion.Identity.Information.Registration do
   use Legion.Stereotype, :model
 
   alias Legion.Identity.Information.Registration
-  alias Legion.Identity.Auth.Insecure.Pair
+  alias Legion.Identity.Auth.Concrete.Scheme
   alias Legion.Internationalization.Locale
 
   @typedoc """
@@ -29,11 +29,12 @@ defmodule Legion.Identity.Information.Registration do
   schema "users" do
     field :has_gps_telemetry_consent?, :boolean, default: false
     belongs_to :locale, Locale, defaults: "en-us", foreign_key: :locale_rfc1766, references: :rfc1766, type: :binary
+    field :authentication_scheme, Scheme, default: :insecure
     field :inserted_at, :naive_datetime, read_after_writes: true
   end
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:has_gps_telemetry_consent?])
+    |> cast(params, [:has_gps_telemetry_consent?, :authentication_scheme])
   end
 end

@@ -4,6 +4,9 @@ defmodule Legion.Identity.AuthTest do
 
   import Legion.Identity.Auth
 
+  alias Legion.Identity.Auth.Algorithm.Keccak
+  alias Legion.Identity.Auth.Insecure.Pair
+
   @env Application.get_env(:legion, Legion.Identity.Auth.Insecure)
   @username_length Keyword.fetch!(@env, :username_length)
   @password_length Keyword.fetch!(@env, :password_length)
@@ -43,5 +46,27 @@ defmodule Legion.Identity.AuthTest do
 
       assert register_internal_user(username, password) |> elem(0) == :error
     end
+  end
+
+  describe "generate_passphrase" do
+    setup do
+      user = insert(:user)
+      password = random_string(@password_length)
+      password_hash = Keccak.hash(password)
+      password_digest = Pair.hashpwsalt(password_hash)
+
+      %{user: insert(:user),
+        password: password,
+        password_hash: password_hash,
+        password_digest: password_digest,
+        pair: insert(:pair, user: user, password_digest: password_digest),
+        ip_addr: {1, 1, 1, 1}}
+    end
+
+    # test "generates passphrase", %{password_hash: password_hash, pair: pair, ip_addr: ip_addr} do
+    #   result = generate_passphrase(pair.username, password_hash, ip_addr)
+
+    #   assert Kernel.elem(result, 0) == :ok
+    # end
   end
 end

@@ -10,10 +10,14 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
         Legion.Identity.Auth.AccessControl.ControllerAction.create_type()
         Legion.Messaging.Message.Medium.create_type()
         Legion.Templating.Renderer.Engine.create_type()
+        Legion.Identity.Auth.Algorithm.Digestion.create_type()
+        Legion.Identity.Auth.Concrete.Scheme.create_type()
       :down ->
         Legion.Identity.Auth.AccessControl.ControllerAction.drop_type()
         Legion.Messaging.Message.Medium.drop_type()
         Legion.Templating.Renderer.Engine.drop_type()
+        Legion.Identity.Auth.Algorithm.Digestion.drop_type()
+        Legion.Identity.Auth.Concrete.Scheme.drop_type()
     end
 
     create table(:locales, primary_key: false) do
@@ -26,6 +30,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
     create table(:users) do
       add :has_gps_telemetry_consent?, :boolean, default: false
       add :locale_rfc1766, references(:locales, on_delete: :restrict, on_update: :update_all, column: :rfc1766, type: :text), default: "en-us", null: false
+      add :authentication_scheme, :authentication_scheme, null: false
       add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
@@ -198,9 +203,8 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :user_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false
       add :username, :string, null: false
       add :password_digest, :string, null: false
+      add :digestion_algorithm, :digestion_algorithm, null: false
       add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
-
-    create unique_index(:insecure_authentication_pairs, [:username])
   end
 end

@@ -10,15 +10,20 @@ defmodule Legion.Identity.Auth.Algorithm.Keccak do
   """
   @type algorithm() :: :sha3_224 | :sha3_256 | :sha3_384 | :sha3_512
 
+  @typedoc """
+  The result of the algorithm.
+  """
+  @type hash() :: binary()
+
   @doc """
   Hashes the given binary with given Keccak algorithm.
   """
-  @spec hash(algorithm(), binary()) :: binary()
+  @spec hash(algorithm(), binary()) :: hash()
   def hash(algorithm, data), do: :keccakf1600.hash(algorithm, data)
 
   @doc """
   Hashes the given binary with default Keccak algorithm configured.
   """
-  @spec hash(binary()) :: binary()
+  @spec hash(binary()) :: hash()
   def hash(data), do: hash(@variant, data)
 end
