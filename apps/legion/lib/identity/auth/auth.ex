@@ -4,17 +4,17 @@ defmodule Legion.Identity.Auth do
   """
   use Legion.Stereotype, :service
 
+  import Legion.Identity.Auth.Concrete.ActivePassphrase, only: [count_for_user: 1]
+
   alias Legion.Identity.Information.Registration, as: User
   alias Legion.Identity.Auth.Insecure.Pair
-  alias Legion.Identity.Auth.Concrete.Passkey
-  alias Legion.Identity.Auth.Concrete.Passphrase
+  alias Legion.Identity.Auth.Concrete.{Passkey, Passphrase}
   alias Legion.Identity.Auth.Algorithm.Keccak
 
   @insecure_env Application.get_env(:legion, Legion.Identity.Auth.Insecure)
   @password_digestion Keyword.fetch!(@insecure_env, :password_digestion)
 
   @concrete_env Application.get_env(:legion, Legion.Identity.Auth.Concrete)
-  @passphrase_lifetime Keyword.fetch!(@concrete_env, :passphrase_lifetime)
   @maximum_allowed_passphrases Keyword.fetch!(@concrete_env, :maximum_allowed_passphrases)
 
   @doc """
@@ -93,7 +93,9 @@ defmodule Legion.Identity.Auth do
   not proceed.
   """
   @spec generate_passphrase(User.username(), Keccak.hash(), Passphrase.inet(), Keyword.t()) ::
-    {:ok, Passkey.t()} |
+    {:ok, :access, JWT.t()} |
+    {:ok, :require, Passkey.t()} |
+    {:ok, :advance, Advance.t()} |
     {:error, :no_user_verify} |
     {:error, :unsupported_scheme} |
     {:error, :wrong_password} |
@@ -102,7 +104,7 @@ defmodule Legion.Identity.Auth do
     # TODO: Should generate the token directly
     one_shot = Keyword.get(opts, :one_shot, true)
 
-    Repo.transaction(fn ->
+    case Repo.transaction(fn ->
       # Query the possessor user of the given username
       query =
         from p1 in Pair,
@@ -112,8 +114,8 @@ defmodule Legion.Identity.Auth do
           on: p1.user_id == u.id,
         where: is_nil(p2.id) and
                p1.username == ^username,
-        select: %{user_id: u.id,   
-                  password_digest: p1.password_digest, 
+        select: %{user_id: u.id,
+                  password_digest: p1.password_digest,
                   digestion_algorithm: p1.digestion_algorithm,
                   authentication_scheme: u.authentication_scheme}
 
@@ -123,30 +125,26 @@ defmodule Legion.Identity.Auth do
 
           Repo.rollback(:no_user_verify)
         result ->
-          unless result.authentication_scheme == :insecure,
-            do: Repo.rollback(:unsupported_scheme)
+          :insecure = result.authentication_scheme
 
           unless checkpw(password, result.password_digest, result.digestion_algorithm),
             do: Repo.rollback(:wrong_password)
 
-          # Check the current number of passphrases belonging to the user
-          time_offset = -1 * @passphrase_lifetime
-          query =
-            from p in Passphrase,
-            where: p.user_id == ^result.user_id and
-                   p.inserted_at > from_now(^time_offset, "second"),
-            select: count(p.id)
-
-          unless Repo.one!(query) < @maximum_allowed_passphrases,
+          unless count_for_user(result.user_id) < @maximum_allowed_passphrases,
             do: Repo.rollback(:maximum_passphrases_exceeded)
 
           {passkey, changeset} = Passphrase.create_changeset(result.user_id, ip_addr)
 
           Repo.insert!(changeset)
 
-          passkey
+          {:require, passkey}
       end
-    end)
+    end) do
+      {:ok, {atom, struct}} ->
+        {:ok, atom, struct}
+      any ->
+        any
+    end
   end
 
   defp checkpw(password, hash, alg) do
