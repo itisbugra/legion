@@ -206,5 +206,12 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :digestion_algorithm, :digestion_algorithm, null: false
       add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
+
+    case direction() do
+      :up ->
+        Legion.Identity.Auth.Concrete.ActivePassphrase.create_view()
+      :down ->
+        Legion.Identity.Auth.Concrete.ActivePassphrase.drop_view()
+    end
   end
 end
