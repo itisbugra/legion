@@ -14,6 +14,17 @@ defmodule Legion.Stereotype do
     end
   end
 
+  def virtual do
+    quote do
+      use Ecto.Schema
+
+      import Ecto
+      import Ecto.Query
+
+      alias Legion.Repo
+    end
+  end
+
   def singleton do
     quote do
       use Ecto.Schema
