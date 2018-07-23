@@ -52,7 +52,9 @@ defmodule Legion.Mixfile do
       {:rsa_ex, "~> 0.2.1"},
       {:keccakf1600, "~> 2.0.0"},
       {:liquid, "~> 0.8.0"},
-      {:entropy_string, "~> 1.3"}
+      {:entropy_string, "~> 1.3"},
+      {:nimble_csv, "~> 0.4.0"},
+      {:cidr, "~> 1.1"}
     ]
   end
 

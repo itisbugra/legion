@@ -6,7 +6,7 @@ defmodule Legion.Messaging.Localization.Entry do
 
   alias Legion.Identity.Information.Registration, as: User
   alias Legion.Messaging.Templatization.Template
-  alias Legion.Templating.{Renderer, Renderer.Engine}
+  alias Legion.Templating.Renderer.Engine
 
   schema "messaging_template_localization_entry" do
     belongs_to :user, User

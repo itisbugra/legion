@@ -6,16 +6,13 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
 
   import NaiveDateTime, only: [utc_now: 0, diff: 2]
 
-  alias Legion.Identity.Auth.Concrete.Passphrase
+  alias Legion.Identity.Auth.Concrete.{Passphrase, ActivePassphrase, Passkey, Activity}
   alias Legion.Identity.Auth.Concrete.Passphrase.Invalidation
-  alias Legion.Identity.Auth.Concrete.Passkey
-  alias Legion.Identity.Auth.Concrete.Activity
   alias Legion.Identity.Information.Registration, as: User
+  alias Legion.Networking.INET
 
-  @typedoc """
-  Type of the IP address.
-  """
-  @type inet() :: :inet.ip_address()
+  @env Application.get_env(:legion, Legion.Identity.Auth.Concrete)
+  @maximum_allowed_passphrases Keyword.fetch!(@env, :maximum_allowed_passphrases)
 
   schema "passphrases" do
     belongs_to :user, User
@@ -40,8 +37,8 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   @doc """
   Generates a new passphrase changeset and returns it with the passkey itself in a tuple.
   """
-  @spec create_changeset(User.user_or_id(), :inet.ip_address) ::
-    { Passkey.t, Ecto.Changeset.t }
+  @spec create_changeset(User.user_or_id(), INET.t()) ::
+    {Passkey.t, Ecto.Changeset.t}
   def create_changeset(user_id, ip_addr) when is_integer(user_id) do
     passkey = Passkey.generate()
 
@@ -55,6 +52,32 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   end
   def create_changeset(user, ip_addr) when is_map(user),
     do: create_changeset(user.id, ip_addr)
+
+  @doc """
+  Creates a changeset and inserts it into the repository.
+  """
+  @spec create(User.user_or_id(), INET.t()) :: Passkey.t
+  def create(user_or_id, ip_addr) do
+    {passkey, changeset} = create_changeset(user_or_id, ip_addr)
+
+    Repo.insert!(changeset)
+
+    passkey
+  end
+
+  @doc """
+  Checks passphrase quota of the user, returns error if it is
+  exceeded.
+  """
+  def check_passphrase_quota(user_id) do
+    count = ActivePassphrase.count_for_user(user_id)
+
+    if count < @maximum_allowed_passphrases do
+      :ok
+    else
+      {:error, :maximum_passphrases_exceeded}
+    end
+  end
 
   @doc """
   Validates given passphrase and returns `:ok`, or an error tuple with a reason.

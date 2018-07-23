@@ -5,8 +5,6 @@ defmodule Legion.Factory do
   use ExMachina.Ecto, repo: Legion.Repo
   use Legion.TemplateFactory
 
-  import Legion.Testing.Random
-
   alias Legion.Identity.Auth.Concrete.Passkey
   alias Legion.Identity.Auth.TFA.OneTimeCode
 

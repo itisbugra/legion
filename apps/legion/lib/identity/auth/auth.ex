@@ -4,15 +4,12 @@ defmodule Legion.Identity.Auth do
   """
   use Legion.Stereotype, :service
 
-  import Legion.Identity.Auth.Concrete.ActivePassphrase, only: [count_for_user: 1]
-
   alias Legion.Identity.Information.Registration, as: User
   alias Legion.Identity.Auth.Insecure.Pair
+  alias Legion.Identity.Auth.Insecure.AuthInfo
   alias Legion.Identity.Auth.Concrete.{Passkey, Passphrase}
   alias Legion.Identity.Auth.Algorithm.Keccak
-
-  @insecure_env Application.get_env(:legion, Legion.Identity.Auth.Insecure)
-  @password_digestion Keyword.fetch!(@insecure_env, :password_digestion)
+  alias Legion.Networking.INET
 
   @concrete_env Application.get_env(:legion, Legion.Identity.Auth.Concrete)
   @maximum_allowed_passphrases Keyword.fetch!(@concrete_env, :maximum_allowed_passphrases)
@@ -76,10 +73,22 @@ defmodule Legion.Identity.Auth do
   password *digest*, where digest is a time-variant, salted hash of
   the client-side produced hash.
 
-  With a valid digest for the user, this function should return a
-  `{:ok, Passkey.t()}` passkey, which should be transferred to the
-  client-side device to be persisted on its secure storage. However,
-  these errors can also be returned from the function:
+  With a valid digest for the user, this function should either return
+  a 
+
+  - `{:ok, :require, passkey}` tuple containing the passkey which 
+  should be transferred to the client-side device to be persisted on 
+  its secure storage, or 
+
+  - `{:ok, :access, jwt}` tuple containing the JSON Web Token
+   [*(RFC 7159)*] to perform stealth authentication, directly, or
+
+  - `{:ok, :advance, advance_artifact}` tuple containing the artifact
+  information for proceeding to the next mandatory step of users
+  preferred multi-factor-authentication method.
+
+  In such circumstances, these errors can also be returned from the 
+  function:
 
   - `{:error, :no_user_verify}`: User cannot be found with given
   username.
@@ -91,8 +100,15 @@ defmodule Legion.Identity.Auth do
   passphrases (#{@maximum_allowed_passphrases}) are exceeded.
   User might either reset his/her password, authentication will
   not proceed.
+  - `{:error, :bad_host, :reserve_reason}`: The IP address provided
+  is reserved by IETF (IANA).
+  - `{:error, :blacklist, "reason"}`: The IP address provided is
+  blacklisted by server authority.
+
+  [*(RFC 7159)*]: https://tools.ietf.org/html/rfc7519
+  [*(RFC 5735)*]: https://tools.ietf.org/html/rfc5735#section-4
   """
-  @spec generate_passphrase(User.username(), Keccak.hash(), Passphrase.inet(), Keyword.t()) ::
+  @spec generate_passphrase(User.username(), Keccak.hash(), INET.t(), Keyword.t()) ::
     {:ok, :access, JWT.t()} |
     {:ok, :require, Passkey.t()} |
     {:ok, :advance, Advance.t()} |
@@ -101,71 +117,24 @@ defmodule Legion.Identity.Auth do
     {:error, :wrong_password} |
     {:error, :maximum_passphrases_exceeded}
   def generate_passphrase(username, password, ip_addr, opts \\ []) do
-    # TODO: Should generate the token directly
-    one_shot = Keyword.get(opts, :one_shot, true)
-
     case Repo.transaction(fn ->
-      # Query the possessor user of the given username
-      query =
-        from p1 in Pair,
-        left_join: p2 in Pair,
-          on: p1.id < p2.id and p1.user_id == p2.user_id,
-        join: u in User,
-          on: p1.user_id == u.id,
-        where: is_nil(p2.id) and
-               p1.username == ^username,
-        select: %{user_id: u.id,
-                  password_digest: p1.password_digest,
-                  digestion_algorithm: p1.digestion_algorithm,
-                  authentication_scheme: u.authentication_scheme}
-
-      case Repo.one(query) do
-        nil ->
-          dummy_checkpw(@password_digestion)
-
-          Repo.rollback(:no_user_verify)
-        result ->
-          :insecure = result.authentication_scheme
-
-          unless checkpw(password, result.password_digest, result.digestion_algorithm),
-            do: Repo.rollback(:wrong_password)
-
-          unless count_for_user(result.user_id) < @maximum_allowed_passphrases,
-            do: Repo.rollback(:maximum_passphrases_exceeded)
-
-          {passkey, changeset} = Passphrase.create_changeset(result.user_id, ip_addr)
-
-          Repo.insert!(changeset)
-
-          {:require, passkey}
+      with :ok <- INET.validate_addr(ip_addr),
+           {:ok, auth_info} <- Pair.retrieve_auth_info(username),
+           :ok <- AuthInfo.check_authentication_schema(auth_info),
+           :ok <- Pair.checkpw(password, auth_info.password_digest, auth_info.digestion_algorithm),
+           :ok <- Passphrase.check_passphrase_quota(auth_info.user_id),
+           passkey <- Passphrase.create(auth_info.user_id, ip_addr)
+      do
+        {:require, passkey}
+      else
+        {:error, error} ->
+          Repo.rollback(error)
       end
     end) do
       {:ok, {atom, struct}} ->
         {:ok, atom, struct}
-      any ->
+      any -> 
         any
-    end
-  end
-
-  defp checkpw(password, hash, alg) do
-    case alg do
-      :argon2 ->
-        Comeonin.Argon2.checkpw(password, hash)
-      :bcrypt ->
-        Comeonin.Bcrypt.checkpw(password, hash)
-      :pbkdf2 ->
-        Comeonin.Pbkdf2.checkpw(password, hash)
-    end
-  end
-
-  defp dummy_checkpw(alg) do
-    case alg do
-      :argon2 ->
-        Comeonin.Argon2.dummy_checkpw()
-      :bcrypt ->
-        Comeonin.Bcrypt.dummy_checkpw()
-      :pbkdf2 ->
-        Comeonin.Pbkdf2.dummy_checkpw()
     end
   end
 end
