@@ -65,8 +65,7 @@ elixir:test:ex_unit:
     - mix local.rebar --force
     - mix legion.setup
   script:
-    - mix test --cover
-  coverage: '/\[TOTAL\]\s+(\d+\.\d+)%/'
+    - mix test
   dependencies:
     - elixir:build
 
@@ -82,6 +81,7 @@ elixir:coverage:coveralls:
     - mix legion.setup
   script:
     - MIX_ENV=test mix coveralls.html --umbrella
+  coverage: '/\[TOTAL\]\s+(\d+\.\d+)%/'
   dependencies:
     - elixir:build
   artifacts:
