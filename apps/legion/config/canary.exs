@@ -20,7 +20,8 @@ config :legion, Legion.Identity.Auth.Concrete,
   passkey_scaling: 4,
   passphrase_lifetime: six_months,
   user_agent_length: 400,
-  maximum_allowed_passphrases: 5
+  maximum_allowed_passphrases: 5,
+  allow_local_addresses: true
 
 config :legion, Legion.Identity.Auth.Concrete.JOSE,
   secret_key_base: "secret_key_base",
@@ -32,7 +33,8 @@ config :legion, Legion.Identity.Auth.Insecure,
   username_length: 6..20,
   bypass_concrete_auth: true,
   password_digestion: :argon2,
-  password_length: 128
+  password_length: 128,
+  dispute_wrong_password: false
 
 config :legion, Legion.Identity.Auth.OTC,
   lifetime: three_minutes,
