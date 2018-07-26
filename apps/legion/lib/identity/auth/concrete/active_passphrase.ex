@@ -8,9 +8,6 @@ defmodule Legion.Identity.Auth.Concrete.ActivePassphrase do
   alias Legion.Identity.Auth.Concrete.ActivePassphrase
   alias Legion.Identity.Auth.Concrete.Activity
 
-  @concrete_env Application.get_env(:legion, Legion.Identity.Auth.Concrete)
-  @passphrase_lifetime Keyword.fetch!(@concrete_env, :passphrase_lifetime)
-
   schema "active_passphrases" do
     belongs_to :user, User
     field :passkey_digest, :binary
@@ -36,26 +33,5 @@ defmodule Legion.Identity.Auth.Concrete.ActivePassphrase do
       select: count(ap.id)
 
     Repo.one!(query)
-  end
-
-  def create_view do
-    """
-    CREATE OR REPLACE VIEW active_passphrases AS
-      SELECT p.*
-      FROM passphrases p
-      LEFT OUTER JOIN passphrase_invalidations pi 
-        ON p.id = pi.target_passphrase_id
-      WHERE 
-        pi.id IS NULL AND
-        p.inserted_at > now()::timestamp without time zone - interval '#{@passphrase_lifetime} seconds';
-    """
-    |> Ecto.Migration.execute()
-  end
-
-  def drop_view do
-    """
-    DROP VIEW active_passphrases;
-    """
-    |> Ecto.Migration.execute()
   end
 end
