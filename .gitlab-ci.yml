@@ -81,7 +81,7 @@ elixir:coverage:coveralls:
     - mix local.rebar --force
     - mix legion.setup
   script:
-    - mix coveralls.html
+    - MIX_ENV=test mix coveralls.html --umbrella
   dependencies:
     - elixir:build
   artifacts:
