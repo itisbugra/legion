@@ -4,6 +4,7 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
   alias Legion.Identity.Information.Registration, as: User
   alias Legion.Identity.Auth.Algorithm.Digestion
   alias Legion.Identity.Auth.Insecure.{Pair, AuthInfo}
+  alias Legion.Meta.Naming
 
   @env Application.get_env(:legion, Legion.Identity.Auth.Insecure)
   @username_length Keyword.fetch!(@env, :username_length)
@@ -15,7 +16,7 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
   schema "insecure_authentication_pairs" do
     belongs_to :user, User
     field :username, :string
-    field :password, :string, virtual: true
+    field :password_hash, :string, virtual: true
     field :password_digest, :string
     field :digestion_algorithm, Digestion, default: @password_digestion
     field :inserted_at, :naive_datetime, read_after_writes: true
@@ -23,17 +24,17 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id, :username, :password])
-    |> validate_required([:user_id, :username, :password])
+    |> cast(params, [:user_id, :username, :password_hash])
+    |> validate_required([:user_id, :username, :password_hash])
     |> validate_length(:username, min: Enum.min(@username_length), max: Enum.max(@username_length))
-    |> validate_length(:password, is: @password_length)
+    |> validate_length(:password_hash, is: @password_length)
     |> foreign_key_constraint(:user_id)
     |> hash_pw()
   end
 
   defp hash_pw(changeset) do
-    if password = get_change(changeset, :password) do
-      digest = hashpwsalt(password)
+    if hash = get_change(changeset, :password_hash) do
+      digest = hashpwsalt(hash)
 
       changeset
       |> put_change(:password_digest, digest)
@@ -42,15 +43,12 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
     end
   end
 
-  def hashpwsalt(password) do
-    case @password_digestion do
-      :argon2 ->
-        Comeonin.Argon2.hashpwsalt(password)
-      :bcrypt ->
-        Comeonin.Bcrypt.hashpwsalt(password)
-      :pbkdf2 ->
-        Comeonin.Pbkdf2.hashpwsalt(password)
-    end
+  def hashpwsalt(password_hash) do
+    mod_name = Naming.camelize(@password_digestion)
+
+    alg_module = Module.concat([Comeonin, mod_name])
+
+    apply(alg_module, :hashpwsalt, [password_hash])
   end
 
   @doc """
@@ -90,32 +88,23 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
   @spec checkpw(Keccak.hash(), binary(), Pair.digestion_algorithm()) ::
     :ok |
     {:error, :wrong_password}
-  def checkpw(password, hash, alg) do
-    result =
-      case alg do
-        :argon2 ->
-          Comeonin.Argon2.checkpw(password, hash)
-        :bcrypt ->
-          Comeonin.Bcrypt.checkpw(password, hash)
-        :pbkdf2 ->
-          Comeonin.Pbkdf2.checkpw(password, hash)
-      end
+  def checkpw(password_hash, digest, alg) do
+    mod_name = Naming.camelize(alg)
 
-    if result do
+    alg_module = Module.concat([Comeonin, mod_name])
+
+    if apply(alg_module, :checkpw, [password_hash, digest]) do
       :ok
     else
-      {:error, :wrong_password}
+      {:error, :wrong_password_hash}
     end
   end
 
   defp dummy_checkpw(alg) do
-    case alg do
-      :argon2 ->
-        Comeonin.Argon2.dummy_checkpw()
-      :bcrypt ->
-        Comeonin.Bcrypt.dummy_checkpw()
-      :pbkdf2 ->
-        Comeonin.Pbkdf2.dummy_checkpw()
-    end
+    mod_name = Naming.camelize(alg)
+
+    alg_module = Module.concat([Comeonin, mod_name])
+
+    apply(alg_module, :dummy_checkpw, [])
   end
 end
