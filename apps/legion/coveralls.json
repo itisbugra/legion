@@ -1,11 +1,12 @@
 {
-  "custom_stop_words": [
+  "default_stop_words": [
     "embedded_schema",
     "schema",
     "defmacro",
     "defenum",
     "using",
-    "setup"
+    "setup",
+    "defstruct"
   ],
 
   "coverage_options": {
@@ -25,6 +26,7 @@
     "lib/logger",
     "lib/application.ex",
     "lib/repo.ex",
-    "lib/legion.ex"
+    "lib/legion.ex",
+    "viewdecl"
   ]
 }
