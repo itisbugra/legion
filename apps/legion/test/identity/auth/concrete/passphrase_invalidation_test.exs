@@ -24,4 +24,8 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase.InvalidationTest do
 
     refute changeset.valid?
   end
+
+  test "changeset is not valid with default params either" do
+    refute Invalidation.changeset(%Invalidation{}).valid?
+  end
 end

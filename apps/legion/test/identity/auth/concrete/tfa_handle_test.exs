@@ -53,6 +53,10 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandleTest do
     assert changeset.changes.otc_digest != valid_attrs.otc
   end
 
+  test "changeset is invalid with default params" do
+    refute TFAHandle.changeset(%TFAHandle{}).valid?
+  end
+
   describe "create_handle/1" do
     test "creates a handle with given user" do
       user = insert(:user)

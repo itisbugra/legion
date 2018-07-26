@@ -96,5 +96,9 @@ defmodule Legion.Messaging.Templatization.TemplateTest do
     assert changeset.valid?
   end
 
+  test "changeset is invalid with default params" do
+    refute Template.changeset(%Template{}).valid?
+  end
+
   defp params_without_field(field), do: Map.delete(@valid_params, field)
 end

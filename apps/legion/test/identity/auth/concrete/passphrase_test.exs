@@ -55,6 +55,10 @@ defmodule Legion.Identity.Auth.Concrete.PassphraseTest do
     refute changeset.valid?
   end
 
+  test "changeset is invalid with default params either" do
+    refute Passphrase.changeset(%Passphrase{}).valid?
+  end
+
   describe "create_changeset/1" do
     test "returns changeset with raw passkey using primary key" do
       {passkey, changeset} = 

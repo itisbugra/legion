@@ -30,6 +30,10 @@ defmodule Legion.Messaging.Localization.EntryTest do
     assert changeset.valid?
   end
 
+  test "changeset is invalid with default params either" do
+    refute Entry.changeset(%Entry{}).valid?
+  end
+
   def attrs_drop_key(key) do
     Map.delete(@valid_attrs, key)
   end

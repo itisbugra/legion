@@ -41,4 +41,8 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionTest do
 
     refute changeset.valid?
   end
+
+  test "changeset is not valid with default params either" do
+    refute Permission.changeset(%Permission{}).valid?
+  end
 end

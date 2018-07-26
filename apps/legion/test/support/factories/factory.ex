@@ -82,7 +82,7 @@ defmodule Legion.Factory do
     %Legion.Identity.Auth.Insecure.Pair{
       user: build(:user),
       username: sequence(:pair_username_key, &"some_username#{&1}"),
-      password: password,
+      password_hash: password_hash,
       password_digest: Legion.Identity.Auth.Insecure.Pair.hashpwsalt(password_hash),
       digestion_algorithm: @password_digestion
     }

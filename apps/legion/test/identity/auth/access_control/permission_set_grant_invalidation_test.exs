@@ -23,4 +23,8 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrant.InvalidationTest
 
     refute changeset.valid?
   end
+
+  test "changeset is not valid with default params either" do
+    refute Invalidation.changeset(%Invalidation{}).valid?
+  end
 end

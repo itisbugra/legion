@@ -204,6 +204,10 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
     assert changeset.valid?
   end
 
+  test "changeset is invalid with default params either" do
+    refute Activity.changeset(%Activity{}).valid?
+  end
+
   describe "create_changeset/4" do
     test "creates changeset with valid attrs" do
       passphrase =

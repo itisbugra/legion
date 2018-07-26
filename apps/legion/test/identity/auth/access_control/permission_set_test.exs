@@ -86,6 +86,10 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetTest do
     refute changeset.valid?
   end
 
+  test "changeset is not valid with default params either" do
+    refute PermissionSet.changeset(%PermissionSet{}).valid?
+  end
+
   defp genstr(len) do
     len
     |> :crypto.strong_rand_bytes() 

@@ -17,4 +17,8 @@ defmodule Legion.Messaging.Message.SuccessInformationTest do
 
     refute changeset.valid?
   end
+
+  test "changeset is invalid with default params either" do
+    refute SuccessInformation.changeset(%SuccessInformation{}).valid?
+  end
 end

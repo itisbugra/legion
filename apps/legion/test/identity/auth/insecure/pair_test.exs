@@ -5,6 +5,7 @@ defmodule Legion.Identity.Auth.Insecure.PairTest do
   import Ecto.Changeset, only: [get_change: 3]
 
   alias Legion.Identity.Auth.Insecure.Pair
+  alias Legion.Identity.Auth.Algorithm.Keccak
 
   @env Application.get_env(:legion, Legion.Identity.Auth.Insecure)
   @username_length Keyword.fetch!(@env, :username_length)
@@ -12,7 +13,7 @@ defmodule Legion.Identity.Auth.Insecure.PairTest do
 
   @valid_attrs %{user_id: 1,
                  username: random_string(@username_length),
-                 password: random_string(@password_length)}
+                 password_hash: Keccak.hash(random_string(7))}
 
   test "changeset with valid attributes" do
     changeset = Pair.changeset(%Pair{}, @valid_attrs)
@@ -35,7 +36,7 @@ defmodule Legion.Identity.Auth.Insecure.PairTest do
   end
 
   test "changeset without password" do
-    params = params_by_dropping_key(@valid_attrs, :password)
+    params = params_by_dropping_key(@valid_attrs, :password_hash)
     changeset = Pair.changeset(%Pair{}, params)
 
     refute changeset.valid?
@@ -64,11 +65,15 @@ defmodule Legion.Identity.Auth.Insecure.PairTest do
   end
 
   test "changeset with password having unknown length" do
-    password = random_string(@password_length + 1)
-    params = params_by_updating_key(@valid_attrs, :password, password)
+    password_hash = random_string(@password_length + 1)
+    params = params_by_updating_key(@valid_attrs, :password_hash, password_hash)
     changeset = Pair.changeset(%Pair{}, params)
 
     refute changeset.valid?
+  end
+
+  test "changeset is invalid with default params either" do
+    refute Pair.changeset(%Pair{}).valid?
   end
 
   defp params_by_dropping_key(attrs, key),

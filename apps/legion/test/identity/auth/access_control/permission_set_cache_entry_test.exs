@@ -60,4 +60,8 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetCacheEntryTest do
 
     assert changeset.valid?
   end
+
+  test "changeset is not valid with default params either" do
+    refute PermissionSetCacheEntry.changeset(%PermissionSetCacheEntry{}).valid?
+  end
 end

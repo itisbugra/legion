@@ -17,4 +17,8 @@ defmodule Legion.Identity.Information.RegistrationTest do
 
     assert changeset.valid?
   end
+
+  test "changeset is valid with default params" do
+    assert Registration.changeset(%Registration{}).valid?
+  end
 end

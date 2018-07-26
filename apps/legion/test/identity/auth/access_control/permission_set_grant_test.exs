@@ -107,6 +107,10 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrantTest do
     assert List.first(changeset.errors) == {:second, {"is equal to grantee_id", [value: 2]}}
   end
 
+  test "changeset is not valid with default params either" do
+    refute PermissionSetGrant.changeset(%PermissionSetGrant{}).valid?
+  end
+
   test "validate/1 returns ok if grant is valid" do
     grant = 
       %PermissionSetGrant{permission_set_id: 1,
