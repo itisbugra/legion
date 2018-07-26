@@ -29,6 +29,8 @@ Parameter name | Data Type | Units | Description | Default
 `:passkey_scaling` | `pos_integer()` | - | Scales the authentication passphrase by given number to increase the entropy. | `4`
 `:passphrase_lifetime` | `pos_integer()` | seconds | Duration of a passphrase without being invalidated. | `15_552_000`
 `:user_agent_length` | `pos_integer()` | - | Maximum length of the user agent string sent by the client. | `400`
+`:maximum_allowed_passphrases` | `pos_integer()` | - | Maximum number of active passphrases allowed to a client. | `5`
+`:allow_local_addresses` | `pos_integer()` | - | Bypasses CIDR-based checks for connections used during authentication. | `false`
 
 ## JSON Object Signing and Encoding (JOSE)
 
