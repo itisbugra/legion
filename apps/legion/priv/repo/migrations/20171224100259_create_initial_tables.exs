@@ -207,11 +207,6 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
-    case direction() do
-      :up ->
-        Legion.Identity.Auth.Concrete.ActivePassphrase.create_view()
-      :down ->
-        Legion.Identity.Auth.Concrete.ActivePassphrase.drop_view()
-    end
+    Legion.Identity.Auth.Concrete.ActivePassphrase.ViewDecl.migrate()
   end
 end
