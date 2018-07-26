@@ -15,7 +15,7 @@ defmodule Legion.Identity.Auth do
   @maximum_allowed_passphrases Keyword.fetch!(@concrete_env, :maximum_allowed_passphrases)
 
   @doc """
-  Registers an internal user with given username and password.
+  Registers an internal user with given username and password hash.
 
   ### Caveats
   The new user will have the insecure authentication scheme set initially,
@@ -26,7 +26,7 @@ defmodule Legion.Identity.Auth do
   @spec register_internal_user(String.t(), String.t()) ::
     {:ok, User.id(), User.username()} |
     {:error, :already_registered}
-  def register_internal_user(username, password) do
+  def register_internal_user(username, password_hash) do
     case Repo.transaction(fn ->
       query =
         from p1 in Pair,
@@ -47,7 +47,7 @@ defmodule Legion.Identity.Auth do
 
       pair_params = %{user_id: registration.id,
                       username: username,
-                      password: password}
+                      password_hash: password_hash}
 
       pair = 
         %Pair{}
@@ -95,7 +95,7 @@ defmodule Legion.Identity.Auth do
   - `{:error, :unsupported_scheme}`: The authentication scheme 
   of the user is not supported (in implementation). This is
   subject to change without a notice on further releases.
-  - `{:error, :wrong_password}`: The password hash is wrong.
+  - `{:error, :wrong_password_hash}`: The password hash is wrong.
   - `{:error, :maximum_passphrases_exceeded}`: The number of the
   passphrases (#{@maximum_allowed_passphrases}) are exceeded.
   User might either reset his/her password, authentication will
@@ -115,13 +115,14 @@ defmodule Legion.Identity.Auth do
     {:error, :no_user_verify} |
     {:error, :unsupported_scheme} |
     {:error, :wrong_password} |
-    {:error, :maximum_passphrases_exceeded}
-  def generate_passphrase(username, password, ip_addr, opts \\ []) do
+    {:error, :maximum_passphrases_exceeded} |
+    {:error, INET.error_type()}
+  def generate_passphrase(username, password_hash, ip_addr, opts \\ []) do
     case Repo.transaction(fn ->
       with :ok <- INET.validate_addr(ip_addr),
            {:ok, auth_info} <- Pair.retrieve_auth_info(username),
            :ok <- AuthInfo.check_authentication_schema(auth_info),
-           :ok <- Pair.checkpw(password, auth_info.password_digest, auth_info.digestion_algorithm),
+           :ok <- Pair.checkpw(password_hash, auth_info.password_digest, auth_info.digestion_algorithm),
            :ok <- Passphrase.check_passphrase_quota(auth_info.user_id),
            passkey <- Passphrase.create(auth_info.user_id, ip_addr)
       do

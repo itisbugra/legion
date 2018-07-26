@@ -77,7 +77,7 @@ defmodule Legion.Identity.AuthTest do
     end
 
     test "returns wrong password if hash is not verified", %{pair: pair, password_hash: password_hash, ip_addr: ip_addr} do
-      assert {:error, :wrong_password} == generate_passphrase(pair.username, random_string(String.length(password_hash)), ip_addr)
+      assert {:error, :wrong_password_hash} == generate_passphrase(pair.username, random_string(String.length(password_hash)), ip_addr)
     end
 
     test "errors if user already has maximum amount of passphrases exceed", %{pair: pair, password_hash: password_hash, ip_addr: ip_addr} do
