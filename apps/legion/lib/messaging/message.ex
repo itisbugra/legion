@@ -170,6 +170,7 @@ defmodule Legion.Messaging.Message do
       validate_subject_for_min_max_length(changeset, min, max)
     end
   end
+  defp validate_subject_for_medium(changeset, nil), do: changeset
 
   defp validate_subject_for_min_max_length(changeset, min, max) do
     changeset
@@ -191,4 +192,5 @@ defmodule Legion.Messaging.Message do
       validate_length(changeset, :body, min: min, max: max)
     end
   end
+  defp validate_body_for_medium(changeset, nil), do: changeset
 end
