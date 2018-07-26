@@ -9,7 +9,6 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
   alias __MODULE__, as: TFAHandle
   alias Legion.Identity.Information.Registration, as: User
   alias Legion.Identity.Auth.Concrete.Passphrase
-  alias Legion.Identity.Information.UserNotFoundError
 
   @tfa_env Application.get_env(:legion, Legion.Identity.Auth.Concrete.TFA)
   @lifetime Keyword.fetch!(@tfa_env, :lifetime)
@@ -43,23 +42,6 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
     |> foreign_key_constraint(:user_id)
     |> foreign_key_constraint(:passphrase_id)
     |> hash_if_required()
-  end
-
-  @doc """
-  Same as `create_handle/1`, but throws a `Legion.Identity.Information.UserNotFoundError` if user with
-  given identifier cannot be found.
-  """
-  @spec create_handle!(integer() | User) :: 
-    TFAHandle | 
-    no_return
-  def create_handle!(user = %User{}), do: create_handle!(user.id)
-  def create_handle!(user_id) when is_integer(user_id) do
-    case create_handle(user_id) do
-      {:ok, handle} ->
-        handle
-      {:error, :not_found} ->
-        raise UserNotFoundError, user_id: user_id
-    end
   end
 
   @doc """
@@ -108,7 +90,7 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
           nil ->
             Repo.rollback(:not_found)
           handle ->
-            attempts = increment_if_smaller(handle.attempts, @allowed_attempts)
+            attempts = handle.attempts + 1
             changeset = TFAHandle.changeset(handle, %{attempts: attempts})
 
             Repo.update!(changeset)
@@ -127,15 +109,6 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
       end
     else 
       {:error, :bad_code}
-    end
-  end
-
-  defp increment_if_smaller(value, compared_to) do
-    case value do
-      x when x < compared_to ->
-        x + 1
-      _ ->
-        compared_to
     end
   end
 
