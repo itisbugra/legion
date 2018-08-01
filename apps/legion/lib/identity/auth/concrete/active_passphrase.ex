@@ -5,8 +5,7 @@ defmodule Legion.Identity.Auth.Concrete.ActivePassphrase do
   use Legion.Stereotype, :virtual
 
   alias Legion.Identity.Information.Registration, as: User
-  alias Legion.Identity.Auth.Concrete.ActivePassphrase
-  alias Legion.Identity.Auth.Concrete.Activity
+  alias Legion.Identity.Auth.Concrete.{ActivePassphrase, Passphrase, Activity}
 
   schema "active_passphrases" do
     belongs_to :user, User
@@ -17,6 +16,11 @@ defmodule Legion.Identity.Auth.Concrete.ActivePassphrase do
     has_many :activities, Activity, foreign_key: :passphrase_id
   end
 
+  @doc """
+  Lists active passphrase entries for given user.
+  """
+  @spec list_for_user(User.user_or_id()) ::
+    [Passphrase]
   def list_for_user(user_id) do
     query =
       from ap in ActivePassphrase,
