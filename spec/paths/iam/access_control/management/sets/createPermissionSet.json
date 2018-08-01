@@ -1,0 +1,46 @@
+{
+  "tags": [
+    "access_control",
+    "safe"
+  ],
+  "summary": "Creates a new permission set\n",
+  "description": "Inserts a new permission set entry (e.g. basic store employee) for with given data.\n",
+  "operationId": "createPermissionSet",
+  "parameters": [
+    {
+      "in": "body",
+      "name": "permission_set",
+      "description": "Properties of the new permission set.\n",
+      "required": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the new permission set.\n"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the new permission set.\n"
+          },
+          "permission_ids": {
+            "type": "array",
+            "description": "Permission identifier list of the new permission set.",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "responses": {
+    "201": {
+      "description": "Permission set is saved succesfully.\n"
+    },
+    "422": {
+      "description": "The supplied permission set parameters is invalid, the action is rolled back. *Refer to the body of the response.*\n"
+    }
+  }
+}

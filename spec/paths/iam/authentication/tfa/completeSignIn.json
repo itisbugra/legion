@@ -1,0 +1,64 @@
+{
+  "tags": [
+    "user",
+    "severe",
+    "authentication",
+    "scheme:two_factor_authentication"
+  ],
+  "summary": "Completes two-factor concrete authentication",
+  "description": "If two-factor authentication was enabled in user, upon one-time code generation, the sign in process can be completed by submitting two-factor authentication artifact to this route.",
+  "operationId": "completeSignIn",
+  "parameters": [
+    {
+      "name": "artifact",
+      "in": "body",
+      "description": "Supplies two-factor authentication artifact, which might be one-time code.",
+      "required": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Identifier of the user."
+          },
+          "one_time_code": {
+            "type": "string",
+            "description": "One-time code supplied in twofactor authentication middleware."
+          }
+        }
+      }
+    }
+  ],
+  "responses": {
+    "201": {
+      "description": "Authentication is succeed, passphrase is included in the response.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Identifier of the user."
+          },
+
+          "scheme": {
+            "type": "string",
+            "enum": ["insecure", "pre_otc_over_sms", "pre_otc_over_email", "pre_otc_over_guard"],
+            "description": "Planned authentication scheme for the user. See documentation for value descriptions."
+          },
+
+          "passphrase": {
+            "type": "string",
+            "description": "Passphrase string to proceed to stealth authentication. Must be stored safely by client.",
+            "minLength": 192,
+            "maxLength": 192
+          }
+        }
+      }
+    },
+    "404": {
+      "description": "Authentication is failed since user has no awaiting two-factor authentication handle, or user does not exist, or one-time code given does not match."
+    }
+  }
+}

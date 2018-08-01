@@ -1,0 +1,14 @@
+{ 
+  "description": "Saudi Digital Payment Solutions Instant Messaging Service Developer's API",
+  "version": "1.0.0",
+  "title": "Saudi Digital Payment Solutions Messaging Service Core Services",
+  "termsOfService": "http://stms.stcpay.com.sa/developers/terms-of-service",
+  "contact": {
+    "email": "development@stcpay.com.sa"
+    
+  },
+  "license": {
+    "name": "Apache 2.0",
+    "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+  }
+}

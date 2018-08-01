@@ -1,0 +1,61 @@
+{
+  "tags": [
+    "user",
+    "telephony",
+    "mediocre",
+    "cost:sms_service"
+  ],
+  "summary": "Sends an SMS to given phone number",
+  "description": "Sends an SMS message to the phone number given using SMS service",
+  "operationId": "sendSMS",
+  "parameters": [
+    {
+      "name": "sms_data",
+      "in": "body",
+      "required": true,
+      "description": "Data to be sent in SMS.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string",
+            "description": "Body of the SMS message.",
+            "maxLength": 144
+          },
+          "send_after": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Defers the dispatch of SMS message by seconds (maximum 1 day long).",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 86400
+          }
+        }
+      }
+    },
+    {
+      "name": "user_id",
+      "in": "path",
+      "required": true,
+      "description": "Identifier of the platform user.",
+      "type": "integer",
+      "format": "int64"
+    },
+    {
+      "name": "phone_number_id",
+      "in": "path",
+      "required": true,
+      "description": "Identfier of the phone number.",
+      "type": "integer",
+      "format": "int64"
+    }
+  ],
+  "responses": {
+    "201": {
+      "description": "Job has been succesfully scheduled."
+    },
+    "404": {
+      "description": "User or phone number with given identifier could not be found."
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "description": "Email address found in entry."
+    },
+
+    "is_primary": {
+      "type": "boolean",
+      "description": "If true, this email address is primary, which can be used in user authentication."
+    },
+
+    "inserted_at": {
+      "$ref": "#/definitions/Timestamp",
+      "description": "The time email was created."
+    }
+  }
+}

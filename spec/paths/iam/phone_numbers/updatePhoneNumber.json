@@ -1,0 +1,60 @@
+{
+  "tags": [
+    "user",
+    "safe",
+    "telephony"
+  ],
+  "summary": "Updates given phone number",
+  "description": "Replaces given phone number with new phone number data.",
+  "operationId": "updatePhoneNumber",
+  "parameters": [
+    {
+      "name": "phone_number",
+      "in": "body",
+      "required": true,
+      "description": "New phone number to be going added.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "home",
+              "mobile",
+              "work",
+              "home_fax",
+              "work_fax",
+              "pager"
+            ],
+            "description": "Description of the phone number."
+          },
+          "number": {
+            "type": "string",
+            "description": "Phone number of a user represented with only numerical letters, e.g. \"00902121234567\"."
+          }
+        }
+      }
+    },
+    {
+      "name": "user_id",
+      "in": "path",
+      "required": true,
+      "description": "Identifier of the platform user.",
+      "type": "integer",
+      "format": "int64"
+    },
+    {
+      "name": "phone_number_id",
+      "in": "path",
+      "required": true,
+      "description": "Identfier of the phone number.",
+      "type": "integer",
+      "format": "int64"
+    }
+  ],
+  "responses": {
+    "200": {
+      "description": "Phone number has been updated on the platform."
+    }
+  }
+}

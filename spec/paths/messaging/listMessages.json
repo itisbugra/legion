@@ -1,0 +1,121 @@
+{
+  "tags": [
+    "user",
+    "messaging",
+    "mediocre"
+  ],
+  "summary": "Retrieves messages sent to the user in shortened forms\n",
+  "description": "Lists messages of the user by shortening their bodies to 128 characters.\n",
+  "operationId": "listMessages",
+  "parameters": [
+    {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "description": "Identifier of the platform user.",
+      "type": "integer",
+      "format": "int64"
+    },
+    {
+      "name": "sender",
+      "in": "query",
+      "required": false,
+      "description": "Identifier of the sender of the message.",
+      "type": "integer",
+      "format": "int64"
+    },
+    {
+      "name": "unread",
+      "in": "query",
+      "required": false,
+      "description": "Specifies the status of the message.",
+      "type": "boolean"
+    },
+    {
+      "name": "contains",
+      "in": "query",
+      "required": false,
+      "description": "A short text to perform full-text search on all messages.",
+      "type": "string",
+      "maxLength": 50
+    },
+    {
+      "name": "limit",
+      "in": "query",
+      "required": false,
+      "description": "The number of the messages asked to retrieve.",
+      "type": "integer",
+      "format": "int64",
+      "default": 20,
+      "minimum": 1,
+      "maximum": 40
+    },
+    {
+      "name": "offset",
+      "in": "query",
+      "required": false,
+      "description": "Skips given number of messages to provide pagination functionality.",
+      "type": "integer",
+      "format": "int64",
+      "default": 0,
+      "minimum": 0
+    },
+    {
+      "name": "order_by",
+      "in": "query",
+      "required": false,
+      "description": "Property as a key to sort the messages.",
+      "type": "string",
+      "enum": [
+        "message",
+        "recipient",
+        "inserted_at",
+        "replied_at"
+      ]
+    }
+  ],
+  "responses": {
+    "200": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "sender": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Identifier of the platform user."
+              },
+              "username": {
+                "type": "string",
+                "description": "Username of the user."
+              }
+            }
+          },
+          "recipients": {
+            "type": "array",
+            "items": {
+              "id": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Identifier of the platform user."
+              },
+              "username": {
+                "type": "string",
+                "description": "Username of the user."
+              }
+            },
+            "minLength": 1,
+            "maxLength": 20
+          },
+          "body": {
+            "type": "string",
+            "maxLength": 4096
+          }
+        }
+      },
+      "description": "Response containing messages."
+    }
+  }
+}

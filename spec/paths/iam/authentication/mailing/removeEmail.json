@@ -1,0 +1,36 @@
+{
+  "tags": [
+    "user",
+    "mailing",
+    "mediocre"
+  ],
+  "summary": "Removes given email of the user",
+  "description": "Shows given email entries of the user.",
+  "operationId": "removeEmail",
+  "parameters": [
+    {
+      "name": "user_id",
+      "in": "path",
+      "required": true,
+      "description": "Identifier of the platform user.",
+      "type": "integer",
+      "format": "int64"
+    },
+    {
+      "name": "entry_id",
+      "in": "path",
+      "required": true,
+      "description": "Identifier of the email entry.",
+      "type": "integer",
+      "format": "int64"
+    }
+  ],
+  "responses": {
+    "204": {
+      "description": "Action has been successfully completed."
+    },
+    "404": {
+      "description": "User does not exist."
+    }
+  }
+}

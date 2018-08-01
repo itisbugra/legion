@@ -1,0 +1,319 @@
+{
+  "/": {
+    "head": {
+      "$ref": "./paths/misc/healthCheck.json"
+    }
+  },
+
+  "/users": {
+    "get": {
+      "$ref": "./paths/iam/listUsers.json"
+    },
+    "post": {
+      "$ref": "./paths/iam/createUser.json"
+    }
+  },
+
+  "/users/{id}": {
+    "get": {
+      "$ref": "./paths/iam/showUser.json"
+    }
+  },
+
+  "/users/{id}/ban": {
+    "post": {
+      "$ref": "./paths/iam/access_control/ban/banUser.json"
+    },
+    "delete": {
+      "$ref": "./paths/iam/access_control/ban/unbanUser.json"
+    }
+  },
+
+  "/users/{id}/personal_information": {
+    "put": {
+      "$ref": "./paths/iam/updatePersonalInformation.json"
+    }
+  },
+
+  "/users/{id}/image": {
+    "put": {
+      "$ref": "./paths/iam/updateImage.json"
+    }
+  },
+
+  "/users/{id}/emails": {
+    "post": {
+      "$ref": "./paths/iam/authentication/mailing/addEmail.json"
+    },
+    "delete": {
+      "$ref": "./paths/iam/authentication/mailing/removeEmail.json"
+    }
+  },
+
+  "/users/{user_id}/emails/{entry_id}/make_primary": {
+    "post": {
+      "$ref": "./paths/iam/authentication/mailing/makeEmailPrimary.json"
+    }
+  },
+
+  "/users/{id}/personal_information/phone_numbers": {
+    "post": {
+      "$ref": "./paths/iam/phone_numbers/addPhoneNumber.json"
+    }
+  },
+
+  "/users/{user_id}/personal_information/phone_numbers/{phone_number_id}": {
+    "put": {
+      "$ref": "./paths/iam/phone_numbers/updatePhoneNumber.json"
+    },
+    "delete": {
+      "$ref": "./paths/iam/phone_numbers/removePhoneNumber.json"
+    }
+  },
+
+  "/users/{user_id}/personal_information/phone_numbers/{phone_number_id}/send_sms": {
+    "post": {
+      "$ref": "./paths/iam/phone_numbers/sendSMS.json"
+    }
+  },
+
+  "/users/{id}/personal_information/addresses": {
+    "post": {
+      "$ref": "./paths/iam/addresses/createAddress.json"
+    }
+  },
+
+  "/users/{user_id}/personal_information/addresses/{address_id}": {
+    "put": {
+      "$ref": "./paths/iam/addresses/updateAddress.json"
+    },
+    "delete": {
+      "$ref": "./paths/iam/addresses/deleteAddress.json"
+    }
+  },
+
+  "/users/{id}/messages": {
+    "get": {
+      "$ref": "./paths/messaging/listMessages.json"
+    },
+    "post": {
+      "$ref": "./paths/messaging/sendMessage.json"
+    }
+  },
+
+  "/users/sign_in": {
+    "post": {
+      "$ref": "./paths/iam/authentication/signIn.json"
+    }
+  },
+
+  "/users/sign_in/complete": {
+    "post": {
+      "$ref": "./paths/iam/authentication/tfa/completeSignIn.json"
+    }
+  },
+
+  "/users/{id}/authenticated_devices": {
+    "get": {
+      "$ref": "./paths/iam/authentication/listAuthenticatedDevices.json"
+    }
+  },
+
+  "/users/{id}/sign_out": {
+    "post": {
+      "$ref": "./paths/iam/authentication/signOutDevice.json"
+    }
+  },
+
+  "/users/{id}/reset_password": {
+    "post": {
+      "$ref": "./paths/iam/authentication/insecure/resetPassword.json"
+    }
+  },
+
+  "/users/{id}/change_password": {
+    "put": {
+      "$ref": "./paths/iam/authentication/insecure/changePassword.json"
+    }
+  },
+
+  "/users/{id}/authentication_scheme": {
+    "put": {
+      "$ref": "./paths/iam/authentication/changeAuthenticationScheme.json"
+    }
+  },
+
+  "/users/{id}/activities": {
+    "get": {
+      "$ref": "./paths/iam/activity_tracking/listUserActivities.json"
+    }
+  },
+
+  "/permissions": {
+    "get": {
+      "$ref": "./paths/iam/access_control/listPermissions.json"
+    }
+  },
+
+  "/users/{id}/access_control": {
+    "get": {
+      "$ref": "./paths/iam/access_control/listUserPermissions.json"
+    }
+  },
+
+  "/permission_sets/{permission_set_id}" : {
+    "put": {
+      "$ref": "./paths/iam/access_control/updatePermissionSet.json"
+    },
+    "delete": {
+      "$ref": "./paths/iam/access_control/deletePermissionSet.json"
+    }
+  },
+
+  "/permission_sets" : {
+    "get": {
+      "$ref": "./paths/iam/access_control/management/sets/listPermissionSets.json"
+    },
+    "post": {
+      "$ref": "./paths/iam/access_control/management/sets/createPermissionSet.json"
+    }
+  },
+
+  "/permission_sets/{id}/grants": {
+    "get": {
+      "$ref": "./paths/iam/access_control/management/granting/listPermissionSetGrants.json"
+    },
+    "post": {
+      "$ref": "./paths/iam/access_control/management/granting/createPermissionSetGrant.json"
+    }
+  },
+
+  "/permission_sets/{permission_set_id}/grants/{grant_id}": {
+    "delete": {
+      "$ref": "./paths/iam/access_control/management/granting/invalidatePermissionSetGrant.json"
+    }
+  },
+
+  "/users/{user_id}/emails/{email_id}/orders": {
+    "get": {
+      "$ref": "./paths/iam/authentication/mailing/ordering/direct/listDirectMailingOrders.json"
+    },
+    "post": {
+      "$ref": "./paths/iam/authentication/mailing/ordering/direct/createDirectMailingOrder.json"
+    }
+  },
+
+  "/users/{user_id}/emails/{email_id}/orders/{order_id}": {
+    "delete": {
+      "$ref": "./paths/iam/authentication/mailing/ordering/direct/cancelDirectMailingOrder.json"
+    }
+  },
+
+  "/mail_templates": {
+    "get": {
+      "$ref": "./paths/iam/authentication/mailing/ordering/circular/listCircularMailingTemplates.json"
+    },
+    "post": {
+      "$ref": "./paths/iam/authentication/mailing/ordering/circular/createCircularMailingTemplate.json"
+    }
+  },
+
+  "/mail_templates/{id}": {
+    "put": {
+      "$ref": "./paths/iam/authentication/mailing/ordering/circular/updateCircularMailingTemplate.json"
+    },
+    "delete": {
+      "$ref": "./paths/iam/authentication/mailing/ordering/circular/deleteCircularMailingTemplate.json"
+    }
+  },
+
+  "/mail_templates/{id}/orders": {
+    "get": {
+      "$ref": "./paths/iam/authentication/mailing/ordering/circular/listCircularMailingOrders.json"
+    },
+    "post": {
+      "$ref": "./paths/iam/authentication/mailing/ordering/circular/createCircularMailingOrder.json"
+    }
+  },
+
+  "/mail_templates/{mail_template_id}/orders/{order_id}": {
+    "put": {
+      "$ref": "./paths/iam/authentication/mailing/ordering/circular/updateCircularMailingOrder.json"
+    },
+    "delete": {
+      "$ref": "./paths/iam/authentication/mailing/ordering/circular/cancelCircularMailingOrder.json"
+    }
+  },
+
+  "/analytics/authentication/statistical/authentication_preferences": {
+    "get": {
+      "$ref": "./paths/iam/authentication/analytics/statistical/authenticationPreferences.json"
+    }
+  },
+
+  "/analytics/authentication/statistical/comeback_estimation": {
+    "get": {
+      "$ref": "./paths/iam/authentication/analytics/statistical/comebackEstimation.json"
+    }
+  },
+
+  "/analytics/authentication/statistical/locational_comeback_estimation": {
+    "get": {
+      "$ref": "./paths/iam/authentication/analytics/statistical/locationalComebackEstimation.json"
+    }
+  },
+
+  "/analytics/authentication/time_series/authentication_preferences": {
+    "get": {
+      "$ref": "./paths/iam/authentication/analytics/time_series/authenticationPreferences.json"
+    }
+  },
+
+  "/analytics/authentication/time_series/concrete_authentications": {
+    "get": {
+      "$ref": "./paths/iam/authentication/analytics/time_series/concreteAuthentications.json"
+    }
+  },
+
+  "/analytics/authentication/time_series/stealth_authentications": {
+    "get": {
+      "$ref": "./paths/iam/authentication/analytics/time_series/stealthAuthentications.json"
+    }
+  },
+
+  "/analytics/activity_tracking/gis/activity_heat_map": {
+    "get": {
+      "$ref": "./paths/iam/activity_tracking/analytics/gis/activityHeatMap.json"
+    }
+  },
+
+  "/analytics/activity_tracking/gis/personal_traveling_delta": {
+    "get": {
+      "$ref": "./paths/iam/activity_tracking/analytics/gis/personalTravelingDelta.json"
+    }
+  },
+
+  "/analytics/activity_tracking/statistical/activity_statistics": {
+    "get": {
+      "$ref": "./paths/iam/activity_tracking/analytics/statistical/activityStatistics.json"
+    }
+  },
+
+  "/analytics/activity_tracking/time_series/activity_density": {
+    "get": {
+      "$ref": "./paths/iam/activity_tracking/analytics/time_series/activityDensity.json"
+    }
+  },
+
+  "/analytics/activity_tracking/time_series/net_io": {
+    "get": {
+      "$ref": "./paths/iam/activity_tracking/analytics/time_series/netIO.json"
+    }
+  },
+
+  "/qos/net_stat/latency_reports": {
+    "post": {
+      "$ref": "./paths/qos/net_stat/latency/createNetStatLatencyReport.json"
+    }
+  }
+}

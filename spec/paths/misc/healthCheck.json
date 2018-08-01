@@ -1,0 +1,16 @@
+{
+  "tags": [
+    "safe"
+  ],
+  "summary": "Retrieves a simple response from the platform\n",
+  "operationId": "healthCheck",
+  "description": "This endpoint provides a simple response piggybacking in order to synchronize server time with the client-side.\n",
+  "responses": {
+    "200": {
+      "description": "Response with the simple scaffolding of its processor.",
+      "schema": {
+        "$ref": "#/definitions/Response"
+      }
+    }
+  }
+}

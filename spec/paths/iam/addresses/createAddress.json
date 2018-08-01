@@ -1,0 +1,79 @@
+{
+  "tags": [
+    "user",
+    "addresses",
+    "mediocre"
+  ],
+  "summary": "Create a new address of user\n",
+  "description": "Inserts a new personal address entry (e.g. home address) for the user with given data.\n",
+  "operationId": "createAddress",
+  "parameters": [
+    {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "description": "Identifier of the platform user.",
+      "type": "integer",
+      "format": "int64"
+    },
+    {
+      "name": "address_information",
+      "in": "body",
+      "required": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "home",
+              "work",
+              "other"
+            ],
+            "description": "Type of the address."
+          },
+          "name": {
+            "type": "string",
+            "description": "The given name for the address of the user."
+          },
+          "country": {
+            "type": "string",
+            "description": "The country of the residence."
+          },
+          "state": {
+            "type": "string",
+            "description": "The state of the residence."
+          },
+          "city": {
+            "type": "string",
+            "description": "The city of the residence."
+          },
+          "neighborhood": {
+            "type": "string",
+            "description": "The neighborhood of the residence."
+          },
+          "address": {
+            "type": "string",
+            "description": "Optional details for the address."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description for the address to enhance ease of search."
+          },
+          "zip_code": {
+            "type": "string",
+            "description": "The zip code of the residence."
+          }
+        }
+      }
+    }
+  ],
+  "responses": {
+    "201": {
+      "description": "Personal address entry is saved to the user.\n"
+    },
+    "400": {
+      "description": "The supplied personal address is invalid.\n"
+    }
+  }
+}

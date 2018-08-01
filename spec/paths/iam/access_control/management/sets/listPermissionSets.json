@@ -1,0 +1,43 @@
+{
+  "tags": [
+    "access_control",
+    "safe"
+  ],
+  "summary": "Lists permission sets",
+  "description": "Lists permission sets found in platform",
+  "operationId": "listPermissionSets",
+  "parameters": [
+    {
+      "name": "owner_id",
+      "in": "query",
+      "description": "User id of the owner",
+      "type": "integer",
+      "required": false
+    },
+    {
+      "name": "limit",
+      "in": "query",
+      "description": "Limits the number of entities found in response.",
+      "required": false,
+      "type": "integer"
+    },
+    {
+      "name": "offset",
+      "in": "query",
+      "description": "Skips given number of entities to provide pagination.",
+      "required": false,
+      "type": "integer"
+    }
+  ],
+  "responses": {
+    "200": {
+      "schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/PermissionSet"
+        }
+      },
+      "description": "Response contains permission sets."
+    }
+  }
+}

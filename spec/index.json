@@ -1,0 +1,34 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "$ref": "./info.json"
+  },
+  "host": "api.stms.stcpay.com.sa",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Identity/Access Management (IAM)",
+      "externalDocs": {
+        "description": "Documentation of IAM workflow",
+        "url": "http://docs.stms.stcpay.com.sa"
+      }
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "responses": {
+    "$ref": "./responses.json"
+  },
+  "paths": {
+    "$ref": "./paths/index.json"
+  },
+  "definitions": {
+    "$ref": "./definitions/index.json"
+  }
+}

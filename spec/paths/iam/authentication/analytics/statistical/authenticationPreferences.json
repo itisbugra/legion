@@ -1,0 +1,141 @@
+{
+  "tags": [
+    "user",
+    "analytics:statistical"
+  ],
+  "summary": "Retrieves statistics for authentication preferences",
+  "description": "Calculates hypergeometric distribution properties for authentication preferences of users.",
+  "operationId": "authenticationPreferencesStatistics",
+  "parameters": [
+    {
+      "name": "time_shift",
+      "in": "query",
+      "required": false,
+      "default": 0,
+      "type": "integer",
+      "format": "int32",
+      "description": "Shifts time for given seconds in forward direction. Negative values warp time backwards."
+    }
+  ],
+  "responses": {
+    "200": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "set_size": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Set size of the sample."
+          },
+          "proportions": {
+            "type": "object",
+            "properties": {
+              "insecure": {
+                "type": "object",
+                "properties": {
+                  "committed": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Number of platform users using insecure authentication scheme."
+                  }
+                }
+              },
+              "pre_otc_over_sms": {
+                "type": "object",
+                "properties": {
+                  "committed": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Number of platform users using pre-OTC over SMS authentication scheme."
+                  },
+                  "available": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Number of platform users available to use pre-OTC over SMS authentication scheme."
+                  }
+                }
+              },
+              "pre_otc_over_email": {
+                "type": "object",
+                "properties": {
+                  "committed": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Number of platform users using pre-OTC over email authentication scheme."
+                  },
+                  "available": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Number of platform users available to use pre-OTC over email authentication scheme."
+                  }
+                }
+              },
+              "pre_otc_over_guard": {
+                "type": "object",
+                "properties": {
+                  "committed": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Number of platform users using pre-OTC over guard authentication scheme."
+                  },
+                  "available": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Number of platform users available to use pre-OTC over guard authentication scheme."
+                  }
+                }
+              }
+            }
+          },
+          "statistics": {
+            "type": "object",
+            "properties": {
+              "population_size": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Population size of hypergeometric distribution."
+              },
+              "probability_mass_function": {
+                "type": "array",
+                "description": "Probability mass function plot of hypergeometric distribution."
+              },
+              "cumulative_distribution_function": {
+                "type": "array",
+                "description": "Cumulative distribution function plot of hypergeometric distribution."
+              },
+              "mean": {
+                "type": "number",
+                "format": "float",
+                "description": "Expected value of the hypergeometric distribution."
+              },
+              "mode": {
+                "type": "number",
+                "format": "float",
+                "description": "Mode of the hypergeometric distribution."
+              },
+              "skewness": {
+                "type": "number",
+                "format": "float",
+                "description": "Skewness of the hypergeometric distribution."
+              },
+              "excess_kurtosis": {
+                "type": "number",
+                "format": "float",
+                "description": "Kurtosis minus 3 to determine mesokurticness, leptokurticness and platykurticness."
+              },
+              "moment_generating_function": {
+                "type": "array",
+                "description": "Real-valued random variable application as an alternative specification on probability distribution."
+              },
+              "characteristic_function": {
+                "type": "array",
+                "description": "Statistical characteristic function of the hypergeometric distribution."
+              }
+            }
+          }
+        }
+      },
+      "description": "Response containing detailed statistics for the requested analytics."
+    }
+  }
+}

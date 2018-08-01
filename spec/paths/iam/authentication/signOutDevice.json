@@ -1,0 +1,39 @@
+{
+  "tags": [
+    "user",
+    "mediocre",
+    "authentication"
+  ],
+  "summary": "Signs out given device(s)\n",
+  "description": "Invalidates the given passphrase, which will make it unusable to perform stealth authentication.",
+  "operationId": "signOutDevice",
+  "parameters": [
+    {
+      "name": "passphrase_ids",
+      "in": "body",
+      "type": "object",
+      "schema": {
+        "$ref": "#/definitions/SignOutOrder"
+      },
+      "required": true,
+      "description": "Identifiers of the passphrases going to be invalidated."
+    },
+    {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "description": "Identifier of the platform user.",
+      "type": "integer",
+      "format": "int64"
+    }
+  ],
+  "responses": {
+    "201": {
+      "description": "Response indicating the sign out was successful."
+    },
+
+    "404": {
+      "description": "Response indicating that one of the passphrases is not found (or inactive)."
+    }
+  }
+}

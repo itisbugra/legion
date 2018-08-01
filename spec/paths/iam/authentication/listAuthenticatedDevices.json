@@ -1,0 +1,150 @@
+{
+  "tags": [
+    "user",
+    "mediocre",
+    "authentication"
+  ],
+  "summary": "Lists devices authenticated to the user\n",
+  "description": "Retrieves a list of devices authenticated to the platform with the same user.",
+  "operationId": "listAuthenticatedDevices",
+  "parameters": [
+    {
+      "name": "is_active",
+      "in": "query",
+      "description": "Filters active devices authenticated to the user.",
+      "required": true,
+      "type": "boolean"
+    },
+    {
+      "name": "id",
+      "in": "path",
+      "description": "Identifier of the user.",
+      "required": true,
+      "type": "integer",
+      "format": "int64"
+    }
+  ],
+  "responses": {
+    "200": {
+      "description": "Devices and their latest activities are returned in an array.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "started_at": {
+            "type": "string",
+            "description": "Indicates the date of sign in."
+          },
+          "is_active": {
+            "type": "boolean",
+            "description": "If *true*, device is currently signed in."
+          },
+          "device_blueprint": {
+            "type": "object",
+            "properties": {
+              "engine": {
+                "type": "string",
+                "description": "Name of the engine of the client."
+              },
+              "engine_version": {
+                "type": "string",
+                "description": "Version of the engine of the client."
+              },
+              "client_name": {
+                "type": "string",
+                "description": "Name of the client."
+              },
+              "client_type": {
+                "type": "string",
+                "description": "Type of the client."
+              },
+              "client_version": {
+                "type": "string",
+                "description": "Version of the client."
+              },
+              "device_brand": {
+                "type": "string",
+                "description": "Brand of the device."
+              },
+              "device_model": {
+                "type": "string",
+                "description": "Model of the device."
+              },
+              "device_type": {
+                "type": "string",
+                "description": "Type of the device."
+              },
+              "os_name": {
+                "type": "string",
+                "description": "Name of the operating system of device."
+              },
+              "os_platform": {
+                "type": "string",
+                "description": "Platform of the operating system of device."
+              },
+              "os_version": {
+                "type": "string",
+                "description": "Version of the operating system of device."
+              }
+            },
+            "description": "Blueprint information of the device."
+          },
+          "last_activity": {
+            "type": "object",
+            "properties": {
+              "ip_addr": {
+                "type": "string",
+                "description": "IP address of the last activity."
+              },
+              "country_name": {
+                "type": "string",
+                "description": "Name of the country user connected from."
+              },
+              "country_code": {
+                "type": "string",
+                "description": "Code of the country user connected from."
+              },
+              "ip_location": {
+                "$ref": "#/definitions/Point",
+                "description": "The reverse geocoding result of IP address."
+              },
+              "metro_code": {
+                "type": "string",
+                "description": "Metro code of the coordinate user connected from."
+              },
+              "region_code": {
+                "type": "string",
+                "description": "Code of the region of the area user connected from."
+              },
+              "region_name": {
+                "type": "string",
+                "description": "Name of the region of the area user connected from."
+              },
+              "time_zone": {
+                "type": "string",
+                "description": "Time zone of the user."
+              },
+              "zip_code": {
+                "type": "string",
+                "description": "Zip code of the coordinate."
+              },
+              "geo_location": {
+                "$ref": "#/definitions/Point",
+                "description": "The location of the user retrieved from GPS unit of the device, if available."
+              },
+              "inserted_at": {
+                "type": "string",
+                "description": "The timestamp of the activity."
+              }
+            },
+            "description": "Last visible activity of the user."
+          },
+          "passphrase_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Identifier of the passphrase."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "description": "Time information of the remote server. It provides arbitrary time synchronization between client and the server.\n",
+  "properties": {
+    "zone": {
+      "type": "string",
+      "description": "Time zone information of the server."
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "An ISO 8601-compliant timestamp indicating current time of the server."
+    }
+  }
+}

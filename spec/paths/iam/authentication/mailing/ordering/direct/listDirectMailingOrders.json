@@ -1,0 +1,85 @@
+{
+  "tags": [
+    "mailing"
+  ],
+  "summary": "Lists direct mailing orders\n",
+  "description": "Lists direct mailing orders found in platform.",
+  "operationId": "listDirectMailingOrders",
+  "parameters": [
+    {
+      "name": "owner_id",
+      "in": "query",
+      "description": "User identifier of the owner.",
+      "type": "integer",
+      "required": false
+    },
+    {
+      "name": "user_id",
+      "in": "query",
+      "description": "The identifier of the receiver on the platform.",
+      "type": "integer",
+      "required": false
+    },
+    { "name": "email_id",
+      "in": "query",
+      "description": "Email identifier of the receivers on the platform.",
+      "type": "integer",
+      "required": false
+    },
+    {
+      "name": "limit",
+      "in": "query",
+      "description": "Limits the number of entities found in response.",
+      "required": false,
+      "type": "integer"
+    },
+    {
+      "name": "offset",
+      "in": "query",
+      "description": "Skips given number of entities to provide pagination.",
+      "required": false,
+      "type": "integer"
+    }
+  ],
+  "responses": {
+    "200": {
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64",
+              "description": "Identifier of the order."
+            },
+            "is_sent": {
+              "type": "boolean",
+              "description": "Sending status of the mail."
+            },
+            "owner_id": {
+              "type": "integer",
+              "format": "int64",
+              "description": "Identifier of the owner user."
+            },
+            "body": {
+              "type": "string",
+              "description": "Content of the email."
+            },
+            "user_id": {
+              "type": "integer",
+              "format": "int64",
+              "description": "The identifier of the receiver on the platform."
+            },
+            "send_after": {
+              "type": "integer",
+              "format": "int64",
+              "description": "The time in seconds order deferred by.\n"
+            }
+          }
+        },
+        "description": "Response contains direct mailing orders."
+      }
+    }
+  }
+}

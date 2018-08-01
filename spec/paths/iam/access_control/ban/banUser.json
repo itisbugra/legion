@@ -1,0 +1,27 @@
+{
+  "tags": [
+    "user",
+    "severe"
+  ],
+  "summary": "Bans user from platform\n",
+  "description": "Denies the user from signing in to the platform, and performing any actions.\n",
+  "operationId": "banUser",
+  "parameters": [
+    {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "description": "Identifier of the user on the platform.",
+      "type": "integer",
+      "format": "int64"
+    }
+  ],
+  "responses": {
+    "201": {
+      "description": "User has been banned."
+    },
+    "404": {
+      "description": "User not found."
+    }
+  }
+}

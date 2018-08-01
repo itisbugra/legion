@@ -1,0 +1,20 @@
+{
+  "401": {
+    "description": "The endpoint requires authentication or the authentication artifact supplied in the request is invalid, outdated (expired) or ill-formed.\n"
+  },
+  "403": {
+    "description": "The authenticated user of request lacks of required privileges in order to access the data or execute the specified action.\n"
+  },
+  "404": {
+    "description": "The request contains an access to an entity with a specified identifier, which actually does not exist in the platform. What is more, this status code might be returned in a few more scenarios, which are explicitly disclaimed in the endpoint documentation.\n"
+  },
+  "422": {
+    "description": "The request for creating an instance of a specific entity has been failed due to ill-formed entity form. Refer to the response to fix the situation.\n"
+  },
+  "429": {
+    "description": "The quota available for the user has been exceeded."
+  },
+  "500": {
+    "description": "An internal server error has been occurred, contact with *STMS* platform support in order to resolve the situation, or post a *radar*.\n"
+  }
+}

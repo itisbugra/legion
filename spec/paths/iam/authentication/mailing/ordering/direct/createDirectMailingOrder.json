@@ -1,0 +1,58 @@
+{
+  "tags": [
+    "mailing",
+    "cost:mailing_service"
+  ],
+  "summary": "Creates a new direct mailing order\n",
+  "description": "Inserts a new direct mailing order entry (e.g. basic welcome email order) for with given data.\n",
+  "operationId": "createDirectMailingOrder",
+  "parameters": [
+    {
+      "name": "user_id",
+      "in": "path",
+      "required": true,
+      "description": "Identifier of the receiver id on the platform.",
+      "type": "integer",
+      "format": "int64"
+    },
+    {
+      "name": "email_id",
+      "in": "path",
+      "required": true,
+      "description": "Email identifier of the user on the platform.",
+      "type": "integer",
+      "format": "int64"
+    },
+    {
+      "in": "body",
+      "name": "direct_mailing_order",
+      "description": "Properties of the new direct mailing order.\n",
+      "required": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string",
+            "description": "Content of the email."
+          },
+          "send_after": {
+            "type": "integer",
+            "format": "int64",
+            "maximum": 604800,
+            "minumum": 0,
+            "default": 300,
+            "description": "The time in seconds order deferred by.\n"
+          }
+        }
+      }
+    }
+  ],
+  "responses": {
+    "201": {
+      "description": "Direct mailing order saved succesfully.\n"
+    },
+    "422": {
+      "description": "The supplied direct mailing order parameters are invalid, the action is rolled back. *Refer to the body of the response.*\n"
+    }
+  }
+}

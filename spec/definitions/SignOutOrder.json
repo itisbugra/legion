@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "passphrase_ids": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "description": "Identifier of the passphrases going to be signed out."
+    }
+  }
+}

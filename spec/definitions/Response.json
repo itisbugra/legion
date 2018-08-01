@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "description": "Generic response model. Contains timing and rate limiting information, which might be helpful in further requests and time synchronization.\n",
+  "properties": {
+    "data": {
+      "type": "object"
+    },
+    "time_information": {
+      "$ref": "#/definitions/TimeInformation"
+    },
+    "quota_information": {
+      "$ref": "#/definitions/QuotaInformation"
+    }
+  }
+}

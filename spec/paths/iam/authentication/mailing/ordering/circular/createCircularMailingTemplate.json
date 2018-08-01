@@ -1,0 +1,67 @@
+{
+  "tags": [
+    "mailing"
+  ],
+  "summary": "Creates a new circular mailing template\n",
+  "description": "Inserts a new circular mailing template entry (e.g. basic welcome email) for with given data.\n",
+  "operationId": "createCircularMailingTemplate",
+  "parameters": [
+    {
+      "in": "body",
+      "name": "circular_mailing_template",
+      "description": "Properties of the new circular mailing template.\n",
+      "required": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the new template.\n"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the template."
+          },
+          "template_body": {
+            "type": "string",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1048576,
+            "description": "EEX template to be parameterized.\n"
+          },
+          "template_parameters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "format": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "EEX template filling parameters."
+          },
+          "owner_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Template owner user identifier."
+          }
+        }
+      }
+    }
+  ],
+  "responses": {
+    "201": {
+      "description": "Circular mailing template saved succesfully.\n"
+    },
+    "422": {
+      "description": "The supplied circular mailing template parameters is invalid, the action is rolled back. *Refer to the body of the response.*\n"
+    }
+  }
+}

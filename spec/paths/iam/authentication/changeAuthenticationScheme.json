@@ -1,0 +1,36 @@
+{
+  "tags": [
+    "user",
+    "severe",
+    "authentication"
+  ],
+  "summary": "Change authentication scheme preference of the user(s)",
+  "description": "Replaces authentication scheme preference of the user with given one.",
+  "operationId": "changeAuthenticationScheme",
+  "parameters": [
+    {
+      "name": "id",
+      "in": "path",
+      "description": "Identifier of the user.",
+      "required": true,
+      "type": "integer",
+      "format": "int64"
+    },
+    {
+      "name": "authentication_scheme",
+      "in": "body",
+      "description": "New preferred scheme for the authentication of user.",
+      "required": true,
+      "type": "string",
+      "enum": ["insecure", "pre_otc_over_sms", "pre_otc_over_email", "pre_otc_over_guard"]
+    }
+  ],
+  "responses": {
+    "200": {
+      "description": "Operation successfuly completed."
+    },
+    "422": {
+      "description": "Given scheme not found."
+    }
+  }
+}

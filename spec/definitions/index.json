@@ -1,0 +1,32 @@
+{
+  "Response": {
+    "$ref": "./definitions/Response.json"
+  },
+  "TimeInformation": {
+    "$ref": "./definitions/TimeInformation.json"
+  },
+  "QuotaInformation": {
+    "$ref": "./definitions/QuotaInformation.json"
+  },
+  "PhoneNumber": {
+    "$ref": "./definitions/PhoneNumber.json"
+  },
+  "Point": {
+    "$ref": "./definitions/Point.json"
+  },
+  "SignOutOrder": {
+    "$ref": "./definitions/SignOutOrder.json"
+  },
+  "EmailEntry": {
+    "$ref": "./definitions/EmailEntry.json"
+  },
+  "Timestamp": {
+    "$ref": "./definitions/Timestamp.json"
+  },
+  "PermissionSet": {
+    "$ref": "./definitions/PermissionSet.json"
+  },
+  "PermissionSetGrant": {
+    "$ref": "./definitions/PermissionSetGrant.json"
+  }
+}

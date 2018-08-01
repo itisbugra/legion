@@ -1,0 +1,66 @@
+{
+  "tags": [
+    "mailing"
+  ],
+  "summary": "Updates circular mailing order\n",
+  "description": "Upserts given circular mailing order entry (e.g. basic welcome email order) for with given data.\n",
+  "operationId": "updateCircularMailingOrder",
+  "parameters": [
+    {
+      "name": "order_id",
+      "in": "path",
+      "required": true,
+      "description": "Identifier of the circular mailing order.",
+      "type": "integer",
+      "format": "int64"
+    },
+    {
+      "name": "mail_template_id",
+      "in": "path",
+      "required": true,
+      "description": "Identifier of the circular mailing template id.",
+      "type": "integer",
+      "format": "int64"
+    },
+    {
+      "in": "body",
+      "name": "circular_mailing_order",
+      "description": "Properties of the new circular mailing template.\n",
+      "required": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "send_after": {
+            "type": "integer",
+            "format": "int64",
+            "maximum": 604800,
+            "minumum": 0,
+            "default": 300,
+            "description": "Referral time (seconds) of the order.\n"
+          },
+          "user_ids": {
+            "description": "User identifiers array of the order.",
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "owner_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Order owner user identifier."
+          }
+        }
+      }
+    }
+  ],
+  "responses": {
+    "201": {
+      "description": "Circular mailing order saved succesfully.\n"
+    },
+    "422": {
+      "description": "The supplied circular mailing order parameters is invalid, the action is rolled back. *Refer to the body of the response.*\n"
+    }
+  }
+}
