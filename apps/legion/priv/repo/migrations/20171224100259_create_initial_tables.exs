@@ -116,7 +116,7 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :country_name, :text
       add :country_code, :text
       add :ip_location, :point
-      add :metro_code, :text
+      add :metro_code, :integer
       add :region_code, :text
       add :region_name, :text
       add :time_zone, :text
