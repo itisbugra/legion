@@ -1,0 +1,62 @@
+defmodule Legion.Location.Geocode do
+  @moduledoc """
+  Represents information about a location geocode. A geocode is a locational 
+  estimation of a location identified by a connection artifact or such.
+  The data can be mostly used to analytic purposes, rather than transactional
+  operations.
+  """
+  @enforce_keys ~w(location country_name country_code metro_code region_code region_name time_zone geocoder channel timestamp)a
+  
+  defstruct [
+    :location,
+    :country_name,
+    :country_code,
+    :metro_code,
+    :region_code,
+    :region_name,
+    :time_zone,
+    :zip_code,
+    :geocoder,
+    :channel,
+    :meta,
+    :timestamp,
+  ]
+
+  @typedoc """
+  Shows the method of the retrieval of geocode data.
+  """
+  @type channel() :: :inet | :gps
+
+  @typedoc """
+  Represents information about a location.
+
+  ## Fields
+
+  - `:location`: Roughly estimated location for the geocode.
+  - `:country_name`: Name of the country.
+  - `:country_code`: Code of the country.
+  - `:metro_code`: Metro code.
+  - `:region_code`: Code of the region.
+  - `:region_name`: Name of the region.
+  - `:time_zone`: Time zone of the location.
+  - `:zip_code`: Zip code of the location.
+  - `:geocoder`: The toolchain used to create the geocode.
+  - `:channel`: The channel used as a metaartifact of the geocode.
+  - `:meta`: Additional metadata given by the geocoder.
+  - `:timestamp`: The time of the geocoding lookup.
+  """
+  @type t() :: %__MODULE__{
+    location: Postgrex.Point.t(),
+    country_name: binary(),
+    country_code: binary(),
+    metro_code: binary(),
+    region_code: binary(),
+    region_name: binary(),
+    time_zone: binary(),
+    zip_code: binary(),
+    geocoder: atom(),
+    channel: channel(),
+    meta: map(),
+    timestamp: NaiveDateTime.t(),
+  }
+end
