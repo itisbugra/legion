@@ -85,6 +85,43 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   end
 
   @doc """
+  Searches for a matching passphrase with given user identifier and a
+  passkey hash.
+
+  ## Caveats
+
+  We are searching for the passphrases, but not using the #{ActivePassphrase}
+  view schema. The reason on doing this is, we need to offload the query
+  conditionals to the web application instead of the server.
+
+  The passkey is itsekf a unique index, so it is pretty fast to query one with this
+  attribute on passphrases. The only thing we need to do additionally is looking for
+  an invalidation entry. Since we are using unique index here, again, we can leverage
+  the power of the physical `btree` indexing the invalidations.
+  """
+  def find_passphrase_matching(user_id, passkey) do
+    hash = Passkey.hash(passkey)
+
+    query = 
+      from p in Passphrase,
+      preload: :invalidation,
+      where: p.user_id == ^user_id and 
+             p.passkey_digest == ^hash,
+      select: p
+
+    with passphrase when not is_nil(passphrase) <- Repo.one(query),
+         :ok <- validate(passphrase)
+    do
+      {:ok, passphrase.id}
+    else
+      {:error, _error} = any ->
+        any
+      _ ->
+        {:error, :not_found}
+    end
+  end
+
+  @doc """
   Validates given passphrase and returns `:ok`, or an error tuple with a reason.
 
   A passphrase is valid if and only if it is not invalidated manually and it has not timed out.
