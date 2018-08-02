@@ -1,8 +1,8 @@
-defmodule Legion.Identity.AuthTest do
+defmodule Legion.Identity.Auth.ConcreteTest do
   @moduledoc false
   use Legion.DataCase
 
-  import Legion.Identity.Auth
+  import Legion.Identity.Auth.Concrete
   import NaiveDateTime, only: [utc_now: 0, add: 3]
 
   alias Legion.Identity.Auth.Algorithm.Keccak
