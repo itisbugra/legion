@@ -12,7 +12,7 @@ defmodule Legion.Identity.Auth.Insecure.AuthInfo do
   ]
 
   
-  @type t :: %__MODULE__{
+  @type t() :: %__MODULE__{
     user_id: User.id(),
     password_digest: binary(),
     digestion_algorithm: Pair.digestion_algorithm(),

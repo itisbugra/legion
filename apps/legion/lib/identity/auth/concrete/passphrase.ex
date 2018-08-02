@@ -14,6 +14,11 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   @env Application.get_env(:legion, Legion.Identity.Auth.Concrete)
   @maximum_allowed_passphrases Keyword.fetch!(@env, :maximum_allowed_passphrases)
 
+  @typedoc """
+  The type of the identifier to uniquely reference a passphrase.
+  """
+  @type id() :: integer()
+
   schema "passphrases" do
     belongs_to :user, User
     field :passkey_digest, :binary

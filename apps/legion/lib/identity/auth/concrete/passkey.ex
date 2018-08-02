@@ -11,7 +11,7 @@ defmodule Legion.Identity.Auth.Concrete.Passkey do
   @typedoc """
   A passkey is simply a random string consisting of #{@scale * @cofactor} entropy bits.
   """
-  @type t :: binary
+  @type t() :: binary()
 
   @doc """
   Generates a string passkey with an entropy size of #{@scale * @cofactor}.

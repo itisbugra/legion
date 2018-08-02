@@ -12,19 +12,19 @@ defmodule Legion.Identity.Information.Registration do
   The type of the identifier to uniquely reference the users is
   managed by integer identifiers.
   """
-  @type id :: integer()
+  @type id() :: integer()
 
   @typedoc """
   The type of the name of the user.
   """
-  @type username :: String.t()
+  @type username() :: String.t()
 
   @typedoc """
   Indicates a `Registration` struct or a user identifier.
 
   Most of the time, the API calls regarding users will use this type.
   """
-  @type user_or_id :: Registration.id() | Registration
+  @type user_or_id() :: Registration.id() | Registration
 
   schema "users" do
     field :has_gps_telemetry_consent?, :boolean, default: false
