@@ -216,7 +216,7 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
                     passkey_digest: @passkey_digest,
                     ip_addr: @ipv4}
 
-      result = create_changeset(passphrase,
+      result = create_changeset(passphrase.id,
                                 @user_agent,
                                 @ipv4.address,
                                 %Postgrex.Point{x: 4.2, y: 6.1})
@@ -232,7 +232,7 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
                     passkey_digest: @passkey_digest,
                     ip_addr: @ipv4}
 
-      result = create_changeset(passphrase,
+      result = create_changeset(passphrase.id,
                                 @user_agent,
                                 {127, 0, 0, 1},
                                 %Postgrex.Point{x: 4.2, y: 6.1})
@@ -248,7 +248,7 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
                     passkey_digest: @passkey_digest,
                     ip_addr: @ipv4}
 
-      result = create_changeset(passphrase,
+      result = create_changeset(passphrase.id,
                                 @user_agent,
                                 {500, 22, 1100, 34},
                                 %Postgrex.Point{x: 4.2, y: 6.1})
