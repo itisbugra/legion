@@ -93,7 +93,7 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   `{:error, :timed_out}` if passphrase is timed out.
 
   ### Caveats
-  In order to use this function properly, one should preload `:invalidation` association of the
+  To use this function properly, one should preload `:invalidation` association of the
   passphrase before supplying it as a parameter to this function. Otherwise, nil-check is
   performed against the `:invalidation` field of the struct, it would see the association as
   non-nil since `Ecto.Association.NotLoaded` struct will be there.

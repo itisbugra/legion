@@ -9,8 +9,7 @@ defmodule Legion.Identity.Information.Registration do
   alias Legion.Internationalization.Locale
 
   @typedoc """
-  The type of the identifier to uniquely reference the users is
-  managed by integer identifiers.
+  The type of the identifier to uniquely reference a user.
   """
   @type id() :: integer()
 
