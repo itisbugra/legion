@@ -7,8 +7,9 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
   alias Legion.Identity.Auth.Concrete.Activity
   alias Legion.Identity.Auth.Concrete.Passphrase
   alias Legion.Identity.Information.Registration, as: User
-  alias UAInspector, as: UserAgentParser
-  alias FreeGeoIP.Search, as: IPReverseGeocoding
+  alias Legion.Networking.INET
+  alias Legion.Networking.HTTP.UserAgent
+  alias Legion.Networking.INET.Geocoding
 
   @env Application.get_env(:legion, Legion.Identity.Auth.Concrete)
   @user_agent_len Keyword.fetch!(@env, :user_agent_length)
@@ -48,7 +49,9 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
     struct
     |> cast(params, [:passphrase_id, :ip_addr, :country_name, :country_code,
                      :ip_location, :metro_code, :region_code, :region_name, :time_zone,
-                     :zip_code, :user_agent, :gps_location])
+                     :zip_code, :user_agent, :gps_location, :engine, :engine_version,
+                     :client_name, :client_type, :client_version, :device_brand,
+                     :device_model, :device_type, :os_name, :os_platform, :os_version])
     |> validate_required([:passphrase_id, :user_agent, :ip_addr])
     |> validate_length(:user_agent, max: @user_agent_len)
     |> foreign_key_constraint(:passphrase_id)
@@ -57,42 +60,55 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
   @doc """
   Creates a changeset with given passphrase, user agent string and IP address.
   """
-  @spec create_changeset(Passphrase, binary, :inet.ip_address, Postgrex.Point.t) ::
+  @spec create_changeset(Passphrase.id(), UserAgent.t(), INET.t(), Postgrex.Point.t()) ::
     {:ok, Ecto.Changeset.t} |
     {:error, any}
-  def create_changeset(passphrase, user_agent, ip_addr, geo_location) do
-    ua_result = UserAgentParser.parse(user_agent)
+  def create_changeset(passphrase_id, user_agent, ip_addr, gps_location) do
+    with ua_result <- UserAgent.parse(user_agent),
+         {:ok, result} <- Geocoding.trace(ip_addr)
+    do
+      params =
+        %{passphrase_id: passphrase_id,
+          user_agent: user_agent,
+          engine: ua_result.client.engine,
+          engine_version: ua_result.client.engine_version,
+          client_name: ua_result.client.name,
+          client_type: ua_result.client.type,
+          client_version: ua_result.client.version,
+          device_brand: ua_result.device.brand,
+          device_model: ua_result.device.model,
+          device_type: ua_result.device.type,
+          os_name: ua_result.os.name,
+          os_platform: ua_result.os.platform,
+          os_version: ua_result.os.version,
+          ip_addr: %Postgrex.INET{address: ip_addr},
+          country_name: result.country_name,
+          country_code: result.country_code,
+          ip_location: result.location,
+          metro_code: result.metro_code,
+          region_code: result.region_code,
+          region_name: result.region_name,
+          time_zone: result.time_zone,
+          zip_code: result.zip_code,
+          gps_location: gps_location}
 
-    case IPReverseGeocoding.search(ip_addr) do
-      {:ok, result} ->
-        params =
-          %{passphrase_id: passphrase.id,
-            user_agent: user_agent,
-            engine: ua_result.client.engine,
-            engine_version: ua_result.client.engine_version,
-            client_name: ua_result.client.name,
-            client_type: ua_result.client.type,
-            client_version: ua_result.client.version,
-            device_brand: ua_result.device.brand,
-            device_model: ua_result.device.model,
-            device_type: ua_result.device.type,
-            os_name: ua_result.os.name,
-            os_platform: ua_result.os.platform,
-            os_version: ua_result.os.version,
-            ip_addr: %Postgrex.INET{address: ip_addr},
-            country_name: result["country_name"],
-            country_code: result["country_code"],
-            ip_location: %Postgrex.Point{x: result["longitude"], y: result["latitude"]},
-            metro_code: result["metro_code"],
-            region_code: result["region_code"],
-            region_name: result["region_name"],
-            time_zone: result["time_zone"],
-            zip_code: result["zip_code"],
-            geo_location: geo_location}
+      {:ok, changeset(%__MODULE__{}, params)}
+    else
+      {:error, error} ->
+        {:error, error}
+    end
+  end
 
-        {:ok, changeset(%__MODULE__{}, params)}
-      {:error, %{reason: reason}} ->
-        {:error, reason}
+  @spec generate_activity(Passphrase, binary, INET.t(), Postgrex.Point.t) ::
+    Activity
+  def generate_activity(passphrase, user_agent, ip_addr, gps_location) do
+    with {:ok, changeset} <- create_changeset(passphrase, user_agent, ip_addr, gps_location),
+         {:ok, activity} <- Repo.insert(changeset)
+    do
+      {:ok, activity}
+    else
+      {:error, _error} = any ->
+        any
     end
   end
 
