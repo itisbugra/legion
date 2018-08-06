@@ -26,6 +26,9 @@ elixir:deps:
     - mix local.rebar --force
   script:
     - mix deps.get
+  variables:
+    HEX_HTTP_CONCURRENCY: 1 
+    HEX_HTTP_TIMEOUT: 120
   dependencies: []
   artifacts:
     paths:
