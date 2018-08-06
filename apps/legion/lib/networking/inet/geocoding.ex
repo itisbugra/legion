@@ -6,7 +6,6 @@ defmodule Legion.Networking.INET.Geocoding do
 
   alias Legion.Networking.INET
   alias Legion.Location.Geocode
-  alias Legion.Location.Coordinate
 
   @doc """
   Traces an INET address using IP reverse geocoding service.
