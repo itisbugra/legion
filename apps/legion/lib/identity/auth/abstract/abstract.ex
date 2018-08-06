@@ -33,6 +33,6 @@ defmodule Legion.Identity.Auth.Abstract do
       end
     end)
   end
-  def authenticate(user, passkey) when is_map(user),
-    do: authenticate(user.id, passkey)
+  def authenticate(user, passkey, user_agent, ip_addr, geo_location) when is_map(user),
+    do: authenticate(user.id, passkey, user_agent, ip_addr, geo_location)
 end
