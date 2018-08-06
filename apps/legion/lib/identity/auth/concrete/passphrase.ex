@@ -88,17 +88,35 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   Searches for a matching passphrase with given user identifier and a
   passkey hash.
 
-  ## Caveats
+  ## Return types
 
-  We are searching for the passphrases, but not using the #{ActivePassphrase}
+  This function returns a passphrase identifier if there was no faulty conditions.
+  However, it might also return errors in following scenarios.
+
+  - `:not_found`: No matching passphrase found.
+  - `:invalid`: The passphrase exists, but it is revoked manually.
+  - `:timed_out`: The passphrase exists, however it is not valid anymore.
+
+  The interface of the business logic might choose to not show the reason for the
+  failed action due to security concerns. Hence, the developer of this API might
+  need to take care of the error values implicitly.
+
+  ## Discussion
+
+  We are searching for the passphrases, but not using the `#{ActivePassphrase}`
   view schema. The reason on doing this is, we need to offload the query
   conditionals to the web application instead of the server.
 
-  The passkey is itsekf a unique index, so it is pretty fast to query one with this
+  The passkey itself is a unique index, so it is not overwhelming to query one with this
   attribute on passphrases. The only thing we need to do additionally is looking for
-  an invalidation entry. Since we are using unique index here, again, we can leverage
+  an invalidation entry, since we are using unique index here, again, we can leverage
   the power of the physical `btree` indexing the invalidations.
   """
+  @spec find_passphrase_matching(User.id(), Passkey.t()) ::
+    {:ok, Passphrase.id()} |
+    {:error, :not_found} |
+    {:error, :invalid} | 
+    {:error, :timed_out}
   def find_passphrase_matching(user_id, passkey) do
     hash = Passkey.hash(passkey)
 
@@ -129,7 +147,7 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   interval. It returns `{:error, :invalid}` if passphrase is invalidated manually, or
   `{:error, :timed_out}` if passphrase is timed out.
 
-  ### Caveats
+  ## Caveats
   To use this function properly, one should preload `:invalidation` association of the
   passphrase before supplying it as a parameter to this function. Otherwise, nil-check is
   performed against the `:invalidation` field of the struct, it would see the association as
