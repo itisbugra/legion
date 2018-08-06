@@ -22,6 +22,7 @@ defmodule Legion.Factory do
 
     %Legion.Identity.Auth.Concrete.Passphrase{
       user: build(:user),
+      passkey: passkey,
       passkey_digest: Passkey.hash(passkey),
       ip_addr: %Postgrex.INET{address: (1..4 |> Enum.map(&Enum.random(&1..255)) |> List.to_tuple())}
     }
