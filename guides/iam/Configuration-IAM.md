@@ -41,6 +41,7 @@ Key | Data Type | Units | Description | Default
 `:secret_key_base` | [`String.t()`] | - | Secret key used in HMAC algorithm (JWS). | *See notes (1).*
 `:issuer` | [`String.t()`] | - | Issuer of the JWT. | *N/A*
 `:lifetime` | `pos_integer()` | - | Valid duration for the JWT. | `300`
+`:extended_lifetime` | `pos_integer()` | - | Extended valid duration for the JWT. | `300`
 `:sub` | [`String.t()`] | - | Purpose of the issue. | `access`
 
 ## Insecure authentication
