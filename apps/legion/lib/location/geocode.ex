@@ -22,6 +22,8 @@ defmodule Legion.Location.Geocode do
     :timestamp,
   ]
 
+  alias Legion.Location.Coordinate
+
   @typedoc """
   Shows the method of the retrieval of geocode data.
   """
@@ -33,20 +35,20 @@ defmodule Legion.Location.Geocode do
   ## Fields
 
   - `:location`: Roughly estimated location for the geocode.
-  - `:country_name`: Name of the country.
-  - `:country_code`: Code of the country.
+  - `:country_name`: Name of the country, e.g. `"Turkey"`.
+  - `:country_code`: Code of the country, e.g. `"TR"`.
   - `:metro_code`: Metro code.
-  - `:region_code`: Code of the region.
-  - `:region_name`: Name of the region.
-  - `:time_zone`: Time zone of the location.
-  - `:zip_code`: Zip code of the location.
+  - `:region_code`: Code of the region, e.g. `"34"`.
+  - `:region_name`: Name of the region, e.g. `"Istanbul"`.
+  - `:time_zone`: Time zone of the location, e.g. `"Europe/Istanbul"`.
+  - `:zip_code`: Zip code of the location, e.g. `"34134"`.
   - `:geocoder`: The toolchain used to create the geocode.
   - `:channel`: The channel used as a metaartifact of the geocode.
   - `:meta`: Additional metadata given by the geocoder.
   - `:timestamp`: The time of the geocoding lookup.
   """
   @type t() :: %__MODULE__{
-    location: Postgrex.Point.t(),
+    location: Coordinate.t(),
     country_name: binary(),
     country_code: binary(),
     metro_code: binary(),
