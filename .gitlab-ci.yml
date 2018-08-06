@@ -28,7 +28,7 @@ elixir:deps:
     - mix deps.get
   variables:
     HEX_HTTP_CONCURRENCY: 1 
-    HEX_HTTP_TIMEOUT: 120
+    HEX_HTTP_TIMEOUT: 720
   dependencies: []
   artifacts:
     paths:
