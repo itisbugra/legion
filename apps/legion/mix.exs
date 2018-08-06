@@ -54,7 +54,8 @@ defmodule Legion.Mixfile do
       {:liquid, "~> 0.8.0"},
       {:entropy_string, "~> 1.3"},
       {:nimble_csv, "~> 0.4.0"},
-      {:cidr, "~> 1.1"}
+      {:cidr, "~> 1.1"},
+      {:dialyxir, "~> 1.0.0-rc.3", only: [:dev], runtime: false}
     ]
   end
 
