@@ -27,6 +27,7 @@ config :legion, Legion.Identity.Auth.Concrete.JOSE,
   secret_key_base: "secret_key_base",
   issuer: "legion",
   lifetime: half_of_an_hour,
+  extended_lifetime: half_of_an_hour * 6,
   sub: "access"
 
 config :legion, Legion.Identity.Auth.Insecure,
