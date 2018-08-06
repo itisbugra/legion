@@ -31,15 +31,32 @@ defmodule Legion.Identity.Auth.Abstract.Token do
 
   @doc """
   Issues a token to given user.
+
+  ## Options
+
+  - `:lifetime`: If supplied, the lifetime of the token will be changed
+  to this value. This defaults to the configuration value.
+
+  ## Applied configuration values
+  On `Legion.Identity.Auth.Concrete.JOSE` domain,
+
+  - `:issuer`: The issuer of the token, e.g. "legion".
+  - `:sub`: The subsidiary of the token.
+  
+  If `:lifetime` is not supplied as an option, the value of the parameter
+  will be applicable to:
+
+  - `:lifetime`: The default lifetime of the token.
   """
-  @spec issue_token(User.user_or_id(), Passphrase.id()) :: 
+  @spec issue_token(User.id(), Passphrase.id(), Keyword.t()) :: 
     {:ok, __MODULE__.t} |
     {:error, :invalid} |
     {:error, :timed_out}
-  def issue_token(user_id, passphrase_id) when is_integer(user_id) and is_integer(passphrase_id) do
+  def issue_token(user_id, passphrase_id, opts \\ []) when is_integer(user_id) and is_integer(passphrase_id) do
     env = Application.get_env(:legion, Legion.Identity.Auth.Concrete.JOSE)
     issuer = Keyword.fetch!(env, :issuer)
-    expires_after = :os.system_time(:seconds) + Keyword.fetch!(env, :lifetime)
+    lifetime = Keyword.get(opts, :lifetime, Keyword.fetch!(env, :lifetime))
+    expires_after = :os.system_time(:seconds) + lifetime
     sub = Keyword.fetch!(env, :sub)
 
     payload = generate_payload(user_id, passphrase_id, issuer, expires_after, sub)
@@ -53,9 +70,6 @@ defmodule Legion.Identity.Auth.Abstract.Token do
                       expires_after: expires_after,
                       jwk: @jwk,
                       jws: @jws}}
-  end
-  def issue_token(user, passphrase_id) when is_map(user) and is_integer(passphrase_id) do
-    issue_token(user.id, passphrase_id)
   end
 
   defp generate_payload(user_id, passphrase_id, issuer, expire, sub) do
