@@ -10,11 +10,12 @@ defmodule Legion.Identity.Auth.Abstract do
   alias Legion.Identity.Auth.Concrete.Activity
   alias Legion.Networking.INET
   alias Legion.Networking.HTTP.UserAgent
+  alias Legion.Location.Coordinate
 
   @doc """
   Performs abstract authentication for the user with given passkey.
   """
-  @spec authenticate(User.user_or_id(), Passkey.t(), UserAgent.t(), INET.t(), Postgrex.Point.t()) ::
+  @spec authenticate(User.user_or_id(), Passkey.t(), UserAgent.t(), INET.t(), Coordinate.t()) ::
     {:ok, Token.t()} |
     {:error, :not_found} |
     {:error, :invalid} |
