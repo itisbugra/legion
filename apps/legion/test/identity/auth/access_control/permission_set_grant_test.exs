@@ -80,7 +80,7 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrantTest do
   end
 
   test "changeset without lifetime (allowing infinite lifetime)" do
-    new_env = Keyword.put(@env, :allow_infinite_lifetime, false)
+    new_env = Keyword.put(@env, :allow_infinite_lifetime, true)
     Application.put_env(:legion, Legion.Identity.Auth.AccessControl, new_env)
 
     changeset =
