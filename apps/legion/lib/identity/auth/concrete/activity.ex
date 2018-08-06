@@ -100,7 +100,8 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
   end
 
   @spec generate_activity(Passphrase, binary, INET.t(), Postgrex.Point.t) ::
-    Activity
+    {:ok, Activity} | 
+    {:error, Ecto.Changeset.t()}
   def generate_activity(passphrase, user_agent, ip_addr, gps_location) do
     with {:ok, changeset} <- create_changeset(passphrase, user_agent, ip_addr, gps_location),
          {:ok, activity} <- Repo.insert(changeset)
