@@ -6,7 +6,8 @@
     "defenum",
     "using",
     "setup",
-    "defstruct"
+    "defstruct",
+    "defdelegate"
   ],
 
   "coverage_options": {
@@ -15,7 +16,7 @@
   },
 
   "terminal_options": {
-    "file_column_width": 150
+    "file_column_width": 104
   },
 
   "skip_files": [
