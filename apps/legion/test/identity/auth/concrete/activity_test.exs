@@ -2,7 +2,7 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
   @moduledoc false
   use Legion.DataCase
 
-  import Legion.Identity.Auth.Concrete.Activity, only: [create_changeset: 4]
+  import Legion.Identity.Auth.Concrete.Activity, only: [create_changeset: 4, generate_activity: 4]
   import NaiveDateTime, only: [utc_now: 0, add: 2]
 
   alias Legion.Identity.Auth.Concrete.Activity
@@ -254,6 +254,30 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
                                 %Postgrex.Point{x: 4.2, y: 6.1})
 
       assert result == {:error, :incorrect_ip_range}
+    end
+  end
+
+  describe "generate_activity/4" do
+    test "creates an activity" do
+      passphrase = Factory.insert(:passphrase)
+
+      result = generate_activity(passphrase.id,
+                                 @user_agent,
+                                 @ipv4.address,
+                                 %Postgrex.Point{x: 4.2, y: 6.1})
+
+      assert match? {:ok, _activity}, result
+    end
+
+    test "projects an error of create_changeset/4" do
+      passphrase = Factory.insert(:passphrase)
+
+      result = generate_activity(passphrase.id,
+                                 @user_agent,
+                                 {500, 22, 1100, 34},
+                                 %Postgrex.Point{x: 4.2, y: 6.1})
+
+      assert match? {:error, _}, result
     end
   end
 

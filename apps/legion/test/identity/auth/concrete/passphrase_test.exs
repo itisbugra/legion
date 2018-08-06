@@ -81,42 +81,78 @@ defmodule Legion.Identity.Auth.Concrete.PassphraseTest do
 
   describe "validate/1" do
     test "returns ok if passphrase is valid", %{passkey: passkey} do
-    passphrase = 
-      %Passphrase{user_id: 2,
-                  passkey: passkey,
-                  inserted_at: utc_now(),
-                  invalidation: nil}
+      passphrase = 
+        %Passphrase{user_id: 2,
+                    passkey: passkey,
+                    inserted_at: utc_now(),
+                    invalidation: nil}
 
-    assert Passphrase.validate(passphrase) == :ok
+      assert Passphrase.validate(passphrase) == :ok
+    end
+
+    test "returns error if passphrase is invalidated", %{passkey: passkey} do
+      invalidation = 
+        %Invalidation{source_passphrase_id: 1,
+                      target_passphrase_id: 1}
+      passphrase = 
+        %Passphrase{id: 1,
+                    user_id: 2,
+                    passkey: passkey,
+                    inserted_at: utc_now(),
+                    invalidation: invalidation}
+
+      assert Passphrase.validate(passphrase) == {:error, :invalid}
+    end
+
+    test "returns error if passphrase is timed out", %{passkey: passkey} do
+      env = Application.get_env(:legion, Legion.Identity.Auth.Concrete)
+      offset = Keyword.fetch!(env, :passphrase_lifetime) + 200_000
+      time = add(utc_now(), (-1) * offset)
+
+      passphrase = 
+        %Passphrase{id: 1,
+                    user_id: 2,
+                    passkey: passkey,
+                    inserted_at: time,
+                    invalidation: nil}
+
+      assert Passphrase.validate(passphrase) == {:error, :timed_out}
+    end
   end
 
-  test "returns error if passphrase is invalidated", %{passkey: passkey} do
-    invalidation = 
-      %Invalidation{source_passphrase_id: 1,
-                    target_passphrase_id: 1}
-    passphrase = 
-      %Passphrase{id: 1,
-                  user_id: 2,
-                  passkey: passkey,
-                  inserted_at: utc_now(),
-                  invalidation: invalidation}
+  describe "find_passphrase_matching/2" do
+    setup do
+      env = Application.get_env(:legion, Legion.Identity.Auth.Concrete)
+      offset = Keyword.fetch!(env, :passphrase_lifetime) + 200_000
+      time = add(utc_now(), (-1) * offset)
 
-    assert Passphrase.validate(passphrase) == {:error, :invalid}
-  end
+      user = Factory.insert(:user)
+      passphrase = Factory.insert(:passphrase, user: user)
+      timed_out = Factory.insert(:passphrase, user: user, inserted_at: time)
+      invalidated = Factory.insert(:passphrase, user: user)
+      _invalidation = Factory.insert(:passphrase_invalidation, source_passphrase: passphrase, target_passphrase: invalidated)
 
-  test "returns error if passphrase is timed out", %{passkey: passkey} do
-    env = Application.get_env(:legion, Legion.Identity.Auth.Concrete)
-    offset = Keyword.fetch!(env, :passphrase_lifetime) + 200_000
-    time = add(utc_now(), (-1) * offset)
+      %{user: user, 
+        passphrase: passphrase, 
+        time_threshold: time,
+        timed_out: timed_out,
+        invalidated: invalidated}
+    end
 
-    passphrase = 
-      %Passphrase{id: 1,
-                  user_id: 2,
-                  passkey: passkey,
-                  inserted_at: time,
-                  invalidation: nil}
+    test "finds an existing passhrase", %{user: u, passphrase: p} do
+      assert Passphrase.find_passphrase_matching(u.id, p.passkey) == {:ok, p.id}
+    end
 
-    assert Passphrase.validate(passphrase) == {:error, :timed_out}
-  end
+    test "returns error if no passphrase exists with given passkey", %{user: u} do
+      assert Passphrase.find_passphrase_matching(u.id, "(null)") == {:error, :not_found}
+    end
+
+    test "returns error if passphrase is passed out", %{user: u, timed_out: tp} do
+      assert Passphrase.find_passphrase_matching(u.id, tp.passkey) == {:error, :timed_out}
+    end
+
+    test "returns error if passphrase is invalidated", %{user: u, invalidated: ip} do
+      assert Passphrase.find_passphrase_matching(u.id, ip.passkey) == {:error, :invalid}
+    end
   end
 end
