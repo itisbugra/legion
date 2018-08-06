@@ -8,6 +8,7 @@ defmodule Legion.Identity.Auth.Concrete do
   alias Legion.Identity.Auth.Insecure.Pair
   alias Legion.Identity.Auth.Insecure.AuthInfo
   alias Legion.Identity.Auth.Concrete.{Passkey, Passphrase}
+  alias Legion.Identity.Auth.Abstract.Token
   alias Legion.Identity.Auth.Algorithm.Keccak
   alias Legion.Networking.INET
 
@@ -17,7 +18,8 @@ defmodule Legion.Identity.Auth.Concrete do
   @doc """
   Registers an internal user with given username and password hash.
 
-  ### Caveats
+  ## Caveats
+
   The new user will have the insecure authentication scheme set initially,
   client-side implementations are expected to ask whether user prefers
   another authentication scheme or not at the time of the completion of this
@@ -73,15 +75,27 @@ defmodule Legion.Identity.Auth.Concrete do
   password *digest*, where digest is a time-variant, salted hash of
   the client-side produced hash.
 
-  With a valid digest for the user, this function should either return
-  a 
+  ## Options
+
+  - `:one_shot`: If `true`, the authentication will be fallthrough,
+  it will not generate any passphrases, but return a token without
+  requiring any further abstract authentication. This is useful
+  when user does not need to store the passphrase in the
+  authenticating device. The lifetime of the token is determined
+  seperately from the regular abstract authentication flow.
+  Defaults to `false`.
+
+  ## Return types
+
+  With a valid digest for the user, this function should either 
+  return a 
 
   - `{:ok, :require, passkey}` tuple containing the passkey which 
   should be transferred to the client-side device to be persisted on 
   its secure storage, or 
 
   - `{:ok, :access, jwt}` tuple containing the JSON Web Token
-   [*(RFC 7159)*] to perform stealth authentication, directly, or
+   [*(RFC 7159)*] to perform stealth authentication directly, or
 
   - `{:ok, :advance, advance_artifact}` tuple containing the artifact
   information for proceeding to the next mandatory step of users
@@ -94,7 +108,8 @@ defmodule Legion.Identity.Auth.Concrete do
   username.
   - `{:error, :unsupported_scheme}`: The authentication scheme 
   of the user is not supported (in implementation). This is
-  subject to change without a notice on further releases.
+  subject to change without a notice on further releases and
+  left here for the regression of provisioning services.
   - `{:error, :wrong_password_hash}`: The password hash is wrong.
   - `{:error, :maximum_passphrases_exceeded}`: The number of the
   passphrases (#{@maximum_allowed_passphrases}) are exceeded.
@@ -105,11 +120,18 @@ defmodule Legion.Identity.Auth.Concrete do
   - `{:error, :blacklist, "reason"}`: The IP address provided is
   blacklisted by server authority.
 
+  ## Applied configuration values
+
+  If `:one_shot` option is enabled, the function takes
+  `Legion.Identity.Auth.Concrete.JOSE.extended_lifetime`
+  configuration value to provide an expiration time to the token
+  issuer.
+
   [*(RFC 7159)*]: https://tools.ietf.org/html/rfc7519
   [*(RFC 5735)*]: https://tools.ietf.org/html/rfc5735#section-4
   """
   @spec generate_passphrase(User.username(), Keccak.hash(), INET.t(), Keyword.t()) ::
-    {:ok, :access, JWT.t()} |
+    {:ok, :access, Token.t()} |
     {:ok, :require, Passkey.t()} |
     {:ok, :advance, Advance.t()} |
     {:error, :no_user_verify} |
