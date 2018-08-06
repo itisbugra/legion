@@ -1,5 +1,6 @@
 defmodule Legion.Repo do
   use Ecto.Repo, otp_app: :legion
+  @dialyzer {:nowarn_function, rollback: 1}
 
   @doc """
   Dynamically loads the repository url from the
