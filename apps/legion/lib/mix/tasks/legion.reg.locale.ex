@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Legion.Reg.Locale do
+  @moduledoc """
+  Registers locales to the repository.
+  """
   require Logger
 
   import Mix.Ecto

@@ -2,6 +2,7 @@ defmodule Legion.Identity.Auth.Concrete do
   @moduledoc """
   Functions for performing concrete authentication.
   """
+  # credo:disable-for-this-file Credo.Check.Refactor.CyclomaticComplexity
   use Legion.Stereotype, :service
 
   alias Legion.Identity.Information.Registration, as: User
@@ -55,6 +56,7 @@ defmodule Legion.Identity.Auth.Concrete do
         %Pair{}
           |> Pair.changeset(pair_params)
           |> Repo.insert()
+
       case pair do
         {:ok, pair} ->
           pair

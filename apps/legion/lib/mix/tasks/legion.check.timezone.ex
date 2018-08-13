@@ -9,6 +9,9 @@ defmodule Legion.Mix.Check.Timezone.UnknownTimeZoneError do
 end
 
 defmodule Mix.Tasks.Legion.Check.Timezone do
+  @moduledoc """
+  Run before starting any task to check the timezone of the database.
+  """
   require Logger
 
   import Mix.Ecto

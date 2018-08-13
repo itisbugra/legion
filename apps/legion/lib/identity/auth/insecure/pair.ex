@@ -1,4 +1,8 @@
 defmodule Legion.Identity.Auth.Insecure.Pair do
+  @moduledoc """
+  Represents a credential pair to perform insecure authentication in
+  concrete authentication stage.
+  """
   use Legion.Stereotype, :model
 
   alias Legion.Identity.Information.Registration, as: User
