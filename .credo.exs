@@ -50,10 +50,10 @@
       checks: [
         {Credo.Check.Consistency.ExceptionNames},
         {Credo.Check.Consistency.LineEndings},
-        {Credo.Check.Consistency.ParameterPatternMatching},
         {Credo.Check.Consistency.SpaceAroundOperators},
         {Credo.Check.Consistency.SpaceInParentheses},
         {Credo.Check.Consistency.TabsOrSpaces},
+        {Credo.Check.Consistency.ParameterPatternMatching, false},
 
         # You can customize the priority of any check
         # Priority values are: `low, normal, high, higher`
@@ -72,7 +72,7 @@
         # If you don't want TODO comments to cause `mix credo` to fail, just
         # set this value to 0 (zero).
         #
-        {Credo.Check.Design.TagTODO, exit_status: 2},
+        {Credo.Check.Design.TagTODO, exit_status: 0, priority: :low},
         {Credo.Check.Design.TagFIXME},
 
         {Credo.Check.Readability.FunctionNames},
@@ -129,14 +129,6 @@
         {Credo.Check.Refactor.VariableRebinding, false},
         {Credo.Check.Warning.MapGetUnsafePass, false},
         {Credo.Check.Consistency.MultiAliasImportRequireUse, false},
-
-        # Deprecated checks (these will be deleted after a grace period)
-        #
-        {Credo.Check.Readability.Specs, false},
-        {Credo.Check.Warning.NameRedeclarationByAssignment, false},
-        {Credo.Check.Warning.NameRedeclarationByCase, false},
-        {Credo.Check.Warning.NameRedeclarationByDef, false},
-        {Credo.Check.Warning.NameRedeclarationByFn, false},
 
         # Custom checks can be created using `mix credo.gen.check`.
         #
