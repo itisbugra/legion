@@ -52,6 +52,15 @@ config :legion, Legion.Identity.Auth.Concrete.TFA,
 config :legion, Legion.Identity.Auth.Algorithm,
   keccak_variant: :sha3_512
 
+config :legion, Legion.Identity.Information.PersonalData,
+  given_name_length: 1..80,
+  middle_name_length: 1..80,
+  family_name_length: 1..80,
+  name_prefix_length: 1..80,
+  name_postfix_length: 1..80,
+  nickname_length: 1..80,
+  phonetic_representation_length: 1..80
+
 config :legion, Legion.Messaging.Switching.Globals,
   history_buffer_length: 5
 

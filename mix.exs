@@ -18,7 +18,8 @@ defmodule Legion.Umbrella.Mixfile do
 
   defp deps do
     [{:ex_doc, "~> 0.16", only: :dev, runtime: false},
-     {:excoveralls, "~> 0.8.0", only: :test}]
+     {:excoveralls, "~> 0.8.0", only: :test},
+     {:credo, "~> 0.10.0", only: [:dev, :test], runtime: false}]
   end
 
   defp aliases do
@@ -28,7 +29,9 @@ defmodule Legion.Umbrella.Mixfile do
      "ecto.reset": ["ecto.drop",
                     "ecto.setup"],
      "legion.reg": ["legion.reg.locale",
-                    "legion.reg.messaging"],
+                    "legion.reg.nationality",
+                    "legion.reg.messaging",
+                    "legion.reg.political"],
      "legion.check": ["legion.check.timezone"],
      "legion.setup": ["legion.check",
                       "ecto.setup",
