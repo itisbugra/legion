@@ -14,7 +14,7 @@
   },
 
   "terminal_options": {
-    "file_column_width": 104
+    "file_column_width": 100
   },
 
   "skip_files": [
