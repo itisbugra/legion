@@ -61,6 +61,15 @@ config :legion, Legion.Identity.Information.PersonalData,
   nickname_length: 1..80,
   phonetic_representation_length: 1..80
 
+config :legion, Legion.Identity.Information.AddressBook,
+  name_length: 1..24,
+  description_length: 1..80,
+  state_length: 1..24,
+  city_length: 1..24,
+  neighborhood_length: 1..24,
+  zip_code_length: 1..24,
+  listing_default_page_size: 5
+
 config :legion, Legion.Messaging.Switching.Globals,
   history_buffer_length: 5
 
