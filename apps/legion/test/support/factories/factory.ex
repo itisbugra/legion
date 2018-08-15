@@ -4,6 +4,8 @@ defmodule Legion.Factory do
   """
   use ExMachina.Ecto, repo: Legion.Repo
   use Legion.TemplateFactory
+  use Legion.Identity.Information.AddressBook.Factory
+  use Legion.Identity.Information.Political.Factory
 
   alias Legion.Identity.Auth.Concrete.Passkey
   alias Legion.Identity.Auth.TFA.OneTimeCode
