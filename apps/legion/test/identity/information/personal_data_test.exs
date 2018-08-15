@@ -76,7 +76,7 @@ defmodule Legion.Identity.Information.PersonalDataTest do
   end
 
   test "changeset with default params" do
-    assert PersonalData.changeset(%PersonalData{}).valid?
+    refute PersonalData.changeset(%PersonalData{}).valid?
   end
 
   defp omit_param(param) do
