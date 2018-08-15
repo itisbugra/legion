@@ -35,5 +35,6 @@ defmodule Legion.Identity.Information.Registration do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:has_gps_telemetry_consent?, :authentication_scheme])
+    |> foreign_key_constraint(:locale)
   end
 end

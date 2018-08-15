@@ -12,12 +12,18 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
         Legion.Templating.Renderer.Engine.create_type()
         Legion.Identity.Auth.Algorithm.Digestion.create_type()
         Legion.Identity.Auth.Concrete.Scheme.create_type()
+        Legion.Identity.Information.Gender.create_type()
+        Legion.Identity.Telephony.PhoneType.create_type()
+        Legion.Identity.Information.AddressBook.AddressType.create_type()
       :down ->
         Legion.Identity.Auth.AccessControl.ControllerAction.drop_type()
         Legion.Messaging.Message.Medium.drop_type()
         Legion.Templating.Renderer.Engine.drop_type()
         Legion.Identity.Auth.Algorithm.Digestion.drop_type()
         Legion.Identity.Auth.Concrete.Scheme.drop_type()
+        Legion.Identity.Information.Gender.drop_type()
+        Legion.Identity.Telephony.PhoneType.drop_type()
+        Legion.Identity.Information.AddressBook.AddressType.drop_type()
     end
 
     create table(:locales, primary_key: false) do
@@ -26,6 +32,53 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :abbreviation, :text
       add :variant, :text
     end
+
+    create table(:nationalities, primary_key: false) do
+      add :abbreviation, :text, primary_key: true
+      add :country_name, :text, null: false
+      add :preferred_demonym, :text
+      add :second_demonym, :text
+      add :third_demonym, :text
+    end
+
+    create unique_index(:nationalities, [:country_name])
+
+    create table(:regions, primary_key: false) do
+      add :name, :text, primary_key: true
+      add :code, :integer, null: false
+    end
+
+    create unique_index(:regions, [:code])
+
+    create table(:subregions, primary_key: false) do
+      add :name, :text, primary_key: true
+      add :region_name, references(:regions, on_delete: :delete_all, on_update: :update_all, column: :name, type: :text), null: false
+      add :code, :integer, null: false
+    end
+
+    create unique_index(:subregions, [:code])
+
+    create table(:intermediate_regions, primary_key: false) do
+      add :name, :text, primary_key: true
+      add :subregion_name, references(:subregions, on_delete: :delete_all, on_update: :update_all, column: :name, type: :text), null: false
+      add :code, :integer, null: false
+    end
+
+    create unique_index(:intermediate_regions, [:code])
+
+    create table(:countries, primary_key: false) do
+      add :name, :text, primary_key: true
+      add :two_letter, :string
+      add :three_letter, :string
+      add :iso_3166, :string, null: false
+      add :region_name, references(:regions, on_delete: :delete_all, on_update: :update_all, column: :name, type: :text)
+      add :subregion_name, references(:subregions, on_delete: :delete_all, on_update: :update_all, column: :name, type: :text)
+      add :intermediate_region_name, references(:intermediate_regions, on_delete: :delete_all, on_update: :update_all, column: :name, type: :text)
+    end
+
+    create unique_index(:countries, [:two_letter])
+    create unique_index(:countries, [:three_letter])
+    create unique_index(:countries, [:iso_3166])
 
     create table(:users) do
       add :has_gps_telemetry_consent?, :boolean, default: false
@@ -207,6 +260,46 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
     end
 
+    create table(:user_personal_information) do
+      add :user_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false, primary_key: true
+      add :given_name, :string
+      add :middle_name, :string
+      add :family_name, :string
+      add :name_prefix, :string
+      add :name_postfix, :string
+      add :nickname, :string
+      add :phonetic_representation, :string
+      add :gender, :gender
+      add :nationality_abbreviation, references(:nationalities, on_delete: :restrict, on_update: :restrict, column: :abbreviation, type: :text)
+      timestamps inserted_at: false
+    end
+
+    create unique_index(:user_personal_information, [:user_id])
+
+    create table(:user_phone_numbers) do
+      add :user_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false
+      add :number, :string, null: false
+      add :type, :phone_type, null: false
+      add :ignored?, :boolean, null: false, default: false
+      add :safe?, :boolean, null: false, default: true
+      add :primed_at, :naive_datetime
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false 
+    end
+
     Legion.Identity.Auth.Concrete.ActivePassphrase.ViewDecl.migrate()
+
+    create table(:user_addresses) do
+      add :user_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false
+      add :type, :address_type, null: false
+      add :name, :string, null: false
+      add :description, :string
+      add :state, :string
+      add :city, :string
+      add :neighborhood, :string
+      add :zip_code, :string
+      add :location, :point
+      add :country_name, references(:countries, on_delete: :delete_all, on_update: :update_all, column: :name, type: :text), null: false
+      timestamps()
+    end
   end
 end

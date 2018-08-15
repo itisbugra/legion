@@ -44,7 +44,7 @@ defmodule Legion.Identity.Information.PersonalData do
     timestamps inserted_at: false
   end
 
-  def changeset(struct, params \\ []) do
+  def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:user_id, :given_name, :middle_name, :family_name, :name_prefix, :name_postfix, :nickname, :phonetic_representation, :gender, :nationality_abbreviation])
     |> validate_required([:user_id])

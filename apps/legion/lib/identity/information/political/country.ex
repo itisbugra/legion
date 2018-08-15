@@ -1,8 +1,15 @@
 defmodule Legion.Identity.Information.Political.Country do
   @moduledoc """
-  Represents countries in the world.
+  Represents countries in the world. This model is pregenerated during setup of the application.
 
   ## Schema fields
+
+  - `:two_letter`: Two-letter code for identifying the country.
+  - `:three_letter`: Variant for two-letter code for identifying the country, but in three letters.
+  - `:iso_3166`: ISO-3166 code for the country.
+  - `:region`: A reference to the region of the country.
+  - `:subregion`: A reference to the subregion of the country.
+  - `:intermediate_region`: A reference to the intermediate region of the country.
   """
   use Legion.Stereotype, :model
 
@@ -23,5 +30,10 @@ defmodule Legion.Identity.Information.Political.Country do
     struct
     |> cast(params, [])
     |> add_error(:name, "cannot create region at runtime")
+  end
+
+  @spec does_contain_point?(__MODULE__, Legion.Location.Coordinate.t()) :: boolean()
+  def does_contain_point?(_country, _location) do
+    true
   end
 end
