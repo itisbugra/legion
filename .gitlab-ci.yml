@@ -120,7 +120,6 @@ elixir:stats:
   tags:
     - legion
     - stms
-    - cloc
   before_script:
     - npm install -g cloc
   script:
