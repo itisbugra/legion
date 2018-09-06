@@ -27,7 +27,7 @@ defmodule Legion.Identity.Information.AddressBook do
   @default_page_size Keyword.fetch!(@env, :listing_default_page_size)
 
   @doc """
-  Adds an address entry to user.
+  Adds an address entry to the user.
   To get more information about the fields, see `Legion.Identity.Information.AddressBook.Address`.
   """
   @spec create_address(User.id(),
@@ -71,34 +71,43 @@ defmodule Legion.Identity.Information.AddressBook do
   """
   @spec update_address(Address.id(), Address.address_type(), String.t(), String.t(), Keyword.t()) ::
     {:ok, Address} |
-    {:error | Ecto.Changeset.t()}
+    {:error, Ecto.Changeset.t()} |
+    {:error, :not_found}
   def update_address(address_id, type, name, country_name, opts \\ [])
   when is_integer(address_id) do
-    address = Repo.get_by!(Address, id: address_id)
-    description = Keyword.get(opts, :description)
-    state = Keyword.get(opts, :state)
-    city = Keyword.get(opts, :city)
-    neighborhood = Keyword.get(opts, :neighborhood)
-    zip_code = Keyword.get(opts, :zip_code)
-    location = Keyword.get(opts, :location)
+    if address = Repo.get_by(Address, id: address_id) do
+      description = Keyword.get(opts, :description)
+      state = Keyword.get(opts, :state)
+      city = Keyword.get(opts, :city)
+      neighborhood = Keyword.get(opts, :neighborhood)
+      zip_code = Keyword.get(opts, :zip_code)
+      location = Keyword.get(opts, :location)
 
-    changeset =
-      Address.changeset(address,
-                        %{type: type,
-                          name: name,
-                          description: description,
-                          state: state,
-                          city: city,
-                          neighborhood: neighborhood,
-                          zip_code: zip_code,
-                          location: location,
-                          country_name: country_name})
+      changeset =
+        Address.changeset(address,
+                          %{type: type,
+                            name: name,
+                            description: description,
+                            state: state,
+                            city: city,
+                            neighborhood: neighborhood,
+                            zip_code: zip_code,
+                            location: location,
+                            country_name: country_name})
 
-    Repo.update(changeset)
+      Repo.update(changeset)
+    else
+      {:error, :not_found}
+    end
   end
 
   @doc """
   Lists addresses of the user.
+
+  ## Options
+
+  - `:limit`: Limits the number of entities in result. Defaults to #{@default_page_size}.
+  - `:offset`: Skips given number of entities in result.
   """
   @spec list_addresses_of_user(User.id(), Keyword.t()) ::
     [Address]
