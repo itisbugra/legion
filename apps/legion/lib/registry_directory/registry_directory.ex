@@ -209,8 +209,8 @@ defmodule Legion.RegistryDirectory do
 
           query
           |> Repo.all()
-          |> Enum.map(fn {x, {{ year, month, day }, { hour, minute, second, microsecond }}} ->
-            {x, NaiveDateTime.from_erl!({ { year, month, day }, { hour, minute, second }}, { microsecond, 6 })}
+          |> Enum.map(fn {x, {{year, month, day}, {hour, minute, second, microsecond}}} ->
+            {x, NaiveDateTime.from_erl!({{year, month, day}, {hour, minute, second}}, {microsecond, 6})}
           end) # Little hack to convert Postgrex date to Erlang date
         end
       end
