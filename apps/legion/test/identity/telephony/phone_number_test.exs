@@ -7,7 +7,7 @@ defmodule Legion.Identity.Telephony.PhoneNumberTest do
   alias Legion.Identity.Telephony.PhoneNumber
 
   @user_id 1
-  @phone_number "00902124440000"
+  @phone_number "+966558611111"
   @phone_type :work
 
   @valid_attrs %{user_id: @user_id,
@@ -43,6 +43,12 @@ defmodule Legion.Identity.Telephony.PhoneNumberTest do
 
   test "changeset without prioritization timestamp" do
     assert PhoneNumber.changeset(%PhoneNumber{}, omit_field(:inserted_at)).valid?
+  end
+
+  test "changeset with invalid phone number" do
+    params = Map.put(@valid_attrs, :number, "test")
+
+    refute PhoneNumber.changeset(%PhoneNumber{}, params).valid?
   end
 
   test "changeset fails with default params" do

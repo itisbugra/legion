@@ -27,7 +27,7 @@ defmodule Legion.Identity.Telephony.PhoneNumber do
   - it should have no descendants with a higher prioritization timestamp,
   - its type is one of "home", "work", "mobile".
 
-  ## Preliminary rules for prioritization
+  ## Rules for prioritization
 
   Certain rules apply for the prioritization of the phone numbers.
   A phone number entry can be prioritized if and only if,
@@ -37,8 +37,20 @@ defmodule Legion.Identity.Telephony.PhoneNumber do
   """
   use Legion.Stereotype, :model
 
+  import Legion.Telephony.PhoneNumber, only: [is_valid_number?: 1]
+
   alias Legion.Identity.Information.Registration, as: User
   alias Legion.Identity.Telephony.PhoneType
+
+  @typedoc """
+  A positive integer uniquely identifying a phone number entity.
+  """
+  @type id() :: pos_integer()
+
+  @typedoc """
+  Type of the phone number.
+  """
+  @type phone_type() :: :home | :mobile | :work | :home_fax | :work_fax | :pager
 
   schema "user_phone_numbers" do
     belongs_to :user, User
@@ -55,6 +67,7 @@ defmodule Legion.Identity.Telephony.PhoneNumber do
     |> cast(params, [:user_id, :number, :type, :ignored?, :safe?, :primed_at])
     |> validate_required([:user_id, :number, :type])
     |> validate_safety_constraint()
+    |> validate_phone_number()
     |> foreign_key_constraint(:user_id)
     |> unique_constraint(:user_id)
   end
@@ -64,9 +77,22 @@ defmodule Legion.Identity.Telephony.PhoneNumber do
     ignored? = get_field(changeset, :ignored?, false)
     primed_at = get_field(changeset, :primed_at)
 
-    if not is_nil(primed_at) and not safe? or ignored? do
+    if not is_nil(primed_at) and (not safe? or ignored?) do
       changeset
       |> add_error(:primed_at, "cannot be prioritized if unsafe or ignored")
+    else
+      changeset
+    end
+  end
+
+  defp validate_phone_number(changeset) do
+    # Retrieve the phone number if changed and validate
+    if phone_number = get_change(changeset, :number) do
+      if is_valid_number?(phone_number) do
+        changeset
+      else
+        add_error(changeset, :phone_number, "is invalid")
+      end
     else
       changeset
     end
