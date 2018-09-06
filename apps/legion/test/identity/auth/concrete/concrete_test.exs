@@ -31,25 +31,25 @@ defmodule Legion.Identity.Auth.ConcreteTest do
     test "does not register the user if username is already taken", %{username: username, password: password} do
       register_internal_user username, password     # save the user for once
 
-      assert register_internal_user(username, password) |> elem(0) == :error
+      assert match? {:error, _}, register_internal_user(username, password)
     end
 
     test "does not register the user if username is short", %{password: password} do
       username = random_string(Enum.min(@username_length) - 1)
 
-      assert register_internal_user(username, password) |> elem(0) == :error
+      assert match? {:error, _}, register_internal_user(username, password)
     end
 
     test "does not register the user if username is long", %{password: password} do
       username = random_string(Enum.max(@username_length) + 1)
 
-      assert register_internal_user(username, password)  |> elem(0) == :error
+      assert match? {:error, _}, register_internal_user(username, password)
     end
 
     test "does not register the user if password is not in predetermined length", %{username: username} do
       password = random_string(@password_length + 1)
 
-      assert register_internal_user(username, password) |> elem(0) == :error
+      assert match? {:error, _}, register_internal_user(username, password)
     end
   end
 
