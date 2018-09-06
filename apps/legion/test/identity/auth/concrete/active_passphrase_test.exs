@@ -14,18 +14,18 @@ defmodule Legion.Identity.Auth.Concrete.ActivePassphraseTest do
     inactive_passphrases = Factory.insert_list(@inactive_passphrases_count, :passphrase, user: user)
 
     inactive_passphrases
-    |> Enum.each(&Factory.insert(:passphrase_invalidation, 
-                                 target_passphrase: &1, 
+    |> Enum.each(&Factory.insert(:passphrase_invalidation,
+                                 target_passphrase: &1,
                                  source_passphrase: List.first(active_passphrases)))
 
-    %{user: user, 
-      active_passphrases: active_passphrases, 
+    %{user: user,
+      active_passphrases: active_passphrases,
       inactive_passphrases: inactive_passphrases}
   end
 
   test "fetches active passphrases", %{user: u, active_passphrases: ap, inactive_passphrases: ip} do
-    ftor = &(Map.fetch!(&1, :id))/1
-    result_ids = ActivePassphrase.list_for_user(u.id) |> Enum.map(ftor)
+    ftor = &(Map.fetch!(&1, :id))
+    result_ids = u.id |> ActivePassphrase.list_for_user() |> Enum.map(ftor)
     ap_ids = Enum.map(ap, ftor)
     ip_ids = Enum.map(ip, ftor)
 
