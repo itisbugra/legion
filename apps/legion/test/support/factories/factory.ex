@@ -6,6 +6,7 @@ defmodule Legion.Factory do
   use Legion.TemplateFactory
   use Legion.Identity.Information.AddressBook.Factory
   use Legion.Identity.Information.Political.Factory
+  use Legion.Identity.Information.Telephony.Factory
 
   alias Legion.Identity.Auth.Concrete.Passkey
   alias Legion.Identity.Auth.TFA.OneTimeCode
