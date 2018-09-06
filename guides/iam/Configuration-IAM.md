@@ -88,6 +88,34 @@ Parameter name | Data Type | Units | Description | Default
 --- | --- | --- | --- | ---
 `:keccak_variant` | `t() :: :sha3_224 ǀ :sha3_256 ǀ :sha3_384 ǀ :sha3_512` | - | Keccak variant to be used in hashing passkeys. | `:sha3_512`
 
+## Personal data
+
+The module is configured using namespace `Legion.Identity.Information.PersonalData`, with the following attributes.
+
+Parameter name | Data Type | Units | Description | Default
+--- | --- | --- | --- | ---
+`:given_name_length` | [`Range.t()`] | - | Length of the given name. | `1..80`
+`:middle_name_length` | [`Range.t()`] | - | Length of the middle name. | `1..80`
+`:family_name_length` | [`Range.t()`] | - | Length of the family name. | `1..80`
+`:name_prefix_length` | [`Range.t()`] | - | Length of the name prefix. | `1..80`
+`:name_postfix_length` | [`Range.t()`] | - | Length of the name postfix. | `1..80`
+`:nickname_length` | [`Range.t()`] | - | Length of the nickname. | `1..80`
+`:phonetic_representation_length` | [`Range.t()`] | - | Length of the phonetic representation of the name. | `1..80`
+
+## Address book
+
+The module is configured using namespace `Legion.Identity.Information.AddressBook`, with the following attributes.
+
+Parameter name | Data Type | Units | Description | Default
+--- | --- | --- | --- | ---
+`:name_length` | [`Range.t()`] | - | Length of the name of an address book entry. | `1..24`
+`:description_length` | [`Range.t()`] | - | Length of the description of an address book entry. | `1..80`
+`:state_length` | [`Range.t()`] | - | Length of the state of the address entry. | `1..24`
+`:city_length` | [`Range.t()`] | - | Length of the city of the address entry. | `1..24`
+`:neighborhood_length` | [`Range.t()`] | - | Length of the neighborhood of the address entry. | `1..24`
+`:zip_code_length` | [`Range.t()`] | - | Length of the zip code of the address entry. | `1..24`
+`:listing_default_page_size` | `pos_integer()` | - | Default page size of address book entry listing | `5`
+
 ## Footnotes
 
 1. The secret key should be generated using secure random generator with increased entropy.
