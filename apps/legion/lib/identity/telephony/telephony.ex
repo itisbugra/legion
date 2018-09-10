@@ -38,6 +38,48 @@ defmodule Legion.Identity.Telephony do
     end
   end
 
+  @doc """
+  Updates the type and number of a phone number entry.
+  """
+  @spec update_phone_number(PhoneNumber.id(), PhoneNumber.phone_type(), String.t()) ::
+    {:ok, PhoneNumber} |
+    {:error, :not_found} |
+    {:error, :invalid} |
+    {:error, :unknown_type}
+  def update_phone_number(phone_number_id, type, number) do
+    if phone_number = Repo.get_by(PhoneNumber, id: phone_number_id) do
+      changeset = 
+        PhoneNumber.changeset(phone_number, 
+                              %{type: type,
+                                number: number})
+
+      case Repo.update(changeset) do
+        {:error, changeset} ->
+          translate_changeset(changeset)
+        any ->
+          any
+      end
+    else
+      {:error, :not_found}
+    end
+  end
+
+  @doc """
+  Removes a phone number.
+  """
+  @spec remove_phone_number(PhoneNumber.id()) ::
+    :ok |
+    {:error, :not_found}
+  def remove_phone_number(phone_number_id) do
+    if phone_number = Repo.get_by(PhoneNumber, id: phone_number_id) do
+      Repo.delete!(phone_number)
+
+      :ok
+    else
+      {:error, :not_found}
+    end
+  end
+
   defp translate_changeset(changeset) do
     errors = changeset.errors
 
@@ -57,6 +99,11 @@ defmodule Legion.Identity.Telephony do
   @doc """
   Makes a phone number primary.
   """
+  @spec make_primary(PhoneNumber.id()) ::
+    {:ok, PhoneNumber} |
+    {:error, :ignored} |
+    {:error, :unsafe} |
+    {:error, :not_found}
   def make_primary(phone_number_id) when is_integer(phone_number_id) do
     if phone_number = Repo.get_by(PhoneNumber, id: phone_number_id) do
       ignored? = phone_number.ignored?

@@ -7,6 +7,7 @@ defmodule Legion.Identity.TelephonyTest do
   alias Legion.Identity.Telephony.PhoneNumber
 
   @phone_number "+966558611111"
+  @changed_phone_number "+966558611112"
 
   @fixture_size 5
 
@@ -27,8 +28,7 @@ defmodule Legion.Identity.TelephonyTest do
 
   describe "create_phone_number/4" do
     test "creates a phone number with default options", %{user: u} do
-      {:ok, _} = create_phone_number(u.id, :work, @phone_number)
-
+      assert match? {:ok, _}, create_phone_number(u.id, :work, @phone_number)
       assert Repo.get_by(PhoneNumber, number: @phone_number)
     end
 
@@ -50,6 +50,36 @@ defmodule Legion.Identity.TelephonyTest do
 
     test "errors if phone number is invalid", %{user: u} do
       assert create_phone_number(u.id, :work, "test") == {:error, :invalid}
+    end
+  end
+
+  describe "update_phone_number/3" do
+    test "updates a phone number", %{phone_number: pn} do
+      assert match? {:ok, _}, update_phone_number(pn.id, :work, @changed_phone_number)
+      assert Repo.get_by(PhoneNumber, id: pn.id).number == @changed_phone_number
+    end
+
+    test "errors if type is invalid", %{phone_number: pn} do
+      assert update_phone_number(pn.id, :invalid, @changed_phone_number) == {:error, :unknown_type}
+    end
+
+    test "errors if phone number does not exist" do
+      assert update_phone_number(-1, :work, @changed_phone_number) == {:error, :not_found}
+    end
+
+    test "errors if phone number is invalid", %{phone_number: pn} do
+      assert update_phone_number(pn.id, :work, "test") == {:error, :invalid}
+    end
+  end
+
+  describe "remove_phone_number/1" do
+    test "deletes a phone number", %{phone_number: pn} do
+      assert remove_phone_number(pn.id) == :ok
+      refute Repo.get_by(PhoneNumber, id: pn.id)
+    end
+
+    test "errors if phone number does not exist" do
+      assert remove_phone_number(-1) == {:error, :not_found}
     end
   end
 
