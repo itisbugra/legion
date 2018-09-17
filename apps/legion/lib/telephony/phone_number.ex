@@ -1,6 +1,6 @@
 defmodule Legion.Telephony.PhoneNumber do
   @moduledoc """
-  Declares types for phone numbers.
+  Declares types and utility functions for working with phone numbers.
   """
 
   @typedoc """

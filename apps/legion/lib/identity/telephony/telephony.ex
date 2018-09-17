@@ -11,6 +11,7 @@ defmodule Legion.Identity.Telephony do
 
   @doc """
   Adds a phone number entry to the user.
+  
   To get more information about the fields, see `Legion.Identity.Telephony.PhoneNumber`.
   """
   @spec create_phone_number(User.id(), PhoneNumber.phone_type(), String.t(), Keyword.t()) ::
