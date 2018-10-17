@@ -1,0 +1,69 @@
+@startuml
+
+scale 3.0
+
+skinparam RoundCorner false
+skinparam DefaultTextAlignment center
+skinparam BackgroundColor transparent
+skinparam Monochrome true
+skinparam Shadowing false
+
+skinparam Arrow {
+  Color black
+  LollipopColor black
+  FontName "SFProDisplay-Regular"
+}
+
+skinparam State {
+  FontName "SFProDisplay-Medium"
+  FontSize 12
+  BackgroundColor white
+  BorderColor black
+  StartColor black
+  EndColor black
+}
+
+skinparam StateAttribute {
+  FontName "SFProDisplay-Regular"
+  FontSize 9
+  FontColor black
+}
+
+skinparam Note {
+  FontName "SFProDisplay-Light"
+  FontSize 9
+  BorderColor transparent
+  BackgroundColor transparent
+}
+
+Safe : Available to be utilized
+Unsafe : Unapplicable in integrations
+
+state Safe {
+  state "Default" as d1 : Neither primary nor ignored
+  Primary : Deduced in canonicalization
+  Ignored : Visible to user interfaces but not used
+
+  [*] --> d1
+  d1 --> Primary : prioritize
+  Primary --> d1 : overprioritize
+  d1 --> Ignored : neglect
+}
+
+state Unsafe {
+  state "Default" as d2 : Waiting to be acknowledged
+  Outdated : Removed from disk
+
+  [*] --> d2
+  d2 --> Outdated : scoop
+
+  note right of Outdated : After some while, unsafe phone numbers will be removed from the disk.
+}
+
+[*] -right-> Safe : create
+Safe --> Safe : extend duration
+Safe --> Unsafe : invalidate / timeout
+Unsafe --> Safe : acknowledge
+Outdated -left-> [*]
+
+@enduml
