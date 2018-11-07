@@ -89,7 +89,7 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
   @doc """
   Checks password with given digestion algorithm.
   """
-  @spec checkpw(Keccak.hash(), binary(), Pair.digestion_algorithm()) ::
+  @spec checkpw(binary(), binary(), Pair.digestion_algorithm()) ::
     :ok |
     {:error, :wrong_password}
   def checkpw(password_hash, digest, alg) do
