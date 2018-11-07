@@ -47,6 +47,13 @@ defmodule Legion.Stereotype do
     end
   end
 
+  def viewdecl do
+    quote do
+      use Legion.Stereotype.ViewDecl
+      use Legion.Stereotype, :model
+    end
+  end
+
   @doc """
   When used, dispatch to the appropriate stereotype.
   """
