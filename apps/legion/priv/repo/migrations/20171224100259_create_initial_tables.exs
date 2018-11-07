@@ -280,11 +280,42 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :user_id, references(:users, on_delete: :delete_all, on_update: :update_all), null: false
       add :number, :string, null: false
       add :type, :phone_type, null: false
-      add :ignored?, :boolean, null: false, default: false
-      add :safe?, :boolean, null: false, default: true
-      add :primed_at, :naive_datetime
       add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false 
     end
+
+    create table(:user_phone_number_prioritization_traits) do
+      add :phone_number_id, references(:user_phone_numbers, on_delete: :delete_all, on_update: :update_all), null: false
+      add :authority_id, references(:passphrases, on_delete: :delete_all, on_update: :update_all), null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
+    end
+
+    create index(:user_phone_number_prioritization_traits, [:phone_number_id])
+
+    create table(:user_phone_number_safety_traits) do
+      add :phone_number_id, references(:user_phone_numbers, on_delete: :delete_all, on_update: :update_all), null: false
+      add :authority_id, references(:passphrases, on_delete: :delete_all, on_update: :update_all), null: false
+      add :valid_for, :integer, null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
+    end
+
+    create index(:user_phone_number_safety_traits, [:phone_number_id])
+    create constraint(:user_phone_number_safety_traits, :validity_duration_must_be_positive, check: "valid_for > 0")
+
+    create table(:user_phone_number_safety_trait_invalidations) do
+      add :safety_trait_id, references(:user_phone_number_safety_traits, on_delete: :delete_all, on_update: :update_all), null: false
+      add :authority_id, references(:passphrases, on_delete: :delete_all, on_update: :update_all), null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
+    end
+
+    create unique_index(:user_phone_number_safety_trait_invalidations, [:safety_trait_id])
+
+    create table(:user_phone_number_neglection_traits) do
+      add :phone_number_id, references(:user_phone_numbers, on_delete: :delete_all, on_update: :update_all), null: false
+      add :authority_id, references(:passphrases, on_delete: :delete_all, on_update: :update_all), null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
+    end
+
+    create unique_index(:user_phone_number_neglection_traits, [:phone_number_id])
 
     Legion.Identity.Auth.Concrete.ActivePassphrase.ViewDecl.migrate()
 
@@ -301,5 +332,16 @@ defmodule Legion.Repo.Migrations.CreateInitialTables do
       add :country_name, references(:countries, on_delete: :delete_all, on_update: :update_all, column: :name, type: :text), null: false
       timestamps()
     end
+
+    create table(:password_blacklist_entries) do
+      add :user_id, references(:users, on_delete: :delete_all, on_update: :update_all)
+      add :hash, :bytea, null: false
+      add :inserted_at, :naive_datetime, default: fragment("now()::timestamp"), null: false
+    end
+
+    create unique_index(:password_blacklist_entries, [:hash])
+
+    Legion.Identity.Telephony.PhoneNumber.ValidSafetyTrait.migrate()
+    Legion.Identity.Telephony.PhoneNumber.ValidPrioritizationTrait.migrate()
   end
 end
