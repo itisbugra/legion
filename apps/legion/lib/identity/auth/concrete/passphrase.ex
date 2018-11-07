@@ -140,6 +140,37 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   end
 
   @doc """
+  Returns a boolean value indicating if passphrase exists.
+  """
+  @spec exists?(id()) :: boolean()
+  def exists?(passphrase_id) do
+    not is_nil Repo.get(Passphrase, passphrase_id)
+  end
+
+  @doc """
+  Validates a passphrase with given identifier.
+  """
+  @spec validate_id(id()) ::
+    :ok |
+    {:error, :not_found} |
+    {:error, :invalid} |
+    {:error, :timed_out}
+  def validate_id(passphrase_id) do
+    if exists?(passphrase_id) do
+      query =
+        from p in Passphrase,
+        preload: :invalidation,
+        where: p.id == ^passphrase_id
+
+      query
+      |> Repo.one!()
+      |> validate()
+    else
+      {:error, :not_found}
+    end
+  end
+
+  @doc """
   Validates given passphrase and returns `:ok`, or an error tuple with a reason.
 
   A passphrase is valid if and only if it is not invalidated manually and it has not timed out.
