@@ -1,13 +1,11 @@
 defmodule Legion.Identity.Auth.Concrete.ActivePassphrase.ViewDecl do
   @moduledoc false
+  use Legion.Stereotype, :viewdecl
+
   @concrete_env Application.get_env(:legion, Legion.Identity.Auth.Concrete)
   @passphrase_lifetime Keyword.fetch!(@concrete_env, :passphrase_lifetime)
 
-  def migrate do
-    Ecto.Migration.execute create_view(), drop_view()
-  end
-
-  def create_view do
+  create do
     """
     CREATE OR REPLACE VIEW active_passphrases AS
       SELECT p.*
@@ -20,7 +18,7 @@ defmodule Legion.Identity.Auth.Concrete.ActivePassphrase.ViewDecl do
     """
   end
 
-  def drop_view do
+  drop do
     """
     DROP VIEW active_passphrases;
     """
