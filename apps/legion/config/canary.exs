@@ -70,6 +70,11 @@ config :legion, Legion.Identity.Information.AddressBook,
   zip_code_length: 1..24,
   listing_default_page_size: 5
 
+config :legion, Legion.Identity.Telephony.PhoneNumber,
+  initial_safe_duration: six_months,
+  default_safe_duration: six_months,
+  maximum_safe_duration: (six_months * 2)
+
 config :legion, Legion.Messaging.Switching.Globals,
   history_buffer_length: 5
 
