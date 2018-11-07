@@ -116,6 +116,16 @@ Parameter name | Data Type | Units | Description | Default
 `:zip_code_length` | [`Range.t()`] | - | Length of the zip code of the address entry. | `1..24`
 `:listing_default_page_size` | `pos_integer()` | - | Default page size of address book entry listing | `5`
 
+## Phone book
+
+The module is configured using namespace `Legion.Identity.Telephony.PhoneNumber`, with the following attributes.
+
+| Parameter name           | Data Type       | Units   | Description                                                  | Default      |
+| ------------------------ | --------------- | ------- | ------------------------------------------------------------ | ------------ |
+| `:initial_safe_duration` | `pos_integer()` | seconds | The initial safety duration of a new phone number entry.     | `15_552_000` |
+| `:default_safe_duration` | `pos_integer()` | seconds | Default duration for safety extension.                       | `15_552_000` |
+| `:maximum_safe_duration` | `pos_integer()` | seconds | The maximum possible duration that can be given to safety extension. | `31_104_000` |
+
 ## Footnotes
 
 1. The secret key should be generated using secure random generator with increased entropy.
