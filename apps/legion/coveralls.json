@@ -7,7 +7,8 @@
     "using",
     "setup",
     "defstruct",
-    "defdelegate"
+    "defdelegate",
+    "use"
   ],
 
   "coverage_options": {
@@ -21,7 +22,7 @@
 
   "skip_files": [
     "test/support",
-    "lib/stereotype.ex",
+    "lib/stereotype/stereotype.ex",
     "priv",
     "lib/mix",
     "lib/logger",
