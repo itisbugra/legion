@@ -11,7 +11,7 @@ defmodule Legion.Identity.Telephony.PhoneNumber.FiniteStateMachine do
   alias Legion.Identity.Telephony.PhoneNumber
   alias Legion.Identity.Telephony.PhoneNumber.{SafetyTrait, 
                                                PrioritizationTrait,
-                                               NeglectionTrait, ValidPrioritizationTrait}
+                                               NeglectionTrait}
 
   @env Application.get_env(:legion, Legion.Identity.Telephony.PhoneNumber)
   @default_safe_duration Keyword.fetch!(@env, :default_safe_duration)
