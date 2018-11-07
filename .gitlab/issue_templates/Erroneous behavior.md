@@ -1,6 +1,8 @@
 ## Report
 
-*Type the description for the issue, e.g.: The error occurs due to a programmer error found in the view declaration.*
+*Type the description for the issue, e.g.:* 
+
+The error occurs due to a programmer error found in the view declaration.
 
 ### Module (or function) being affected
 
@@ -30,6 +32,10 @@ Factory.insert(:phone_number_prioritization_trait, phone_number: safe_and_priori
 ```elixir
 assert primary? safe_and_prioritized.id   # fails to pass
 ```
+
+#### What did you expect?
+
+The phone number should be primary.
 
 ### Possible reason
 
