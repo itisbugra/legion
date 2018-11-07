@@ -155,4 +155,56 @@ defmodule Legion.Identity.Auth.Concrete.PassphraseTest do
       assert Passphrase.find_passphrase_matching(u.id, ip.passkey) == {:error, :invalid}
     end
   end
+
+  describe "exists?/1" do
+    setup do
+      passphrase = Factory.insert(:passphrase)
+
+      %{passphrase: passphrase}
+    end
+
+    test "returns truthy value if passphrase exists", %{passphrase: passphrase} do
+      assert Passphrase.exists?(passphrase.id)
+    end
+
+    test "returns falsey value if passphrase does not exist" do
+      refute Passphrase.exists?(-1)
+    end
+  end
+
+  describe "validate_id/1" do
+    setup do
+      env = Application.get_env(:legion, Legion.Identity.Auth.Concrete)
+      offset = Keyword.fetch!(env, :passphrase_lifetime) + 200_000
+      time = add(utc_now(), (-1) * offset)
+
+      user = Factory.insert(:user)
+      passphrase = Factory.insert(:passphrase, user: user)
+      timed_out = Factory.insert(:passphrase, user: user, inserted_at: time)
+      invalidated = Factory.insert(:passphrase, user: user)
+      _invalidation = Factory.insert(:passphrase_invalidation, source_passphrase: passphrase, target_passphrase: invalidated)
+
+      %{user: user, 
+        passphrase: passphrase, 
+        time_threshold: time,
+        timed_out: timed_out,
+        invalidated: invalidated}
+    end
+
+    test "returns ok if passphrase is valid", %{passphrase: passphrase} do
+      assert Passphrase.validate_id(passphrase.id) == :ok
+    end
+
+    test "errors not found if passphrase does not exist" do
+      assert Passphrase.validate_id(-1) == {:error, :not_found}
+    end
+
+    test "errors invalid if passphrase is invalidated", %{invalidated: invalidated} do
+      assert Passphrase.validate_id(invalidated.id) == {:error, :invalid}
+    end
+
+    test "errors invalid if passphrase is timed out", %{timed_out: timed_out} do
+      assert Passphrase.validate_id(timed_out.id) == {:error, :timed_out}
+    end
+  end
 end
