@@ -4,44 +4,49 @@ defmodule Legion.Umbrella.Mixfile do
   def project do
     [
       apps_path: "apps",
-      start_permanent: Mix.env == :prod,
+      start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
       docs: docs(),
       elixir: "~> 1.7.3",
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: [coveralls: :test,
-                          "coveralls.detail": :test,
-                          "coveralls.post": :test,
-                          "coveralls.html": :test]
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
   defp deps do
-    [{:ex_doc, "~> 0.16", only: :dev, runtime: false},
-     {:excoveralls, "~> 0.8.0", only: :test},
-     {:credo, "~> 0.10.0", only: [:dev, :test], runtime: false}]
+    [
+      {:ex_doc, "~> 0.16", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.8.0", only: :test},
+      {:credo, "~> 0.10.0", only: [:dev, :test], runtime: false}
+    ]
   end
 
   defp aliases do
-    ["ecto.setup": ["ecto.create",
-                    "ecto.migrate",
-                    "run apps/legion/priv/repo/seeds.exs"],
-     "ecto.reset": ["ecto.drop",
-                    "ecto.setup"],
-     "legion.reg": ["legion.reg.locale",
-                    "legion.reg.nationality",
-                    "legion.reg.messaging",
-                    "legion.reg.political"],
-     "legion.check": ["legion.check.timezone"],
-     "legion.setup": ["legion.check",
-                      "ecto.setup",
-                      "legion.reg",
-                      "ua_inspector.download.databases -f",
-                      "ua_inspector.download.short_code_maps -f"],
-     "legion.reset": ["legion.check",
-                      "ecto.reset",
-                      "legion.reg"]]
+    [
+      "ecto.setup": ["ecto.create", "ecto.migrate", "run apps/legion/priv/repo/seeds.exs"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      "legion.reg": [
+        "legion.reg.locale",
+        "legion.reg.nationality",
+        "legion.reg.messaging",
+        "legion.reg.political"
+      ],
+      "legion.check": ["legion.check.timezone"],
+      "legion.setup": [
+        "legion.check",
+        "ecto.setup",
+        "legion.reg",
+        "ua_inspector.download.databases -f",
+        "ua_inspector.download.short_code_maps -f"
+      ],
+      "legion.reset": ["legion.check", "ecto.reset", "legion.reg"]
+    ]
   end
 
   def docs do
@@ -60,10 +65,8 @@ defmodule Legion.Umbrella.Mixfile do
     [
       "guides/introduction/Up and Running.md",
       "guides/introduction/Configuration.md",
-
       "guides/iam/Preface-IAM.md",
       "guides/iam/Configuration-IAM.md",
-
       "guides/mpb/Preface-MPB.md",
       "guides/mpb/Configuration-MPB.md"
     ]
