@@ -14,19 +14,19 @@ defmodule Legion.Identity.Auth.Insecure.Blacklist do
   This function should be used in runtime.
   """
   @spec upsert(String.t(), User.id()) ::
-    {:ok, Entry} |
-    {:error, Ecto.Changeset.t()}
+          {:ok, Entry}
+          | {:error, Ecto.Changeset.t()}
   def upsert(word, user_id) do
     hash = Keccak.hash(word)
 
     case Repo.get_by(Entry, hash: hash) do
       nil ->
-        params = %{authority_id: user_id,
-                   hash: hash}
+        params = %{authority_id: user_id, hash: hash}
 
         changeset = Entry.changeset(%Entry{}, params)
 
         Repo.insert(changeset)
+
       entry ->
         {:ok, entry}
     end
@@ -39,8 +39,8 @@ defmodule Legion.Identity.Auth.Insecure.Blacklist do
   seeding operations. It should not be used in production environment.
   """
   @spec upsert(String.t()) ::
-    {:ok, Entry} |
-    {:error, Ecto.Changeset.t()}
+          {:ok, Entry}
+          | {:error, Ecto.Changeset.t()}
   def upsert(word),
     do: upsert(word, nil)
 
@@ -52,6 +52,7 @@ defmodule Legion.Identity.Auth.Insecure.Blacklist do
     case Repo.get_by(Entry, hash: hash) do
       nil ->
         nil
+
       {:ok, entry} ->
         Repo.delete!(entry)
     end

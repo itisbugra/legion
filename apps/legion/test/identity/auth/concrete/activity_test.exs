@@ -11,31 +11,31 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
   @passkey_digest "$argon2i$v=19$m=65536,t=6,p=1$SoJWXxCYs6cTOW4PEZqJ6w$WQhD2UBB9fp2eA5PA2UOzXa7djroksasNNGgB8m0Nko"
   @user_agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/604.3.5 (KHTML, like Gecko) Version/11.0.1 Safari/604.3.5"
   @ipv4 %Postgrex.INET{address: {46, 196, 25, 86}}
-  @valid_attrs %{passphrase_id: 2,
-                 user_agent: @user_agent,
-                 engine: "WebKit",
-                 engine_version: "604.3.5",
-                 client_name: "Safari",
-                 client_type: "browser",
-                 client_version: "11.0.1",
-                 device_brand: "unknown",
-                 device_model: "unknown",
-                 device_type: "desktop",
-                 os_name: "Mac",
-                 os_platform: "unknown",
-                 os_version: "10.13.1",
-                 ip_addr: @ipv4,
-                 country_name: "Turkey",
-                 country_code: "TR",
-                 ip_location: %Postgrex.Point{x: 41.0214,
-                                              y: 28.9684},
-                 metro_code: 0,
-                 region_code: "34",
-                 region_name: "Istanbul",
-                 time_zone: "Europe/Istanbul",
-                 zip_code: "",
-                 gps_location: %Postgrex.Point{x: 41.4079,
-                                               y: 29.0012}}
+  @valid_attrs %{
+    passphrase_id: 2,
+    user_agent: @user_agent,
+    engine: "WebKit",
+    engine_version: "604.3.5",
+    client_name: "Safari",
+    client_type: "browser",
+    client_version: "11.0.1",
+    device_brand: "unknown",
+    device_model: "unknown",
+    device_type: "desktop",
+    os_name: "Mac",
+    os_platform: "unknown",
+    os_version: "10.13.1",
+    ip_addr: @ipv4,
+    country_name: "Turkey",
+    country_code: "TR",
+    ip_location: %Postgrex.Point{x: 41.0214, y: 28.9684},
+    metro_code: 0,
+    region_code: "34",
+    region_name: "Istanbul",
+    time_zone: "Europe/Istanbul",
+    zip_code: "",
+    gps_location: %Postgrex.Point{x: 41.4079, y: 29.0012}
+  }
 
   test "changeset with valid attributes" do
     changeset = Activity.changeset(%Activity{}, @valid_attrs)
@@ -210,48 +210,45 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
 
   describe "create_changeset/4" do
     test "creates changeset with valid attrs" do
-      passphrase =
-        %Passphrase{id: 1,
-                    user_id: 1,
-                    passkey_digest: @passkey_digest,
-                    ip_addr: @ipv4}
+      passphrase = %Passphrase{id: 1, user_id: 1, passkey_digest: @passkey_digest, ip_addr: @ipv4}
 
-      result = create_changeset(passphrase.id,
-                                @user_agent,
-                                @ipv4.address,
-                                %Postgrex.Point{x: 4.2, y: 6.1})
+      result =
+        create_changeset(
+          passphrase.id,
+          @user_agent,
+          @ipv4.address,
+          %Postgrex.Point{x: 4.2, y: 6.1}
+        )
 
       assert elem(result, 0) == :ok
       assert elem(result, 1).valid?
     end
 
     test "creates changeset with loopback address" do
-      passphrase =
-        %Passphrase{id: 1,
-                    user_id: 1,
-                    passkey_digest: @passkey_digest,
-                    ip_addr: @ipv4}
+      passphrase = %Passphrase{id: 1, user_id: 1, passkey_digest: @passkey_digest, ip_addr: @ipv4}
 
-      result = create_changeset(passphrase.id,
-                                @user_agent,
-                                {127, 0, 0, 1},
-                                %Postgrex.Point{x: 4.2, y: 6.1})
+      result =
+        create_changeset(
+          passphrase.id,
+          @user_agent,
+          {127, 0, 0, 1},
+          %Postgrex.Point{x: 4.2, y: 6.1}
+        )
 
       assert elem(result, 0) == :ok
       assert elem(result, 1).valid?
     end
 
     test "fails with improper ip address" do
-      passphrase =
-        %Passphrase{id: 1,
-                    user_id: 1,
-                    passkey_digest: @passkey_digest,
-                    ip_addr: @ipv4}
+      passphrase = %Passphrase{id: 1, user_id: 1, passkey_digest: @passkey_digest, ip_addr: @ipv4}
 
-      result = create_changeset(passphrase.id,
-                                @user_agent,
-                                {500, 22, 1100, 34},
-                                %Postgrex.Point{x: 4.2, y: 6.1})
+      result =
+        create_changeset(
+          passphrase.id,
+          @user_agent,
+          {500, 22, 1100, 34},
+          %Postgrex.Point{x: 4.2, y: 6.1}
+        )
 
       assert result == {:error, :incorrect_ip_range}
     end
@@ -261,23 +258,29 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
     test "creates an activity" do
       passphrase = Factory.insert(:passphrase)
 
-      result = generate_activity(passphrase.id,
-                                 @user_agent,
-                                 @ipv4.address,
-                                 %Postgrex.Point{x: 4.2, y: 6.1})
+      result =
+        generate_activity(
+          passphrase.id,
+          @user_agent,
+          @ipv4.address,
+          %Postgrex.Point{x: 4.2, y: 6.1}
+        )
 
-      assert match? {:ok, _activity}, result
+      assert match?({:ok, _activity}, result)
     end
 
     test "projects an error of create_changeset/4" do
       passphrase = Factory.insert(:passphrase)
 
-      result = generate_activity(passphrase.id,
-                                 @user_agent,
-                                 {500, 22, 1100, 34},
-                                 %Postgrex.Point{x: 4.2, y: 6.1})
+      result =
+        generate_activity(
+          passphrase.id,
+          @user_agent,
+          {500, 22, 1100, 34},
+          %Postgrex.Point{x: 4.2, y: 6.1}
+        )
 
-      assert match? {:error, _}, result
+      assert match?({:error, _}, result)
     end
   end
 
@@ -291,7 +294,10 @@ defmodule Legion.Identity.Auth.Concrete.ActivityTest do
     test "returns activity with highest timestamp" do
       user = insert(:user)
       passphrase = insert(:passphrase, user: user)
-      _passed_activities = insert_list(5, :activity, passphrase: passphrase, inserted_at: add(utc_now(), -5))
+
+      _passed_activities =
+        insert_list(5, :activity, passphrase: passphrase, inserted_at: add(utc_now(), -5))
+
       latest_activity = insert(:activity, passphrase: passphrase)
 
       assert Activity.last_activity(user).id == latest_activity.id

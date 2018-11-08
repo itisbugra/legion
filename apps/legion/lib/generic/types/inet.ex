@@ -10,12 +10,14 @@ defmodule Legion.Types.INET do
   Handles casting to `Postgrex.INET`.
   """
   def cast(%Postgrex.INET{} = address), do: {:ok, address}
+
   def cast(address) when is_binary(address) do
     case parse_address(address) do
       {:ok, parsed_address} -> {:ok, %Postgrex.INET{address: parsed_address}}
-      {:error, _einval}     -> :error
+      {:error, _einval} -> :error
     end
   end
+
   def cast(_), do: :error
 
   @doc """
@@ -36,12 +38,12 @@ defmodule Legion.Types.INET do
   def decode(%Postgrex.INET{address: address}) do
     case :inet.ntoa(address) do
       {:error, _einval} -> :error
-      formatted_address  -> List.to_string(formatted_address)
+      formatted_address -> List.to_string(formatted_address)
     end
   end
 
   defp parse_address(address) do
-    address |> String.to_charlist() |> :inet.parse_address
+    address |> String.to_charlist() |> :inet.parse_address()
   end
 end
 

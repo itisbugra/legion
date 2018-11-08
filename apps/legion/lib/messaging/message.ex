@@ -45,8 +45,7 @@ defmodule Legion.Messaging.Message do
   """
   @type medium() :: :apm | :push | :mailing | :sms | :platform
 
-  defenum Medium, :messaging_medium,
-    [:apm, :push, :mailing, :sms, :platform]
+  defenum(Medium, :messaging_medium, [:apm, :push, :mailing, :sms, :platform])
 
   @available_pushes Medium.__enum_map__()
 
@@ -83,8 +82,8 @@ defmodule Legion.Messaging.Message do
     @primary_key false
 
     schema "message_recipients" do
-      belongs_to :message, Message
-      belongs_to :recipient, User
+      belongs_to(:message, Message)
+      belongs_to(:recipient, User)
     end
 
     def changeset(struct, params \\ %{}) do
@@ -109,10 +108,10 @@ defmodule Legion.Messaging.Message do
     @primary_key {:message_id, :id, autogenerate: false}
 
     schema "message_template_usages" do
-      belongs_to :message, Message, define_field: false
-      belongs_to :template, Template
-      field :subject_params, :map, default: %{}
-      field :body_params, :map, default: %{}
+      belongs_to(:message, Message, define_field: false)
+      belongs_to(:template, Template)
+      field(:subject_params, :map, default: %{})
+      field(:body_params, :map, default: %{})
     end
 
     def changeset(struct, params \\ %{}) do
@@ -126,16 +125,16 @@ defmodule Legion.Messaging.Message do
   end
 
   schema "messages" do
-    belongs_to :sender, User
-    many_to_many :recipients, User, join_through: Recipient
-    field :subject, :string
-    field :body, :string
-    field :medium, Medium
-    field :send_after, :integer, default: 0, read_after_writes: true
-    field :inserted_at, :naive_datetime, read_after_writes: true
+    belongs_to(:sender, User)
+    many_to_many(:recipients, User, join_through: Recipient)
+    field(:subject, :string)
+    field(:body, :string)
+    field(:medium, Medium)
+    field(:send_after, :integer, default: 0, read_after_writes: true)
+    field(:inserted_at, :naive_datetime, read_after_writes: true)
 
-    has_one :success_information, SuccessInformation
-    has_one :template_usage, TemplateUsage
+    has_one(:success_information, SuccessInformation)
+    has_one(:template_usage, TemplateUsage)
   end
 
   @doc """
@@ -159,17 +158,25 @@ defmodule Legion.Messaging.Message do
 
     if medium == :sms,
       do: changeset,
-    else: validate_subject_for_medium(changeset, medium)
+      else: validate_subject_for_medium(changeset, medium)
   end
 
   for type <- List.delete(@available_pushes, :sms) do
     defp validate_subject_for_medium(changeset, unquote(type)) do
-      min = unquote(Enum.min(Module.get_attribute(__MODULE__, :"#{Atom.to_string(type)}_subject_len")))
-      max = unquote(Enum.max(Module.get_attribute(__MODULE__, :"#{Atom.to_string(type)}_subject_len")))
+      min =
+        unquote(
+          Enum.min(Module.get_attribute(__MODULE__, :"#{Atom.to_string(type)}_subject_len"))
+        )
+
+      max =
+        unquote(
+          Enum.max(Module.get_attribute(__MODULE__, :"#{Atom.to_string(type)}_subject_len"))
+        )
 
       validate_subject_for_min_max_length(changeset, min, max)
     end
   end
+
   defp validate_subject_for_medium(changeset, nil), do: changeset
 
   defp validate_subject_for_min_max_length(changeset, min, max) do
@@ -186,11 +193,15 @@ defmodule Legion.Messaging.Message do
 
   for type <- @available_pushes do
     defp validate_body_for_medium(changeset, unquote(type)) do
-      min = unquote(Enum.min(Module.get_attribute(__MODULE__, :"#{Atom.to_string(type)}_body_len")))
-      max = unquote(Enum.max(Module.get_attribute(__MODULE__, :"#{Atom.to_string(type)}_body_len")))
+      min =
+        unquote(Enum.min(Module.get_attribute(__MODULE__, :"#{Atom.to_string(type)}_body_len")))
+
+      max =
+        unquote(Enum.max(Module.get_attribute(__MODULE__, :"#{Atom.to_string(type)}_body_len")))
 
       validate_length(changeset, :body, min: min, max: max)
     end
   end
+
   defp validate_body_for_medium(changeset, nil), do: changeset
 end

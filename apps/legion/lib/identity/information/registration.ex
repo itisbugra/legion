@@ -26,10 +26,17 @@ defmodule Legion.Identity.Information.Registration do
   @type user_or_id() :: Registration.id() | Registration
 
   schema "users" do
-    field :has_gps_telemetry_consent?, :boolean, default: false
-    belongs_to :locale, Locale, defaults: "en-us", foreign_key: :locale_rfc1766, references: :rfc1766, type: :binary
-    field :authentication_scheme, Scheme, default: :insecure
-    field :inserted_at, :naive_datetime, read_after_writes: true
+    field(:has_gps_telemetry_consent?, :boolean, default: false)
+
+    belongs_to(:locale, Locale,
+      defaults: "en-us",
+      foreign_key: :locale_rfc1766,
+      references: :rfc1766,
+      type: :binary
+    )
+
+    field(:authentication_scheme, Scheme, default: :insecure)
+    field(:inserted_at, :naive_datetime, read_after_writes: true)
   end
 
   def changeset(struct, params \\ %{}) do

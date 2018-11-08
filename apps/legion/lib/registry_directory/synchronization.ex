@@ -58,9 +58,9 @@ defmodule Legion.RegistryDirectory.Synchronization do
             Ecto.Adapters.SQL.Sandbox.checkout(@repo, sandbox: false)
           end
 
-          Logger.info fn ->
+          Logger.info(fn ->
             "== Adding #{@site} registers"
-          end
+          end)
 
           sync()
 
@@ -68,9 +68,9 @@ defmodule Legion.RegistryDirectory.Synchronization do
 
           pid && @repo.stop(pid)
 
-          Logger.info fn ->
+          Logger.info(fn ->
             "== Finished migrating #{@site} registers"
-          end
+          end)
         end
       end
     end

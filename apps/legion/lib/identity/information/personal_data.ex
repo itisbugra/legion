@@ -31,22 +31,39 @@ defmodule Legion.Identity.Information.PersonalData do
   @primary_key {:user_id, :integer, autogenerate: false}
 
   schema "user_personal_information" do
-    belongs_to :user, User, define_field: false
-    field :given_name, :string
-    field :middle_name, :string
-    field :family_name, :string
-    field :name_prefix, :string
-    field :name_postfix, :string
-    field :nickname, :string
-    field :phonetic_representation, :string
-    field :gender, Gender
-    belongs_to :nationality, Nationality, foreign_key: :nationality_abbreviation, references: :abbreviation, type: :binary
-    timestamps inserted_at: false
+    belongs_to(:user, User, define_field: false)
+    field(:given_name, :string)
+    field(:middle_name, :string)
+    field(:family_name, :string)
+    field(:name_prefix, :string)
+    field(:name_postfix, :string)
+    field(:nickname, :string)
+    field(:phonetic_representation, :string)
+    field(:gender, Gender)
+
+    belongs_to(:nationality, Nationality,
+      foreign_key: :nationality_abbreviation,
+      references: :abbreviation,
+      type: :binary
+    )
+
+    timestamps(inserted_at: false)
   end
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id, :given_name, :middle_name, :family_name, :name_prefix, :name_postfix, :nickname, :phonetic_representation, :gender, :nationality_abbreviation])
+    |> cast(params, [
+      :user_id,
+      :given_name,
+      :middle_name,
+      :family_name,
+      :name_prefix,
+      :name_postfix,
+      :nickname,
+      :phonetic_representation,
+      :gender,
+      :nationality_abbreviation
+    ])
     |> validate_required([:user_id])
     |> validate_range(:given_name, @given_name_len)
     |> validate_range(:middle_name, @middle_name_len)

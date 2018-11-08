@@ -8,8 +8,7 @@ defmodule Legion.Identity.Auth.Abstract.TokenTest do
     user = Factory.insert(:user)
     valid_passphrase = Factory.insert(:passphrase, user: user)
 
-    %{user: user,
-      valid_passphrase: valid_passphrase}
+    %{user: user, valid_passphrase: valid_passphrase}
   end
 
   test "issues token with given user and passphrase", %{user: user, valid_passphrase: passphrase} do
@@ -17,7 +16,7 @@ defmodule Legion.Identity.Auth.Abstract.TokenTest do
 
     str = elem(result, 1)
 
-    assert match? {:ok, _str}, result
+    assert match?({:ok, _str}, result)
     assert str.header_value
     assert str.jwk
     assert str.jws

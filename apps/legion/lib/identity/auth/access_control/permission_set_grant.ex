@@ -29,24 +29,23 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrant do
   @immediately 1
 
   schema "permission_set_grants" do
-    belongs_to :permission_set, PermissionSet
-    belongs_to :grantee, Registration
-    belongs_to :authority, Registration
-    field :valid_after, :integer
-    field :valid_for, :integer
-    field :inserted_at, :naive_datetime, read_after_writes: true
+    belongs_to(:permission_set, PermissionSet)
+    belongs_to(:grantee, Registration)
+    belongs_to(:authority, Registration)
+    field(:valid_after, :integer)
+    field(:valid_for, :integer)
+    field(:inserted_at, :naive_datetime, read_after_writes: true)
 
-    has_one :invalidation, Invalidation, foreign_key: :grant_id
+    has_one(:invalidation, Invalidation, foreign_key: :grant_id)
   end
 
-  @spec changeset(PermissionSetGrant, map) :: Ecto.Changeset.t
+  @spec changeset(PermissionSetGrant, map) :: Ecto.Changeset.t()
   def changeset(struct, params \\ %{}) do
     env = Application.get_env(:legion, Legion.Identity.Auth.AccessControl)
     maximum_deferral = Keyword.fetch!(env, :maximum_granting_deferral)
 
     struct
-    |> cast(params, [:permission_set_id, :grantee_id, :authority_id, 
-                     :valid_after, :valid_for])
+    |> cast(params, [:permission_set_id, :grantee_id, :authority_id, :valid_after, :valid_for])
     |> validate_required([:permission_set_id, :grantee_id, :authority_id])
     |> validate_lifetime()
     |> validate_inclusion(:valid_after, @immediately..maximum_deferral)
@@ -56,19 +55,22 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrant do
     |> foreign_key_constraint(:authority_id)
   end
 
-  @spec validate(PermissionSetGrant) :: 
-    :ok |
-    {:error, :invalid} |
-    {:error, :inactive} |
-    {:error, :timed_out}
+  @spec validate(PermissionSetGrant) ::
+          :ok
+          | {:error, :invalid}
+          | {:error, :inactive}
+          | {:error, :timed_out}
   def validate(grant) do
     cond do
       invalidated?(grant) ->
         {:error, :invalid}
+
       not become_active?(grant) ->
         {:error, :inactive}
+
       timed_out?(grant) ->
         {:error, :timed_out}
+
       true ->
         :ok
     end
@@ -79,10 +81,11 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrant do
   end
 
   defp become_active?(grant) do
-    valid_after = 
+    valid_after =
       case grant.valid_after do
         nil ->
           grant.inserted_at
+
         _ ->
           add(grant.inserted_at, grant.valid_after)
       end
@@ -94,11 +97,13 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrant do
     case grant.valid_for do
       nil ->
         false
+
       _ ->
-        valid_after = 
+        valid_after =
           case grant.valid_after do
             nil ->
               grant.inserted_at
+
             _ ->
               add(grant.inserted_at, grant.valid_after)
           end

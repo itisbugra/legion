@@ -16,7 +16,7 @@ defmodule Legion.Factory do
 
   def user_factory do
     %Legion.Identity.Information.Registration{
-      has_gps_telemetry_consent?: true,
+      has_gps_telemetry_consent?: true
     }
   end
 
@@ -27,7 +27,7 @@ defmodule Legion.Factory do
       user: build(:user),
       passkey: passkey,
       passkey_digest: Passkey.hash(passkey),
-      ip_addr: %Postgrex.INET{address: (1..4 |> Enum.map(&Enum.random(&1..255)) |> List.to_tuple())}
+      ip_addr: %Postgrex.INET{address: 1..4 |> Enum.map(&Enum.random(&1..255)) |> List.to_tuple()}
     }
   end
 
@@ -50,7 +50,7 @@ defmodule Legion.Factory do
     %Legion.Identity.Auth.Concrete.Activity{
       passphrase: build(:passphrase),
       user_agent: sequence(:user_agent, &"#{&1}th user agent"),
-      ip_addr: %Postgrex.INET{address: (1..4 |> Enum.map(&Enum.random(&1..255)) |> List.to_tuple())}
+      ip_addr: %Postgrex.INET{address: 1..4 |> Enum.map(&Enum.random(&1..255)) |> List.to_tuple()}
     }
   end
 

@@ -18,36 +18,31 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandleTest do
   end
 
   test "changeset with valid attributes", %{valid_attrs: valid_attrs} do
-    changeset =
-      TFAHandle.changeset(%TFAHandle{}, valid_attrs)
+    changeset = TFAHandle.changeset(%TFAHandle{}, valid_attrs)
 
     assert changeset.valid?
   end
 
   test "changeset without user identifier", %{otc: otc} do
-    changeset =
-      TFAHandle.changeset(%TFAHandle{}, %{otc: otc, passphrase_id: 1})
+    changeset = TFAHandle.changeset(%TFAHandle{}, %{otc: otc, passphrase_id: 1})
 
     refute changeset.valid?
   end
 
   test "changeset without otc" do
-    changeset =
-      TFAHandle.changeset(%TFAHandle{}, %{user_id: 1, passphrase_id: 1})
+    changeset = TFAHandle.changeset(%TFAHandle{}, %{user_id: 1, passphrase_id: 1})
 
     refute changeset.valid?
   end
 
   test "changeset without passphrase identifier", %{otc: otc} do
-    changeset =
-      TFAHandle.changeset(%TFAHandle{}, %{user_id: 1, otc: otc})
+    changeset = TFAHandle.changeset(%TFAHandle{}, %{user_id: 1, otc: otc})
 
     assert changeset.valid?
   end
 
   test "hashes otc upon change", %{valid_attrs: valid_attrs} do
-    changeset =
-      TFAHandle.changeset(%TFAHandle{}, valid_attrs)
+    changeset = TFAHandle.changeset(%TFAHandle{}, valid_attrs)
 
     assert changeset.changes.otc_digest
     assert changeset.changes.otc_digest != valid_attrs.otc
@@ -114,7 +109,9 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandleTest do
 
     test "refuses challenge if handle is outdated" do
       user = insert(:user)
-      outdated_handle = insert(:tfa_handle, user: user, inserted_at: add(utc_now(), (-1) * (@lifetime)))
+
+      outdated_handle =
+        insert(:tfa_handle, user: user, inserted_at: add(utc_now(), -1 * @lifetime))
 
       assert TFAHandle.challenge_handle(user, outdated_handle.otc) == {:error, :not_found}
     end
@@ -145,8 +142,7 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandleTest do
   end
 
   def generate_otc(), do: generate()
+
   def generate_valid_attrs(),
-      do: %{user_id: 1,
-            otc: generate_otc(),
-            passphrase_id: 1}
+    do: %{user_id: 1, otc: generate_otc(), passphrase_id: 1}
 end

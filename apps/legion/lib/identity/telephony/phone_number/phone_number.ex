@@ -41,11 +41,14 @@ defmodule Legion.Identity.Telephony.PhoneNumber do
 
   alias Legion.Identity.Information.Registration, as: User
   alias Legion.Identity.Telephony.PhoneType
-  alias Legion.Identity.Telephony.PhoneNumber.{PrioritizationTrait, 
-                                               SafetyTrait, 
-                                               NeglectionTrait,
-                                               ValidSafetyTrait,
-                                               ValidPrioritizationTrait}
+
+  alias Legion.Identity.Telephony.PhoneNumber.{
+    PrioritizationTrait,
+    SafetyTrait,
+    NeglectionTrait,
+    ValidSafetyTrait,
+    ValidPrioritizationTrait
+  }
 
   @typedoc """
   A positive integer uniquely identifying a phone number entity.
@@ -58,17 +61,17 @@ defmodule Legion.Identity.Telephony.PhoneNumber do
   @type phone_type() :: :home | :mobile | :work | :home_fax | :work_fax | :pager
 
   schema "user_phone_numbers" do
-    belongs_to :user, User
-    field :number, :string
-    field :type, PhoneType
-    field :inserted_at, :naive_datetime, read_after_writes: true
+    belongs_to(:user, User)
+    field(:number, :string)
+    field(:type, PhoneType)
+    field(:inserted_at, :naive_datetime, read_after_writes: true)
 
-    has_many :prioritization_traits, PrioritizationTrait
-    has_many :safety_traits, SafetyTrait
-    has_one :neglection_trait, NeglectionTrait
+    has_many(:prioritization_traits, PrioritizationTrait)
+    has_many(:safety_traits, SafetyTrait)
+    has_one(:neglection_trait, NeglectionTrait)
 
-    has_many :valid_safety_traits, ValidSafetyTrait
-    has_one :valid_prioritization_trait, ValidPrioritizationTrait
+    has_many(:valid_safety_traits, ValidSafetyTrait)
+    has_one(:valid_prioritization_trait, ValidPrioritizationTrait)
   end
 
   def changeset(struct, params \\ %{}) do

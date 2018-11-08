@@ -27,45 +27,49 @@ defmodule Legion.Identity.Auth.Concrete do
   action.
   """
   @spec register_internal_user(String.t(), String.t()) ::
-    {:ok, User.id(), User.username()} |
-    {:error, :already_registered}
+          {:ok, User.id(), User.username()}
+          | {:error, :already_registered}
   def register_internal_user(username, password_hash) do
     case Repo.transaction(fn ->
-      query =
-        from p1 in Pair,
-        left_join: p2 in Pair,
-          on: p1.id < p2.id and
-              p1.user_id == p2.user_id,
-        where: is_nil(p2.id) and
-               p1.username == ^username,
-        select: count(p1.id)
+           query =
+             from(p1 in Pair,
+               left_join: p2 in Pair,
+               on: p1.id < p2.id and p1.user_id == p2.user_id,
+               where: is_nil(p2.id) and p1.username == ^username,
+               select: count(p1.id)
+             )
 
-      unless Repo.one!(query) == 0,
-        do: Repo.rollback(:already_registered)
+           unless Repo.one!(query) == 0,
+             do: Repo.rollback(:already_registered)
 
-      registration =
-        %User{}
-        |> User.changeset(%{})
-        |> Repo.insert!()
+           registration =
+             %User{}
+             |> User.changeset(%{})
+             |> Repo.insert!()
 
-      pair_params = %{user_id: registration.id,
-                      username: username,
-                      password_hash: password_hash}
+           pair_params = %{
+             user_id: registration.id,
+             username: username,
+             password_hash: password_hash
+           }
 
-      pair = 
-        %Pair{}
-          |> Pair.changeset(pair_params)
-          |> Repo.insert()
+           pair =
+             %Pair{}
+             |> Pair.changeset(pair_params)
+             |> Repo.insert()
 
-      case pair do
-        {:ok, pair} ->
-          pair
-        {:error, changeset} ->
-          Repo.rollback(changeset)    # rollback with the name of the field
-      end
-    end) do
+           case pair do
+             {:ok, pair} ->
+               pair
+
+             {:error, changeset} ->
+               # rollback with the name of the field
+               Repo.rollback(changeset)
+           end
+         end) do
       {:ok, pair} ->
         {:ok, pair.user_id, pair.inserted_at}
+
       {:error, field} ->
         {:error, field}
     end
@@ -133,32 +137,37 @@ defmodule Legion.Identity.Auth.Concrete do
   [*(RFC 5735)*]: https://tools.ietf.org/html/rfc5735#section-4
   """
   @spec generate_passphrase(User.username(), Keccak.hash(), INET.t(), Keyword.t()) ::
-    {:ok, :access, Token.t()} |
-    {:ok, :require, Passkey.t()} |
-    {:ok, :advance, Advance.t()} |
-    {:error, :no_user_verify} |
-    {:error, :unsupported_scheme} |
-    {:error, :wrong_password} |
-    {:error, :maximum_passphrases_exceeded} |
-    {:error, INET.error_type()}
+          {:ok, :access, Token.t()}
+          | {:ok, :require, Passkey.t()}
+          | {:ok, :advance, Advance.t()}
+          | {:error, :no_user_verify}
+          | {:error, :unsupported_scheme}
+          | {:error, :wrong_password}
+          | {:error, :maximum_passphrases_exceeded}
+          | {:error, INET.error_type()}
   def generate_passphrase(username, password_hash, ip_addr, opts \\ []) do
     case Repo.transaction(fn ->
-      with :ok <- INET.validate_addr(ip_addr),
-           {:ok, auth_info} <- Pair.retrieve_auth_info(username),
-           :ok <- AuthInfo.check_authentication_schema(auth_info),
-           :ok <- Pair.checkpw(password_hash, auth_info.password_digest, auth_info.digestion_algorithm),
-           :ok <- Passphrase.check_passphrase_quota(auth_info.user_id),
-           passkey <- Passphrase.create(auth_info.user_id, ip_addr)
-      do
-        {:require, passkey}
-      else
-        {:error, error} ->
-          Repo.rollback(error)
-      end
-    end) do
+           with :ok <- INET.validate_addr(ip_addr),
+                {:ok, auth_info} <- Pair.retrieve_auth_info(username),
+                :ok <- AuthInfo.check_authentication_schema(auth_info),
+                :ok <-
+                  Pair.checkpw(
+                    password_hash,
+                    auth_info.password_digest,
+                    auth_info.digestion_algorithm
+                  ),
+                :ok <- Passphrase.check_passphrase_quota(auth_info.user_id),
+                passkey <- Passphrase.create(auth_info.user_id, ip_addr) do
+             {:require, passkey}
+           else
+             {:error, error} ->
+               Repo.rollback(error)
+           end
+         end) do
       {:ok, {atom, struct}} ->
         {:ok, atom, struct}
-      any -> 
+
+      any ->
         any
     end
   end

@@ -21,13 +21,13 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
   @regex Regex.compile!("#{@prefix}[0-9]{#{@length}}#{@postfix}")
 
   schema "concrete_tfa_handles" do
-    belongs_to :user, User
-    field :otc_digest, :string
-    belongs_to :passphrase, Passphrase
-    field :attempts, :integer, default: 0
-    field :inserted_at, :naive_datetime, read_after_writes: true
+    belongs_to(:user, User)
+    field(:otc_digest, :string)
+    belongs_to(:passphrase, Passphrase)
+    field(:attempts, :integer, default: 0)
+    field(:inserted_at, :naive_datetime, read_after_writes: true)
 
-    field :otc, :string, virtual: true
+    field(:otc, :string, virtual: true)
   end
 
   @doc """
@@ -48,16 +48,18 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
   Creates a handle with generated OTC in database and returns it. If user was not found,
   it returns `{:error, :not_found}`.
   """
-  @spec create_handle(integer() | User) :: 
-    {:ok, TFAHandle} |
-    {:error, :not_found}
+  @spec create_handle(integer() | User) ::
+          {:ok, TFAHandle}
+          | {:error, :not_found}
   def create_handle(user = %User{}), do: create_handle(user.id)
+
   def create_handle(user_id) when is_integer(user_id) do
     changes = changeset(%TFAHandle{}, %{user_id: user_id, otc: generate()})
 
     case Repo.insert(changes) do
       {:ok, handle} ->
         {:ok, handle}
+
       {:error, _changes} ->
         {:error, :not_found}
     end
@@ -68,46 +70,51 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
   was successful.
   """
   @spec challenge_handle(integer() | User, OneTimeCode.t()) ::
-    {:ok, TFAHandle} |
-    {:error, :not_found} |
-    {:error, :bad_code} |
-    {:error, :no_match}
+          {:ok, TFAHandle}
+          | {:error, :not_found}
+          | {:error, :bad_code}
+          | {:error, :no_match}
   def challenge_handle(user = %User{}, otc), do: challenge_handle(user.id, otc)
+
   def challenge_handle(user_id, otc) when is_integer(user_id) do
     if otc =~ @regex do
       case Repo.transaction(fn ->
-        query = from th1 in TFAHandle,
+             query =
+               from(th1 in TFAHandle,
                  left_join: th2 in TFAHandle,
                  on: th1.user_id == th2.user_id and th1.id < th2.id,
-                 where: is_nil(th2.id) and
-                        th1.user_id == ^user_id and
-                        is_nil(th1.passphrase_id) and
-                        th1.attempts < @allowed_attempts and
-                        th1.inserted_at > from_now(^((-1) * @lifetime), "second"),
+                 where:
+                   is_nil(th2.id) and th1.user_id == ^user_id and is_nil(th1.passphrase_id) and
+                     th1.attempts < @allowed_attempts and
+                     th1.inserted_at > from_now(^(-1 * @lifetime), "second"),
                  select: th1
+               )
 
-        case Repo.one(query) do
-          nil ->
-            Repo.rollback(:not_found)
-          handle ->
-            attempts = handle.attempts + 1
-            changeset = TFAHandle.changeset(handle, %{attempts: attempts})
+             case Repo.one(query) do
+               nil ->
+                 Repo.rollback(:not_found)
 
-            Repo.update!(changeset)
-        end
-      end) do
+               handle ->
+                 attempts = handle.attempts + 1
+                 changeset = TFAHandle.changeset(handle, %{attempts: attempts})
+
+                 Repo.update!(changeset)
+             end
+           end) do
         {:ok, handle} ->
           if handle.otc_digest == hash(otc) do
             {:ok, handle}
           else
             {:error, :no_match}
           end
+
         {:error, :not_found} ->
-          stall() # a dummy wait to prevent from probing
+          # a dummy wait to prevent from probing
+          stall()
 
           {:error, :not_found}
       end
-    else 
+    else
       {:error, :bad_code}
     end
   end
@@ -116,8 +123,10 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
     cond do
       get_field(changeset, first) ->
         changeset
+
       get_field(changeset, second) ->
         changeset
+
       true ->
         add_error(changeset, :first, "can't be blank", either: "second be not blank at least")
     end

@@ -69,7 +69,8 @@ defmodule Legion.Types.CIDRTest do
     end
 
     test "returns error when netmask is invalid" do
-      assert String.Chars.to_string(%Postgrex.CIDR{address: {192, 168, 0, 0}, netmask: nil}) == :error
+      assert String.Chars.to_string(%Postgrex.CIDR{address: {192, 168, 0, 0}, netmask: nil}) ==
+               :error
     end
   end
 end

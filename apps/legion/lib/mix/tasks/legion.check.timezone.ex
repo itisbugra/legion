@@ -19,23 +19,23 @@ defmodule Mix.Tasks.Legion.Check.Timezone do
   alias Legion.Repo
   alias Legion.Mix.Check.Timezone.UnknownTimeZoneError
 
-  Logger.configure level: :info
+  Logger.configure(level: :info)
 
   def run(_args) do
     {:ok, pid, _apps} = ensure_started(Repo, [])
-    sandbox? = Repo.config[:pool] == Ecto.Adapters.SQL.Sandbox
+    sandbox? = Repo.config()[:pool] == Ecto.Adapters.SQL.Sandbox
 
     if sandbox? do
       Ecto.Adapters.SQL.Sandbox.checkin(Repo)
       Ecto.Adapters.SQL.Sandbox.checkout(Repo, sandbox: false)
     end
 
-    Logger.info "== Checking timezone configuration"
+    Logger.info("== Checking timezone configuration")
 
-    {:ok, %Postgrex.Result{rows: [[tz]]}} = Repo.query "SHOW TIME ZONE", [], log: false
+    {:ok, %Postgrex.Result{rows: [[tz]]}} = Repo.query("SHOW TIME ZONE", [], log: false)
 
     if tz == "UTC" do
-      Logger.info "time zone = UTC"
+      Logger.info("time zone = UTC")
     else
       raise UnknownTimeZoneError, tz
     end
@@ -44,6 +44,6 @@ defmodule Mix.Tasks.Legion.Check.Timezone do
 
     pid && Repo.stop(pid)
 
-    Logger.info "== Finished checking timezone configuration"
+    Logger.info("== Finished checking timezone configuration")
   end
 end

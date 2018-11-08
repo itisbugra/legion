@@ -24,12 +24,12 @@ defmodule Legion.Identity.Telephony.PhoneNumber.SafetyTrait do
   @maximum_valid_duration Keyword.fetch!(@env, :maximum_safe_duration)
 
   schema "user_phone_number_safety_traits" do
-    belongs_to :phone_number, PhoneNumber
-    belongs_to :authority, Passphrase
-    field :valid_for, :integer, default: @initial_safe_duration
-    field :inserted_at, :naive_datetime, read_after_writes: true
+    belongs_to(:phone_number, PhoneNumber)
+    belongs_to(:authority, Passphrase)
+    field(:valid_for, :integer, default: @initial_safe_duration)
+    field(:inserted_at, :naive_datetime, read_after_writes: true)
 
-    has_one :invalidation, Invalidation
+    has_one(:invalidation, Invalidation)
   end
 
   @doc false

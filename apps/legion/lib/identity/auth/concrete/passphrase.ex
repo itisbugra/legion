@@ -20,18 +20,18 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   @type id() :: integer()
 
   schema "passphrases" do
-    belongs_to :user, User
-    field :passkey_digest, :binary
-    field :ip_addr, Legion.Types.INET
-    field :inserted_at, :naive_datetime, read_after_writes: true
+    belongs_to(:user, User)
+    field(:passkey_digest, :binary)
+    field(:ip_addr, Legion.Types.INET)
+    field(:inserted_at, :naive_datetime, read_after_writes: true)
 
-    has_one :invalidation, Invalidation, foreign_key: :target_passphrase_id
-    has_many :activities, Activity
+    has_one(:invalidation, Invalidation, foreign_key: :target_passphrase_id)
+    has_many(:activities, Activity)
 
-    field :passkey, :binary, virtual: true
+    field(:passkey, :binary, virtual: true)
   end
 
-  @spec changeset(Passphrase, map) :: Ecto.Changeset.t
+  @spec changeset(Passphrase, map) :: Ecto.Changeset.t()
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:user_id, :passkey_digest, :ip_addr, :passkey])
@@ -42,26 +42,26 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   @doc """
   Generates a new passphrase changeset and returns it with the passkey itself in a tuple.
   """
-  @spec create_changeset(User.user_or_id(), INET.t()) ::
-    {Passkey.t, Ecto.Changeset.t}
+  @spec create_changeset(User.user_or_id(), INET.t()) :: {Passkey.t(), Ecto.Changeset.t()}
   def create_changeset(user_id, ip_addr) when is_integer(user_id) do
     passkey = Passkey.generate()
 
     changeset =
-      Passphrase.changeset(%Passphrase{},
-                           %{user_id: user_id,
-                             passkey: passkey,
-                             ip_addr: %Postgrex.INET{address: ip_addr}})
+      Passphrase.changeset(
+        %Passphrase{},
+        %{user_id: user_id, passkey: passkey, ip_addr: %Postgrex.INET{address: ip_addr}}
+      )
 
     {passkey, changeset}
   end
+
   def create_changeset(user, ip_addr) when is_map(user),
     do: create_changeset(user.id, ip_addr)
 
   @doc """
   Creates a changeset and inserts it into the repository.
   """
-  @spec create(User.user_or_id(), INET.t()) :: Passkey.t
+  @spec create(User.user_or_id(), INET.t()) :: Passkey.t()
   def create(user_or_id, ip_addr) do
     {passkey, changeset} = create_changeset(user_or_id, ip_addr)
 
@@ -113,27 +113,27 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   the power of the physical `btree` indexing the invalidations.
   """
   @spec find_passphrase_matching(User.id(), Passkey.t()) ::
-    {:ok, Passphrase.id()} |
-    {:error, :not_found} |
-    {:error, :invalid} | 
-    {:error, :timed_out}
+          {:ok, Passphrase.id()}
+          | {:error, :not_found}
+          | {:error, :invalid}
+          | {:error, :timed_out}
   def find_passphrase_matching(user_id, passkey) do
     hash = Passkey.hash(passkey)
 
-    query = 
-      from p in Passphrase,
-      preload: :invalidation,
-      where: p.user_id == ^user_id and 
-             p.passkey_digest == ^hash,
-      select: p
+    query =
+      from(p in Passphrase,
+        preload: :invalidation,
+        where: p.user_id == ^user_id and p.passkey_digest == ^hash,
+        select: p
+      )
 
     with passphrase when not is_nil(passphrase) <- Repo.one(query),
-         :ok <- validate(passphrase)
-    do
+         :ok <- validate(passphrase) do
       {:ok, passphrase.id}
     else
       {:error, _error} = any ->
         any
+
       _ ->
         {:error, :not_found}
     end
@@ -144,23 +144,24 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   """
   @spec exists?(id()) :: boolean()
   def exists?(passphrase_id) do
-    not is_nil Repo.get(Passphrase, passphrase_id)
+    not is_nil(Repo.get(Passphrase, passphrase_id))
   end
 
   @doc """
   Validates a passphrase with given identifier.
   """
   @spec validate_id(id()) ::
-    :ok |
-    {:error, :not_found} |
-    {:error, :invalid} |
-    {:error, :timed_out}
+          :ok
+          | {:error, :not_found}
+          | {:error, :invalid}
+          | {:error, :timed_out}
   def validate_id(passphrase_id) do
     if exists?(passphrase_id) do
       query =
-        from p in Passphrase,
-        preload: :invalidation,
-        where: p.id == ^passphrase_id
+        from(p in Passphrase,
+          preload: :invalidation,
+          where: p.id == ^passphrase_id
+        )
 
       query
       |> Repo.one!()
@@ -185,15 +186,17 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   non-nil since `Ecto.Association.NotLoaded` struct will be there.
   """
   @spec validate(Passphrase) ::
-    :ok |
-    {:error, :invalid} |
-    {:error, :timed_out}
+          :ok
+          | {:error, :invalid}
+          | {:error, :timed_out}
   def validate(passphrase) do
     cond do
       invalidated?(passphrase) ->
         {:error, :invalid}
+
       timed_out?(passphrase) ->
         {:error, :timed_out}
+
       true ->
         :ok
     end

@@ -17,27 +17,27 @@ defmodule Mix.Tasks.Legion.Reg.Messaging do
   alias Legion.Repo
   alias Legion.Messaging.Settings.Register
 
-  Logger.configure level: :info
+  Logger.configure(level: :info)
 
   def register(key) do
     register = Repo.insert!(%Register{key: key})
 
-    Logger.info "added register #{register.key}"
+    Logger.info("added register #{register.key}")
   rescue
     Ecto.ConstraintError ->
-      Logger.warn "cannot add register #{key}, it is already added"
+      Logger.warn("cannot add register #{key}, it is already added")
   end
 
   def sync do
-    register "Messaging.Switching.Globals.is_apm_enabled?"
-    register "Messaging.Switching.Globals.is_push_enabled?"
-    register "Messaging.Switching.Globals.is_sms_enabled?"
-    register "Messaging.Switching.Globals.is_mailing_enabled?"
-    register "Messaging.Switching.Globals.is_platform_enabled?"
-    register "Messaging.Switching.Globals.apm_redirection"
-    register "Messaging.Switching.Globals.push_redirection"
-    register "Messaging.Switching.Globals.sms_redirection"
-    register "Messaging.Switching.Globals.mailing_redirection"
-    register "Messaging.Switching.Globals.platform_redirection"
+    register("Messaging.Switching.Globals.is_apm_enabled?")
+    register("Messaging.Switching.Globals.is_push_enabled?")
+    register("Messaging.Switching.Globals.is_sms_enabled?")
+    register("Messaging.Switching.Globals.is_mailing_enabled?")
+    register("Messaging.Switching.Globals.is_platform_enabled?")
+    register("Messaging.Switching.Globals.apm_redirection")
+    register("Messaging.Switching.Globals.push_redirection")
+    register("Messaging.Switching.Globals.sms_redirection")
+    register("Messaging.Switching.Globals.mailing_redirection")
+    register("Messaging.Switching.Globals.platform_redirection")
   end
 end

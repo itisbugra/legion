@@ -47,6 +47,7 @@ defmodule Legion.Identity.Auth.TFA.OneTimeCode do
     |> Integer.to_string()
     |> wrap()
   end
+
   def generate(:alphanumeric) do
     @rand_bytes_take_alphanumeric
     |> :crypto.strong_rand_bytes()
@@ -54,7 +55,6 @@ defmodule Legion.Identity.Auth.TFA.OneTimeCode do
     |> String.slice(0..(@length - 1))
   end
 
-  
   @doc """
   Generates a one-time-code with type declared in configuration. Use `generate/1` to explicitly
   set the type instead.
@@ -76,7 +76,7 @@ defmodule Legion.Identity.Auth.TFA.OneTimeCode do
   A dummy stall function in order to prevent from handle enumeration. It always return `false`.
   """
   @spec stall() :: false
-  def stall() do 
+  def stall() do
     Keccak.hash("password")
     false
   end

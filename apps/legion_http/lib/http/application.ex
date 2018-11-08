@@ -13,7 +13,7 @@ defmodule Legion.HTTP.Application do
     # Define workers and child supervisors to be supervised
     children = [
       # Start the endpoint when the application starts
-      supervisor(Legion.HTTP.Endpoint, []),
+      supervisor(Legion.HTTP.Endpoint, [])
       # Start your own worker by calling: Legion.HTTP.Worker.start_link(arg1, arg2, arg3)
       # worker(Legion.HTTP.Worker, [arg1, arg2, arg3]),
     ]

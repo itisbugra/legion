@@ -19,7 +19,7 @@ defmodule Legion.HTTP.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      
+
       import Legion.HTTP.Router.Helpers
       import Legion.Testing.Random
 
@@ -28,12 +28,13 @@ defmodule Legion.HTTP.ConnCase do
     end
   end
 
-
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Legion.Repo)
+
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(Legion.Repo, {:shared, self()})
     end
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

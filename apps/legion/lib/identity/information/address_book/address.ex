@@ -47,28 +47,45 @@ defmodule Legion.Identity.Information.AddressBook.Address do
   @zip_code_len Keyword.fetch!(@env, :zip_code_length)
 
   schema "user_addresses" do
-    belongs_to :user, User
-    field :type, AddressType
-    field :name, :string
-    field :description, :string
-    field :state, :string
-    field :city, :string
-    field :neighborhood, :string
-    field :zip_code, :string
-    field :location, Point
-    belongs_to :country, Country, foreign_key: :country_name, references: :name, type: :string
+    belongs_to(:user, User)
+    field(:type, AddressType)
+    field(:name, :string)
+    field(:description, :string)
+    field(:state, :string)
+    field(:city, :string)
+    field(:neighborhood, :string)
+    field(:zip_code, :string)
+    field(:location, Point)
+    belongs_to(:country, Country, foreign_key: :country_name, references: :name, type: :string)
     timestamps()
   end
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id, :type, :name, :description, :state, :city, :neighborhood, :zip_code, :country_name, :location])
+    |> cast(params, [
+      :user_id,
+      :type,
+      :name,
+      :description,
+      :state,
+      :city,
+      :neighborhood,
+      :zip_code,
+      :country_name,
+      :location
+    ])
     |> validate_required([:user_id, :type, :name, :country_name])
     |> validate_length(:name, min: Enum.min(@name_len), max: Enum.max(@name_len))
-    |> validate_length(:description, min: Enum.min(@description_len), max: Enum.max(@description_len))
+    |> validate_length(:description,
+      min: Enum.min(@description_len),
+      max: Enum.max(@description_len)
+    )
     |> validate_length(:state, min: Enum.min(@state_len), max: Enum.max(@state_len))
     |> validate_length(:city, min: Enum.min(@city_len), max: Enum.max(@city_len))
-    |> validate_length(:neighborhood, min: Enum.min(@neighborhood_len), max: Enum.max(@neighborhood_len))
+    |> validate_length(:neighborhood,
+      min: Enum.min(@neighborhood_len),
+      max: Enum.max(@neighborhood_len)
+    )
     |> validate_length(:zip_code, min: Enum.min(@zip_code_len), max: Enum.max(@zip_code_len))
     |> validate_geo_inclusion()
     |> foreign_key_constraint(:user_id)

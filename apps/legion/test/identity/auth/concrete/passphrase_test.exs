@@ -14,43 +14,48 @@ defmodule Legion.Identity.Auth.Concrete.PassphraseTest do
   setup do
     passkey = generate()
 
-    %{passkey: passkey, 
-      valid_attrs: %{user_id: 2,
-                     passkey: passkey,
-                     ip_addr: %Postgrex.INET{address: @ip_addr}}}
+    %{
+      passkey: passkey,
+      valid_attrs: %{user_id: 2, passkey: passkey, ip_addr: %Postgrex.INET{address: @ip_addr}}
+    }
   end
 
   test "changeset with valid attributes", %{valid_attrs: valid_attrs} do
-    changeset = 
-      Passphrase.changeset(%Passphrase{},
-                           valid_attrs)
+    changeset =
+      Passphrase.changeset(
+        %Passphrase{},
+        valid_attrs
+      )
 
     assert changeset.valid?
   end
 
   test "changeset without user identifier", %{passkey: passkey} do
     changeset =
-      Passphrase.changeset(%Passphrase{},
-                           %{passkey: passkey,
-                             ip_addr: %Postgrex.INET{address: @ip_addr}})
+      Passphrase.changeset(
+        %Passphrase{},
+        %{passkey: passkey, ip_addr: %Postgrex.INET{address: @ip_addr}}
+      )
 
     refute changeset.valid?
   end
 
   test "changeset without passkey digest" do
     changeset =
-      Passphrase.changeset(%Passphrase{},
-                           %{user_id: 2,
-                             ip_addr: %Postgrex.INET{address: @ip_addr}})
+      Passphrase.changeset(
+        %Passphrase{},
+        %{user_id: 2, ip_addr: %Postgrex.INET{address: @ip_addr}}
+      )
 
     refute changeset.valid?
   end
 
   test "changeset without ip address", %{passkey: passkey} do
     changeset =
-      Passphrase.changeset(%Passphrase{},
-                           %{user_id: 2,
-                             passkey: passkey})
+      Passphrase.changeset(
+        %Passphrase{},
+        %{user_id: 2, passkey: passkey}
+      )
 
     refute changeset.valid?
   end
@@ -61,8 +66,8 @@ defmodule Legion.Identity.Auth.Concrete.PassphraseTest do
 
   describe "create_changeset/1" do
     test "returns changeset with raw passkey using primary key" do
-      {passkey, changeset} = 
-        Passphrase.create_changeset(2, @ip_addr)  # arbitrary integer as primary key
+      # arbitrary integer as primary key
+      {passkey, changeset} = Passphrase.create_changeset(2, @ip_addr)
 
       assert passkey
       assert changeset.valid?
@@ -71,8 +76,8 @@ defmodule Legion.Identity.Auth.Concrete.PassphraseTest do
     test "returns changeset with raw passkey using user struct" do
       user = %Registration{id: 2}
 
-      {passkey, changeset} = 
-        Passphrase.create_changeset(user, @ip_addr)  # arbitrary integer as primary key
+      # arbitrary integer as primary key
+      {passkey, changeset} = Passphrase.create_changeset(user, @ip_addr)
 
       assert passkey
       assert changeset.valid?
@@ -81,25 +86,26 @@ defmodule Legion.Identity.Auth.Concrete.PassphraseTest do
 
   describe "validate/1" do
     test "returns ok if passphrase is valid", %{passkey: passkey} do
-      passphrase = 
-        %Passphrase{user_id: 2,
-                    passkey: passkey,
-                    inserted_at: utc_now(),
-                    invalidation: nil}
+      passphrase = %Passphrase{
+        user_id: 2,
+        passkey: passkey,
+        inserted_at: utc_now(),
+        invalidation: nil
+      }
 
       assert Passphrase.validate(passphrase) == :ok
     end
 
     test "returns error if passphrase is invalidated", %{passkey: passkey} do
-      invalidation = 
-        %Invalidation{source_passphrase_id: 1,
-                      target_passphrase_id: 1}
-      passphrase = 
-        %Passphrase{id: 1,
-                    user_id: 2,
-                    passkey: passkey,
-                    inserted_at: utc_now(),
-                    invalidation: invalidation}
+      invalidation = %Invalidation{source_passphrase_id: 1, target_passphrase_id: 1}
+
+      passphrase = %Passphrase{
+        id: 1,
+        user_id: 2,
+        passkey: passkey,
+        inserted_at: utc_now(),
+        invalidation: invalidation
+      }
 
       assert Passphrase.validate(passphrase) == {:error, :invalid}
     end
@@ -107,14 +113,15 @@ defmodule Legion.Identity.Auth.Concrete.PassphraseTest do
     test "returns error if passphrase is timed out", %{passkey: passkey} do
       env = Application.get_env(:legion, Legion.Identity.Auth.Concrete)
       offset = Keyword.fetch!(env, :passphrase_lifetime) + 200_000
-      time = add(utc_now(), (-1) * offset)
+      time = add(utc_now(), -1 * offset)
 
-      passphrase = 
-        %Passphrase{id: 1,
-                    user_id: 2,
-                    passkey: passkey,
-                    inserted_at: time,
-                    invalidation: nil}
+      passphrase = %Passphrase{
+        id: 1,
+        user_id: 2,
+        passkey: passkey,
+        inserted_at: time,
+        invalidation: nil
+      }
 
       assert Passphrase.validate(passphrase) == {:error, :timed_out}
     end
@@ -124,19 +131,26 @@ defmodule Legion.Identity.Auth.Concrete.PassphraseTest do
     setup do
       env = Application.get_env(:legion, Legion.Identity.Auth.Concrete)
       offset = Keyword.fetch!(env, :passphrase_lifetime) + 200_000
-      time = add(utc_now(), (-1) * offset)
+      time = add(utc_now(), -1 * offset)
 
       user = Factory.insert(:user)
       passphrase = Factory.insert(:passphrase, user: user)
       timed_out = Factory.insert(:passphrase, user: user, inserted_at: time)
       invalidated = Factory.insert(:passphrase, user: user)
-      _invalidation = Factory.insert(:passphrase_invalidation, source_passphrase: passphrase, target_passphrase: invalidated)
 
-      %{user: user, 
-        passphrase: passphrase, 
+      _invalidation =
+        Factory.insert(:passphrase_invalidation,
+          source_passphrase: passphrase,
+          target_passphrase: invalidated
+        )
+
+      %{
+        user: user,
+        passphrase: passphrase,
         time_threshold: time,
         timed_out: timed_out,
-        invalidated: invalidated}
+        invalidated: invalidated
+      }
     end
 
     test "finds an existing passhrase", %{user: u, passphrase: p} do
@@ -176,19 +190,26 @@ defmodule Legion.Identity.Auth.Concrete.PassphraseTest do
     setup do
       env = Application.get_env(:legion, Legion.Identity.Auth.Concrete)
       offset = Keyword.fetch!(env, :passphrase_lifetime) + 200_000
-      time = add(utc_now(), (-1) * offset)
+      time = add(utc_now(), -1 * offset)
 
       user = Factory.insert(:user)
       passphrase = Factory.insert(:passphrase, user: user)
       timed_out = Factory.insert(:passphrase, user: user, inserted_at: time)
       invalidated = Factory.insert(:passphrase, user: user)
-      _invalidation = Factory.insert(:passphrase_invalidation, source_passphrase: passphrase, target_passphrase: invalidated)
 
-      %{user: user, 
-        passphrase: passphrase, 
+      _invalidation =
+        Factory.insert(:passphrase_invalidation,
+          source_passphrase: passphrase,
+          target_passphrase: invalidated
+        )
+
+      %{
+        user: user,
+        passphrase: passphrase,
         time_threshold: time,
         timed_out: timed_out,
-        invalidated: invalidated}
+        invalidated: invalidated
+      }
     end
 
     test "returns ok if passphrase is valid", %{passphrase: passphrase} do

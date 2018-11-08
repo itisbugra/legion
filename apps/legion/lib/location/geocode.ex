@@ -6,7 +6,7 @@ defmodule Legion.Location.Geocode do
   operations.
   """
   @enforce_keys ~w(location country_name country_code metro_code region_code region_name time_zone geocoder channel timestamp)a
-  
+
   defstruct [
     :location,
     :country_name,
@@ -19,7 +19,7 @@ defmodule Legion.Location.Geocode do
     :geocoder,
     :channel,
     :meta,
-    :timestamp,
+    :timestamp
   ]
 
   alias Legion.Location.Coordinate
@@ -48,17 +48,17 @@ defmodule Legion.Location.Geocode do
   - `:timestamp`: The time of the geocoding lookup.
   """
   @type t() :: %__MODULE__{
-    location: Coordinate.t(),
-    country_name: binary(),
-    country_code: binary(),
-    metro_code: binary(),
-    region_code: binary(),
-    region_name: binary(),
-    time_zone: binary(),
-    zip_code: binary(),
-    geocoder: atom(),
-    channel: channel(),
-    meta: map(),
-    timestamp: NaiveDateTime.t(),
-  }
+          location: Coordinate.t(),
+          country_name: binary(),
+          country_code: binary(),
+          metro_code: binary(),
+          region_code: binary(),
+          region_name: binary(),
+          time_zone: binary(),
+          zip_code: binary(),
+          geocoder: atom(),
+          channel: channel(),
+          meta: map(),
+          timestamp: NaiveDateTime.t()
+        }
 end

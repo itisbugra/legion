@@ -9,9 +9,9 @@ defmodule Legion.Internationalization.Locale do
   @primary_key {:rfc1766, :string, autogenerate: false}
 
   schema "locales" do
-    field :language
-    field :abbreviation
-    field :variant
+    field(:language)
+    field(:abbreviation)
+    field(:variant)
   end
 
   def changeset(struct, params \\ %{}) do

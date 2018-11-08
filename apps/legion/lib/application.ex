@@ -12,8 +12,12 @@ defmodule Legion.Application do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
-    Supervisor.start_link([
-      supervisor(Legion.Repo, [])
-    ], strategy: :one_for_one, name: Legion.Supervisor)
+    Supervisor.start_link(
+      [
+        supervisor(Legion.Repo, [])
+      ],
+      strategy: :one_for_one,
+      name: Legion.Supervisor
+    )
   end
 end

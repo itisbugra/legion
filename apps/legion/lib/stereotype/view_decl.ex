@@ -4,7 +4,7 @@ defmodule Legion.Stereotype.ViewDecl do
       import Legion.Stereotype.ViewDecl
 
       def migrate do
-        Ecto.Migration.execute create_view(), drop_view()
+        Ecto.Migration.execute(create_view(), drop_view())
       end
     end
   end

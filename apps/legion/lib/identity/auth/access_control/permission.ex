@@ -8,13 +8,15 @@ defmodule Legion.Identity.Auth.AccessControl.Permission do
   alias Legion.Identity.Auth.AccessControl.ControllerAction
 
   schema "permissions" do
-    field :controller_name, :string
-    field :controller_action, ControllerAction
-    field :type, :string
+    field(:controller_name, :string)
+    field(:controller_action, ControllerAction)
+    field(:type, :string)
 
-    many_to_many :permission_sets,
-                  PermissionSet,
-                  join_through: "permission_set_permissions"
+    many_to_many(
+      :permission_sets,
+      PermissionSet,
+      join_through: "permission_set_permissions"
+    )
   end
 
   def changeset(struct, params \\ %{}) do

@@ -15,17 +15,15 @@ config :legion_http, Legion.HTTP.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "DHRSTmvLpbXKRzl9AukxTAAdlwziFv6hMm5o3C13Vu8j1+cEmUdO8U9va+PvBlw9",
   render_errors: [view: Legion.HTTP.ErrorView, accepts: ~w(json)],
-  pubsub: [name: Legion.HTTP.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Legion.HTTP.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :legion_http, :generators,
-  context_app: :legion
+config :legion_http, :generators, context_app: :legion
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"

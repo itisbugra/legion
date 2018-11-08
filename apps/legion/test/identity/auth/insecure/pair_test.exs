@@ -1,7 +1,7 @@
 defmodule Legion.Identity.Auth.Insecure.PairTest do
   @moduledoc false
   use Legion.DataCase
-  
+
   import Ecto.Changeset, only: [get_change: 3]
 
   alias Legion.Identity.Auth.Insecure.Pair
@@ -11,9 +11,11 @@ defmodule Legion.Identity.Auth.Insecure.PairTest do
   @username_length Keyword.fetch!(@env, :username_length)
   @password_length Keyword.fetch!(@env, :password_length)
 
-  @valid_attrs %{user_id: 1,
-                 username: random_string(@username_length),
-                 password_hash: Keccak.hash(random_string(7))}
+  @valid_attrs %{
+    user_id: 1,
+    username: random_string(@username_length),
+    password_hash: Keccak.hash(random_string(7))
+  }
 
   test "changeset with valid attributes" do
     changeset = Pair.changeset(%Pair{}, @valid_attrs)

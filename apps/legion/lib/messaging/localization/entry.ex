@@ -9,18 +9,17 @@ defmodule Legion.Messaging.Localization.Entry do
   alias Legion.Templating.Renderer.Engine
 
   schema "messaging_template_localization_entry" do
-    belongs_to :user, User
-    belongs_to :template, Template
-    field :engine, Engine
-    field :subject_template, :string
-    field :body_template, :string
-    field :inserted_at, :naive_datetime, read_after_writes: true
+    belongs_to(:user, User)
+    belongs_to(:template, Template)
+    field(:engine, Engine)
+    field(:subject_template, :string)
+    field(:body_template, :string)
+    field(:inserted_at, :naive_datetime, read_after_writes: true)
   end
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id, :template_id, :engine, :subject_template,
-                     :body_template])
+    |> cast(params, [:user_id, :template_id, :engine, :subject_template, :body_template])
     |> validate_required([:user_id, :template_id, :engine, :body_template])
     |> foreign_key_constraint(:user_id)
   end

@@ -23,9 +23,9 @@ defmodule Legion.Identity.Telephony.PhoneNumber.ValidSafetyTrait do
   end
 
   schema "user_phone_number_valid_safety_traits" do
-    belongs_to :phone_number, PhoneNumber
-    belongs_to :authority, Passphrase
-    field :valid_for, :integer
-    field :inserted_at, :naive_datetime
+    belongs_to(:phone_number, PhoneNumber)
+    belongs_to(:authority, Passphrase)
+    field(:valid_for, :integer)
+    field(:inserted_at, :naive_datetime)
   end
 end
