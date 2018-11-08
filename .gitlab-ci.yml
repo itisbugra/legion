@@ -13,12 +13,13 @@ stages:
   - build
   - test
   - coverage
+  - lint
   - docs
   - stats
 
 elixir:deps:
   stage: deps
-  image: elixir:1.6.5
+  image: elixir:1.7.3
   tags:
     - legion
     - stms
@@ -41,7 +42,7 @@ elixir:deps:
 
 elixir:build:
   stage: build
-  image: elixir:1.6.5
+  image: elixir:1.7.3
   tags:
     - legion
     - stms
@@ -60,7 +61,7 @@ elixir:build:
 
 elixir:test:ex_unit:
   stage: test
-  image: elixir:1.6.5
+  image: elixir:1.7.3
   tags:
     - legion
     - stms
@@ -75,7 +76,7 @@ elixir:test:ex_unit:
 
 elixir:coverage:coveralls:
   stage: coverage
-  image: elixir:1.6.5
+  image: elixir:1.7.3
   tags:
     - legion
     - stms
@@ -92,9 +93,24 @@ elixir:coverage:coveralls:
     paths:
       - cover
 
+elixir:lint:format:
+  stage: lint
+  image: elixir:1.7.3
+  tags:
+    - legion
+    - stms
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+    - mix legion.setup
+  script:
+    - mix format --check-formatted
+  script:
+    - MIX_ENV=test
+
 elixir:docs:ex_doc:
   stage: docs
-  image: elixir:1.6.5
+  image: elixir:1.7.3
   tags:
     - legion
     - stms
