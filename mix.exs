@@ -21,9 +21,9 @@ defmodule Legion.Umbrella.Mixfile do
 
   defp deps do
     [
-      {:ex_doc, "~> 0.16", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.8.0", only: :test},
-      {:credo, "~> 0.10.0", only: [:dev, :test], runtime: false}
+      {:ex_doc, "~> 0.19.1", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.10.2", only: :test},
+      {:credo, "~> 0.10.2", only: [:dev, :test], runtime: false}
     ]
   end
 
