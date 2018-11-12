@@ -105,8 +105,6 @@ elixir:lint:format:
     - mix legion.setup
   script:
     - mix format --check-formatted
-  script:
-    - MIX_ENV=test
 
 elixir:docs:ex_doc:
   stage: docs
