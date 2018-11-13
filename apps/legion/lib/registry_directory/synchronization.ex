@@ -49,27 +49,18 @@ defmodule Legion.RegistryDirectory.Synchronization do
 
         import Mix.Ecto
 
-        def run(_args) do
-          {:ok, pid, _apps} = ensure_started(@repo, [])
-          sandbox? = @repo.config[:pool] == Ecto.Adapters.SQL.Sandbox
+        def run(args) do
+          repos = parse_repo(args)
+          {opts, _, _} = OptionParser.parse(args, switches: [quiet: :boolean])
 
-          if sandbox? do
-            Ecto.Adapters.SQL.Sandbox.checkin(@repo)
-            Ecto.Adapters.SQL.Sandbox.checkout(@repo, sandbox: false)
-          end
+          Enum.each(repos, fn repo ->
+            ensure_repo(repo, args)
 
-          Logger.info(fn ->
-            "== Adding #{@site} registers"
-          end)
+            Mix.shell().info("== Adding #{@site} registers")
 
-          sync()
+            sync()
 
-          sandbox? && Ecto.Adapters.SQL.Sandbox.checkin(@repo)
-
-          pid && @repo.stop(pid)
-
-          Logger.info(fn ->
-            "== Finished migrating #{@site} registers"
+            Mix.shell().info("== Finished migrating #{@site} registers")
           end)
         end
       end
