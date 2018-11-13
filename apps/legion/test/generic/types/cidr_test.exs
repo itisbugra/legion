@@ -4,7 +4,7 @@ defmodule Legion.Types.CIDRTest do
   alias Legion.Types.CIDR
 
   setup do
-    {:ok, addr: %Postgrex.CIDR{address: {192, 168, 0, 0}, netmask: 24}}
+    {:ok, addr: %Postgrex.INET{address: {192, 168, 0, 0}, netmask: 24}}
   end
 
   describe "casting" do
@@ -51,11 +51,11 @@ defmodule Legion.Types.CIDRTest do
     end
 
     test "returns error when address is invalid" do
-      assert CIDR.decode(%Postgrex.CIDR{address: nil, netmask: 24}) == :error
+      assert CIDR.decode(%Postgrex.INET{address: nil, netmask: 24}) == :error
     end
 
     test "returns error when netmask is invalid" do
-      assert CIDR.decode(%Postgrex.CIDR{address: {192, 168, 0, 0}, netmask: nil}) == :error
+      assert CIDR.decode(%Postgrex.INET{address: {192, 168, 0, 0}, netmask: nil}) == :error
     end
   end
 
@@ -65,12 +65,7 @@ defmodule Legion.Types.CIDRTest do
     end
 
     test "returns error when address is invalid" do
-      assert String.Chars.to_string(%Postgrex.CIDR{address: nil, netmask: 24}) == :error
-    end
-
-    test "returns error when netmask is invalid" do
-      assert String.Chars.to_string(%Postgrex.CIDR{address: {192, 168, 0, 0}, netmask: nil}) ==
-               :error
+      assert String.Chars.to_string(%Postgrex.INET{address: nil, netmask: 24}) == :error
     end
   end
 end

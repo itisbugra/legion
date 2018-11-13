@@ -35,18 +35,22 @@ defmodule Legion.Types.INET do
   @doc """
   Converts from native Ecto representation to a binary.
   """
-  def decode(%Postgrex.INET{address: address}) do
+  def decode(%Postgrex.INET{address: address, netmask: nil}) do
     case :inet.ntoa(address) do
       {:error, _einval} -> :error
       formatted_address -> List.to_string(formatted_address)
     end
   end
 
+  def decode(%Postgrex.INET{}), do: :error
+
   defp parse_address(address) do
     address |> String.to_charlist() |> :inet.parse_address()
   end
 end
 
+# see https://github.com/elixir-ecto/postgrex/issues/383
 defimpl String.Chars, for: Postgrex.INET do
-  def to_string(%Postgrex.INET{} = address), do: Legion.Types.INET.decode(address)
+  def to_string(%Postgrex.INET{netmask: nil} = address), do: Legion.Types.INET.decode(address)
+  def to_string(%Postgrex.INET{} = address), do: Legion.Types.CIDR.decode(address)
 end

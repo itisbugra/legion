@@ -9,15 +9,15 @@ defmodule Legion.Types.CIDR do
   def type, do: :cidr
 
   @doc """
-  Handles casting to `Postgrex.CIDR`.
+  Handles casting to `Postgrex.INET`.
   """
-  def cast(%Postgrex.CIDR{} = address), do: {:ok, address}
+  def cast(%Postgrex.INET{} = address), do: {:ok, address}
 
   def cast(address) when is_binary(address) do
     try do
       case parse(address, false) do
         {start_address, _end_address, netmask} ->
-          {:ok, %Postgrex.CIDR{address: start_address, netmask: netmask}}
+          {:ok, %Postgrex.INET{address: start_address, netmask: netmask}}
 
         {:error, _einval} ->
           :error
@@ -32,28 +32,24 @@ defmodule Legion.Types.CIDR do
   @doc """
   Loads from the native Ecto representation.
   """
-  def load(%Postgrex.CIDR{} = address), do: {:ok, address}
+  def load(%Postgrex.INET{} = address), do: {:ok, address}
   def load(_), do: :error
 
   @doc """
   Converts to the native Ecto representation.
   """
-  def dump(%Postgrex.CIDR{} = address), do: {:ok, address}
+  def dump(%Postgrex.INET{} = address), do: {:ok, address}
   def dump(_), do: :error
 
   @doc """
   Converts from native Ecto representation to a binary.
   """
-  def decode(%Postgrex.CIDR{address: _address, netmask: nil}), do: :error
+  def decode(%Postgrex.INET{address: _address, netmask: nil}), do: :error
 
-  def decode(%Postgrex.CIDR{address: address, netmask: netmask}) do
+  def decode(%Postgrex.INET{address: address, netmask: netmask}) do
     case :inet.ntoa(address) do
       {:error, _einval} -> :error
       formatted_address -> "#{List.to_string(formatted_address)}/#{netmask}"
     end
   end
-end
-
-defimpl String.Chars, for: Postgrex.CIDR do
-  def to_string(%Postgrex.CIDR{} = address), do: Legion.Types.CIDR.decode(address)
 end
