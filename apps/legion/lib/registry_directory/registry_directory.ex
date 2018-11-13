@@ -127,7 +127,7 @@ defmodule Legion.RegistryDirectory do
 
           field(:value, :map)
           belongs_to(:authority, User)
-          field(:inserted_at, :naive_datetime, read_after_writes: true)
+          field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
         end
 
         def changeset(struct, params \\ %{}) do
@@ -214,17 +214,7 @@ defmodule Legion.RegistryDirectory do
               select: {re.value, re.inserted_at}
             )
 
-          query
-          |> Repo.all()
-          |> Enum.map(fn {x, {{year, month, day}, {hour, minute, second, microsecond}}} ->
-            {x,
-             NaiveDateTime.from_erl!(
-               {{year, month, day}, {hour, minute, second}},
-               {microsecond, 6}
-             )}
-          end)
-
-          # Little hack to convert Postgrex date to Erlang date
+          Repo.all(query)
         end
       end
     end
