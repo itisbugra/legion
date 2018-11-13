@@ -44,7 +44,8 @@ defmodule Legion.HTTP.Mixfile do
       {:jason, "~> 1.0"},
       {:gettext, "~> 0.16.0"},
       {:legion, in_umbrella: true},
-      {:cowboy, "~> 2.5"}
+      {:cowboy, "~> 2.5"},
+      {:plug_cowboy, "~> 2.0"}
     ]
   end
 
