@@ -4,8 +4,6 @@ defmodule Mix.Tasks.Legion.Reg.Locale do
   """
   require Logger
 
-  import Mix.Ecto
-
   alias Legion.Repo
   alias Legion.Internationalization.Locale
 
@@ -40,18 +38,8 @@ defmodule Mix.Tasks.Legion.Reg.Locale do
     end
   end
 
-  def run(_args) do
-    {:ok, pid, _apps} = ensure_started(Repo, [])
-    sandbox? = Repo.config()[:pool] == Ecto.Adapters.SQL.Sandbox
-
-    if sandbox? do
-      Ecto.Adapters.SQL.Sandbox.checkin(Repo)
-      Ecto.Adapters.SQL.Sandbox.checkout(Repo, sandbox: false)
-    end
-
-    Logger.info(fn ->
-      "== Synchronizing locales"
-    end)
+  def sync do
+    Mix.shell().info("== Synchronizing locales")
 
     put_locale("Afrikaans", "af", nil)
     put_locale("Arabic (U.A.E.)", "ar", "ae")
@@ -205,12 +193,6 @@ defmodule Mix.Tasks.Legion.Reg.Locale do
     put_locale("Chinese", "zh", nil)
     put_locale("Zulu", "zu", nil)
 
-    sandbox? && Ecto.Adapters.SQL.Sandbox.checkin(Repo)
-
-    pid && Repo.stop(pid)
-
-    Logger.info(fn ->
-      "== Finished synchronizing locales"
-    end)
+    Mix.shell().info("== Finished synchronizing locales")
   end
 end

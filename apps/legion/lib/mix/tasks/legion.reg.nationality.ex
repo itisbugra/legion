@@ -4,8 +4,6 @@ defmodule Mix.Tasks.Legion.Reg.Nationality do
   """
   require Logger
 
-  import Mix.Ecto
-
   alias Legion.Repo
   alias Legion.Identity.Information.Nationality
 
@@ -42,18 +40,8 @@ defmodule Mix.Tasks.Legion.Reg.Nationality do
   defp downcase_if_not_nil(string) when is_nil(string),
     do: nil
 
-  def run(_args) do
-    {:ok, pid, _apps} = ensure_started(Repo, [])
-    sandbox? = Repo.config()[:pool] == Ecto.Adapters.SQL.Sandbox
-
-    if sandbox? do
-      Ecto.Adapters.SQL.Sandbox.checkin(Repo)
-      Ecto.Adapters.SQL.Sandbox.checkout(Repo, sandbox: false)
-    end
-
-    Logger.info(fn ->
-      "== Synchronizing nationalities"
-    end)
+  def sync do
+    Mix.shell().info("== Synchronizing nationalities")
 
     put_nationality("AD", "Andorra", "Andorran", nil, nil)
     put_nationality("AE", "United Arab Emirates", "Emirian", "Emirati", nil)
@@ -313,12 +301,6 @@ defmodule Mix.Tasks.Legion.Reg.Nationality do
     put_nationality("ZM", "Zambia", "Zambian", nil, nil)
     put_nationality("ZW", "Zimbabwe", "Zimbabwean", nil, nil)
 
-    sandbox? && Ecto.Adapters.SQL.Sandbox.checkin(Repo)
-
-    pid && Repo.stop(pid)
-
-    Logger.info(fn ->
-      "== Finished synchronizing nationalities"
-    end)
+    Mix.shell().info("== Finished synchronizing nationalities")
   end
 end

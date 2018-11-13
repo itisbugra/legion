@@ -4,8 +4,6 @@ defmodule Mix.Tasks.Legion.Reg.Political do
   """
   require Logger
 
-  import Mix.Ecto
-
   alias Legion.Repo
   alias Legion.Identity.Information.Political.{Region, Subregion, IntermediateRegion, Country}
 
@@ -93,18 +91,8 @@ defmodule Mix.Tasks.Legion.Reg.Political do
   defp downcase_if_not_nil(string) when is_nil(string),
     do: nil
 
-  def run(_args) do
-    {:ok, pid, _apps} = ensure_started(Repo, [])
-    sandbox? = Repo.config()[:pool] == Ecto.Adapters.SQL.Sandbox
-
-    if sandbox? do
-      Ecto.Adapters.SQL.Sandbox.checkin(Repo)
-      Ecto.Adapters.SQL.Sandbox.checkout(Repo, sandbox: false)
-    end
-
-    Logger.info(fn ->
-      "== Synchronizing countries"
-    end)
+  def sync do
+    Mix.shell().info("== Synchronizing regions")
 
     # 1. Regions
     put_region("Asia", "142")
@@ -112,6 +100,9 @@ defmodule Mix.Tasks.Legion.Reg.Political do
     put_region("Oceania", "009")
     put_region("Africa", "002")
     put_region("Americas", "019")
+
+    Mix.shell().info("== Finished synchronizing regions")
+    Mix.shell().info("== Synchronizing subregions")
 
     # 2. Subregions
     put_subregion("Australia and New Zealand", "Oceania", "053")
@@ -132,9 +123,15 @@ defmodule Mix.Tasks.Legion.Reg.Political do
     put_subregion("Western Asia", "Asia", "145")
     put_subregion("Western Europe", "Europe", "155")
 
+    Mix.shell().info("== Finished synchronizing subregions")
+    Mix.shell().info("== Synchronizing intermediate regions")
+
     # 3. Intermediate regions
     put_intermediate_region("Middle Africa", "Africa", "Sub-Saharan Africa", "017")
     put_intermediate_region("Southern Africa", "Africa", "Sub-Saharan Africa", "018")
+
+    Mix.shell().info("== Finished synchronizing intermediate regions")
+    Mix.shell().info("== Synchronizing intermediate regions")
 
     put_intermediate_region(
       "Central America",
@@ -148,6 +145,9 @@ defmodule Mix.Tasks.Legion.Reg.Political do
     put_intermediate_region("Channel Islands", "Europe", "Northern Europe", "830")
     put_intermediate_region("Eastern Africa", "Africa", "Sub-Saharan Africa", "014")
     put_intermediate_region("South America", "Americas", "Latin America and the Caribbean", "005")
+
+    Mix.shell().info("== Finished synchronizing intermediate regions")
+    Mix.shell().info("== Synchronizing countries")
 
     # 4. Countries
     put_country("Afghanistan", "AF", "AFG", "ISO 3166-2:AF", "Asia", "Southern Asia", nil)
@@ -1618,12 +1618,6 @@ defmodule Mix.Tasks.Legion.Reg.Political do
       "Eastern Africa"
     )
 
-    sandbox? && Ecto.Adapters.SQL.Sandbox.checkin(Repo)
-
-    pid && Repo.stop(pid)
-
-    Logger.info(fn ->
-      "== Finished synchronizing countries"
-    end)
+    Mix.shell().info("== Finished synchronizing countries")
   end
 end
