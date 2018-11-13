@@ -2,12 +2,10 @@ defmodule Mix.Tasks.Legion.Reg.Locale do
   @moduledoc """
   Registers locales to the repository.
   """
-  require Logger
+  use Legion.RegistryDirectory.Synchronization, site: Legion.Messaging.Settings, repo: Legion.Repo
 
   alias Legion.Repo
   alias Legion.Internationalization.Locale
-
-  Logger.configure(level: :info)
 
   defmacrop put_locale(language, abbreviation, variant) do
     quote do
@@ -26,14 +24,10 @@ defmodule Mix.Tasks.Legion.Reg.Locale do
           variant: unquote(variant)
         })
 
-        Logger.info(fn ->
-          "added locale #{rfc1766}"
-        end)
+        Mix.shell().info("added locale #{rfc1766}")
       rescue
         Ecto.ConstraintError ->
-          Logger.warn(fn ->
-            "cannot add locale #{rfc1766}, it is already loaded"
-          end)
+          Mix.shell().info("cannot add locale #{rfc1766}, it is already loaded")
       end
     end
   end

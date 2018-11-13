@@ -45,9 +45,8 @@ defmodule Legion.RegistryDirectory.Synchronization do
       if Code.ensure_loaded?(unquote(__MODULE__)) do
         use Mix.Task
 
-        require Logger
-
         import Mix.Ecto
+        import Mix.EctoSQL
 
         def run(args) do
           repos = parse_repo(args)
@@ -55,12 +54,17 @@ defmodule Legion.RegistryDirectory.Synchronization do
 
           Enum.each(repos, fn repo ->
             ensure_repo(repo, args)
+            {:ok, pid, apps} = ensure_started(repo, opts)
+
+            pool = repo.config[:pool]
 
             Mix.shell().info("== Adding #{@site} registers")
 
             sync()
 
             Mix.shell().info("== Finished migrating #{@site} registers")
+
+            pid && repo.stop()
           end)
         end
       end

@@ -12,20 +12,16 @@ defmodule Mix.Tasks.Legion.Reg.Messaging do
 
   @shortdoc "Synchronizes messaging subsystem registers"
 
-  require Logger
-
   alias Legion.Repo
   alias Legion.Messaging.Settings.Register
-
-  Logger.configure(level: :info)
 
   def register(key) do
     register = Repo.insert!(%Register{key: key})
 
-    Logger.info("added register #{register.key}")
+    Mix.shell().info("added register #{register.key}")
   rescue
     Ecto.ConstraintError ->
-      Logger.warn("cannot add register #{key}, it is already added")
+      Mix.shell().info("cannot add register #{key}, it is already added")
   end
 
   def sync do

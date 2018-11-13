@@ -2,24 +2,18 @@ defmodule Mix.Tasks.Legion.Reg.Political do
   @moduledoc """
   Registers nationalities to the repository.
   """
-  require Logger
+  use Legion.RegistryDirectory.Synchronization, site: Legion.Messaging.Settings, repo: Legion.Repo
 
   alias Legion.Repo
   alias Legion.Identity.Information.Political.{Region, Subregion, IntermediateRegion, Country}
 
-  Logger.configure(level: :info)
-
   def put_region(name, code) do
     Repo.insert!(%Region{name: downcase_if_not_nil(name), code: Integer.parse(code) |> elem(0)})
 
-    Logger.info(fn ->
-      "added region #{name}"
-    end)
+    Mix.shell().info("added region #{name}")
   rescue
     Ecto.ConstraintError ->
-      Logger.warn(fn ->
-        "cannot add region #{name}, it is already loaded"
-      end)
+      Mix.shell().info("cannot add region #{name}, it is already loaded")
   end
 
   def put_subregion(name, region_name, code) do
@@ -29,14 +23,10 @@ defmodule Mix.Tasks.Legion.Reg.Political do
       code: Integer.parse(code) |> elem(0)
     })
 
-    Logger.info(fn ->
-      "added subregion #{name}"
-    end)
+    Mix.shell().info("added subregion #{name}")
   rescue
     Ecto.ConstraintError ->
-      Logger.warn(fn ->
-        "cannot add subregion #{name}, it is already loaded"
-      end)
+      Mix.shell().info("cannot add subregion #{name}, it is already loaded")
   end
 
   def put_intermediate_region(name, _, subregion_name, code) do
@@ -46,14 +36,10 @@ defmodule Mix.Tasks.Legion.Reg.Political do
       code: Integer.parse(code) |> elem(0)
     })
 
-    Logger.info(fn ->
-      "added intermediate region #{name}"
-    end)
+    Mix.shell().info("added intermediate region #{name}")
   rescue
     Ecto.ConstraintError ->
-      Logger.warn(fn ->
-        "cannot add intermediate region #{name}, it is already loaded"
-      end)
+      Mix.shell().info("cannot add intermediate region #{name}, it is already loaded")
   end
 
   def put_country(
@@ -75,14 +61,10 @@ defmodule Mix.Tasks.Legion.Reg.Political do
       intermediate_region_name: downcase_if_not_nil(intermediate_region_name)
     })
 
-    Logger.info(fn ->
-      "added country #{name}"
-    end)
+    Mix.shell().info("added country #{name}")
   rescue
     Ecto.ConstraintError ->
-      Logger.warn(fn ->
-        "cannot add country #{name}, it is already loaded"
-      end)
+      Mix.shell().info("cannot add country #{name}, it is already loaded")
   end
 
   defp downcase_if_not_nil(string) when is_binary(string),

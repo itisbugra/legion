@@ -2,12 +2,10 @@ defmodule Mix.Tasks.Legion.Reg.Nationality do
   @moduledoc """
   Registers nationalities to the repository.
   """
-  require Logger
+  use Legion.RegistryDirectory.Synchronization, site: Legion.Messaging.Settings, repo: Legion.Repo
 
   alias Legion.Repo
   alias Legion.Identity.Information.Nationality
-
-  Logger.configure(level: :info)
 
   def put_nationality(
         abbreviation,
@@ -24,14 +22,10 @@ defmodule Mix.Tasks.Legion.Reg.Nationality do
       third_demonym: downcase_if_not_nil(third_demonym)
     })
 
-    Logger.info(fn ->
-      "added nationality #{country_name}"
-    end)
+    Mix.shell().info("added nationality #{country_name}")
   rescue
     Ecto.ConstraintError ->
-      Logger.warn(fn ->
-        "cannot add nationality #{country_name}, it is already loaded"
-      end)
+      Mix.shell().info("cannot add nationality #{country_name}, it is already loaded")
   end
 
   defp downcase_if_not_nil(string) when is_binary(string),
