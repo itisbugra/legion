@@ -131,7 +131,7 @@ defmodule Legion.Messaging.Message do
     field(:body, :string)
     field(:medium, Medium)
     field(:send_after, :integer, default: 0, read_after_writes: true)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
 
     has_one(:success_information, SuccessInformation)
     has_one(:template_usage, TemplateUsage)

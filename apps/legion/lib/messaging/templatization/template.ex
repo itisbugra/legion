@@ -17,7 +17,7 @@ defmodule Legion.Messaging.Templatization.Template do
     field(:is_available_for_mailing?, :boolean, default: true)
     field(:is_available_for_sms?, :boolean, default: false)
     field(:is_available_for_platform?, :boolean, default: true)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
   end
 
   def changeset(struct, params \\ %{}) do

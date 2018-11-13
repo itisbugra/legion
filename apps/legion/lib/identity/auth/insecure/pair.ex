@@ -23,7 +23,7 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
     field(:password_hash, :string, virtual: true)
     field(:password_digest, :string)
     field(:digestion_algorithm, Digestion, default: @password_digestion)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
   end
 
   def changeset(struct, params \\ %{}) do

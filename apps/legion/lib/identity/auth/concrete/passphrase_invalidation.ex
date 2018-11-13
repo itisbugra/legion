@@ -10,7 +10,7 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase.Invalidation do
   schema "passphrase_invalidations" do
     belongs_to(:source_passphrase, Passphrase)
     belongs_to(:target_passphrase, Passphrase)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
   end
 
   @spec changeset(Invalidation, map) :: Ecto.Changeset.t()

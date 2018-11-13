@@ -27,7 +27,7 @@ defmodule Legion.Identity.Telephony.PhoneNumber.SafetyTrait do
     belongs_to(:phone_number, PhoneNumber)
     belongs_to(:authority, Passphrase)
     field(:valid_for, :integer, default: @initial_safe_duration)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
 
     has_one(:invalidation, Invalidation)
   end

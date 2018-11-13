@@ -111,7 +111,7 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandleTest do
       user = insert(:user)
 
       outdated_handle =
-        insert(:tfa_handle, user: user, inserted_at: add(utc_now(), -1 * @lifetime))
+        insert(:tfa_handle, user: user, inserted_at: add(utc_now(), -2 * @lifetime))
 
       assert TFAHandle.challenge_handle(user, outdated_handle.otc) == {:error, :not_found}
     end

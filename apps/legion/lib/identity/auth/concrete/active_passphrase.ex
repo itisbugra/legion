@@ -11,7 +11,7 @@ defmodule Legion.Identity.Auth.Concrete.ActivePassphrase do
     belongs_to(:user, User)
     field(:passkey_digest, :binary)
     field(:ip_addr, Legion.Types.INET)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
 
     has_many(:activities, Activity, foreign_key: :passphrase_id)
   end

@@ -25,7 +25,7 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
     field(:otc_digest, :string)
     belongs_to(:passphrase, Passphrase)
     field(:attempts, :integer, default: 0)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
 
     field(:otc, :string, virtual: true)
   end

@@ -12,7 +12,7 @@ defmodule Legion.Identity.Telephony.PhoneNumber.SafetyTrait.Invalidation do
   schema "user_phone_number_safety_trait_invalidations" do
     belongs_to(:safety_trait, SafetyTrait)
     belongs_to(:authority, Passphrase)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
   end
 
   @doc false

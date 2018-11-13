@@ -64,7 +64,7 @@ defmodule Legion.Identity.Telephony.PhoneNumber do
     belongs_to(:user, User)
     field(:number, :string)
     field(:type, PhoneType)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
 
     has_many(:prioritization_traits, PrioritizationTrait)
     has_many(:safety_traits, SafetyTrait)

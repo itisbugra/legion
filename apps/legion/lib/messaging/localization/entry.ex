@@ -14,7 +14,7 @@ defmodule Legion.Messaging.Localization.Entry do
     field(:engine, Engine)
     field(:subject_template, :string)
     field(:body_template, :string)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
   end
 
   def changeset(struct, params \\ %{}) do

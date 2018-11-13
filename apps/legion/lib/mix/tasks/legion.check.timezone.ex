@@ -36,7 +36,7 @@ defmodule Mix.Tasks.Legion.Check.Timezone do
       if tz == "UTC" do
         Mix.shell().info("time zone = UTC")
       else
-        Mix.raise(UnknownTimeZoneError, tz)
+        Mix.raise(UnknownTimeZoneError)
       end
 
       Mix.shell().info("== Finished checking timezone configuration")

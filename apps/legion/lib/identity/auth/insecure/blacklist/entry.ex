@@ -15,7 +15,7 @@ defmodule Legion.Identity.Auth.Insecure.Blacklist.Entry do
   schema "password_blacklist_entries" do
     belongs_to(:authority, User)
     field(:hash, :binary)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
   end
 
   def changeset(struct, params \\ %{}) do

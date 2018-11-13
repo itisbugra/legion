@@ -36,7 +36,7 @@ defmodule Legion.Identity.Information.Registration do
     )
 
     field(:authentication_scheme, Scheme, default: :insecure)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
   end
 
   def changeset(struct, params \\ %{}) do

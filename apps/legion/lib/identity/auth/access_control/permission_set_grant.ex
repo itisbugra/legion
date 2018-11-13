@@ -34,7 +34,7 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrant do
     belongs_to(:authority, Registration)
     field(:valid_after, :integer)
     field(:valid_for, :integer)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
 
     has_one(:invalidation, Invalidation, foreign_key: :grant_id)
   end

@@ -38,7 +38,7 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
     field(:time_zone, :string)
     field(:zip_code, :string)
     field(:gps_location, Legion.Types.Point)
-    field(:inserted_at, :naive_datetime, read_after_writes: true)
+    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
   end
 
   @doc """
