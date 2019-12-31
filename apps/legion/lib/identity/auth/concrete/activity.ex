@@ -10,9 +10,11 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
   alias Legion.Networking.INET
   alias Legion.Networking.HTTP.UserAgent
   alias Legion.Networking.INET.Geocoding
+  alias Legion.Location.Geocode
 
   @env Application.get_env(:legion, Legion.Identity.Auth.Concrete)
   @user_agent_len Keyword.fetch!(@env, :user_agent_length)
+  @allow_failsafe_reverse_geocoding Keyword.get(@env, :allow_failsafe_reverse_geocoding, false)
 
   schema "activities" do
     belongs_to(:passphrase, Passphrase)
@@ -83,32 +85,32 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
   @spec create_changeset(Passphrase.id(), UserAgent.t(), INET.t(), Postgrex.Point.t()) ::
           {:ok, Ecto.Changeset.t()}
           | {:error, any}
-  def create_changeset(passphrase_id, user_agent, ip_addr, gps_location) do
-    with ua_result <- UserAgent.parse(user_agent),
-         {:ok, result} <- Geocoding.trace(ip_addr) do
+  def create_changeset(passphrase_id, user_agent_string, ip_addr, gps_location) do
+    with user_agent <- UserAgent.parse(user_agent_string),
+         {:ok, geocode} <- perform_reverse_geocoding_trace(ip_addr) do
       params = %{
         passphrase_id: passphrase_id,
-        user_agent: user_agent,
-        engine: ua_result.client.engine,
-        engine_version: ua_result.client.engine_version,
-        client_name: ua_result.client.name,
-        client_type: ua_result.client.type,
-        client_version: ua_result.client.version,
-        device_brand: ua_result.device.brand,
-        device_model: ua_result.device.model,
-        device_type: ua_result.device.type,
-        os_name: ua_result.os.name,
-        os_platform: ua_result.os.platform,
-        os_version: ua_result.os.version,
+        user_agent: user_agent_string,
+        engine: user_agent.client.engine,
+        engine_version: user_agent.client.engine_version,
+        client_name: user_agent.client.name,
+        client_type: user_agent.client.type,
+        client_version: user_agent.client.version,
+        device_brand: user_agent.device.brand,
+        device_model: user_agent.device.model,
+        device_type: user_agent.device.type,
+        os_name: user_agent.os.name,
+        os_platform: user_agent.os.platform,
+        os_version: user_agent.os.version,
         ip_addr: %Postgrex.INET{address: ip_addr},
-        country_name: result.country_name,
-        country_code: result.country_code,
-        ip_location: result.location,
-        metro_code: result.metro_code,
-        region_code: result.region_code,
-        region_name: result.region_name,
-        time_zone: result.time_zone,
-        zip_code: result.zip_code,
+        country_name: geocode.country_name,
+        country_code: geocode.country_code,
+        ip_location: geocode.location,
+        metro_code: geocode.metro_code,
+        region_code: geocode.region_code,
+        region_name: geocode.region_name,
+        time_zone: geocode.time_zone,
+        zip_code: geocode.zip_code,
         gps_location: gps_location
       }
 
@@ -159,5 +161,20 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
       )
 
     Repo.one(query)
+  end
+
+  defp perform_reverse_geocoding_trace(ip_addr) do
+    result = Geocoding.trace(ip_addr)
+
+    case result do
+      {:error, :incorrect_ip_range} ->
+        {:error, :incorrect_ip_range}
+
+      {:error, error} ->
+        if @allow_failsafe_reverse_geocoding, do: {:ok, Geocode.new()}, else: {:error, error}
+
+      any ->
+        any
+    end
   end
 end

@@ -45,7 +45,7 @@ defmodule Legion.Mixfile do
       {:bcrypt_elixir, "~> 1.1"},
       {:pbkdf2_elixir, "~> 0.12.3"},
       {:jose, "~> 1.8"},
-      {:ua_inspector, "~> 0.18.0"},
+      {:ua_inspector, "~> 1.0"},
       {:freegeoip, "~> 0.0.5"},
       {:inet_cidr, "~> 1.0"},
       {:ex_machina, "~> 2.2", only: :test},

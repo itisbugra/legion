@@ -21,7 +21,8 @@ config :legion, Legion.Identity.Auth.Concrete,
   passphrase_lifetime: six_months,
   user_agent_length: 400,
   maximum_allowed_passphrases: 5,
-  allow_local_addresses: true
+  allow_local_addresses: true,
+  allow_failsafe_reverse_geocoding: true
 
 config :legion, Legion.Identity.Auth.Concrete.JOSE,
   secret_key_base: "secret_key_base",

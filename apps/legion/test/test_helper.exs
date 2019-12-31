@@ -1,4 +1,4 @@
-ExUnit.start()
+ExUnit.start(exclude: [:external])
 
 Ecto.Adapters.SQL.Sandbox.mode(Legion.Repo, :manual)
 

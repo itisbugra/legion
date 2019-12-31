@@ -13,4 +13,4 @@ config :legion, Legion.Repo,
 
 # fiorix/freegeoip container in Docker to IP Reverse Geocoding
 config :freegeoip,
-  base_url: "http://fiorix-freegeoip:8080"
+  base_url: "https://freegeoip.acme.services.thenopebox.com"

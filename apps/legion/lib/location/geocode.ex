@@ -61,4 +61,28 @@ defmodule Legion.Location.Geocode do
           meta: map(),
           timestamp: NaiveDateTime.t()
         }
+
+  @doc """
+  Returns a new empty geocode.
+
+  ## Examples
+
+      iex> Legion.Location.Geocode.new()
+      %Legion.Location.Geocode{location: nil, country_name: nil, country_code: nil, metro_code: nil, region_code: nil, region_name: nil, time_zone: nil, zip_code: nil, geocoder: nil, channel: nil, meta: %{}, timestamp: nil}
+  """
+  def new,
+    do: %Legion.Location.Geocode{
+      location: nil,
+      country_name: nil,
+      country_code: nil,
+      metro_code: nil,
+      region_code: nil,
+      region_name: nil,
+      time_zone: nil,
+      zip_code: nil,
+      geocoder: nil,
+      channel: nil,
+      meta: %{},
+      timestamp: nil
+    }
 end

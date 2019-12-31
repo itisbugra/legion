@@ -10,6 +10,7 @@ defmodule Legion.HTTP.Common.FallbackController do
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(:unprocessable_entity)
-    |> render(Legion.HTTP.Common.ChangesetView, "error.json", changeset: changeset)
+    |> put_view(Legion.HTTP.Common.ChangesetView)
+    |> render("error.json", changeset: changeset)
   end
 end
