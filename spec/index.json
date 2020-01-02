@@ -3,7 +3,7 @@
   "info": {
     "$ref": "./info.json"
   },
-  "host": "api.stms.stcpay.com.sa",
+  "host": "api.thewerkzeug.ch",
   "basePath": "/api/v1",
   "tags": [
     {
@@ -11,7 +11,7 @@
       "description": "Identity/Access Management (IAM)",
       "externalDocs": {
         "description": "Documentation of IAM workflow",
-        "url": "http://docs.stms.stcpay.com.sa"
+        "url": "http://docs.thewerkzeug.ch"
       }
     }
   ],

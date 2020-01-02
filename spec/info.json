@@ -1,10 +1,10 @@
 { 
-  "description": "Saudi Digital Payment Solutions Instant Messaging Service Developer's API",
+  "description": "Werkzeug's Legion: The developer's API",
   "version": "1.0.0",
-  "title": "Saudi Digital Payment Solutions Messaging Service Core Services",
-  "termsOfService": "http://stms.stcpay.com.sa/developers/terms-of-service",
+  "title": "Legion: Core Services",
+  "termsOfService": "http://thewerkzeug.ch/developers/terms-of-service",
   "contact": {
-    "email": "development@stcpay.com.sa"
+    "email": "development@thewerkzeug.ch"
     
   },
   "license": {

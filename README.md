@@ -1,10 +1,28 @@
-# Legion
+# @werkzeug / Legion
 
-[![Pipeline status](http://95.177.215.207/STMS/Chat/Legion/badges/master/pipeline.svg)](http://95.177.215.207/STMS/Chat/Legion/commits/master)
-[![Coverage report](http://95.177.215.207/STMS/Chat/Legion/badges/master/coverage.svg)](http://95.177.215.207/STMS/Chat/Legion/commits/master)
+Central repository for the server-side installation of Werkzeug.
 
-Central repository for the server-side application.
+## Installation
+
+Install the umbrella dependencies, configure the project from the configuration files located in `**/config/${ENVIRONMENT}.exs`.
+To scaffold the database and download the databases for reverse IP geocoding, you can use the Mix task.
+
+To give an illustration, we're going to run the unit tests with the following commands.
+
+```sh
+$ MIX_ENV=test mix deps.get      # Retrieve the project dependencies
+$ MIX_ENV=test mix legion.setup  # Scaffold database and download specific files (such as MaxGeoIP databases)
+$ mix test                       # Run ExUnit testing suite
+```
 
 ## Documentation
 
-Go ahead to the [pipelines](http://95.177.215.207/STMS/Chat/Legion/pipelines) and download the artifacts for `elixir:test:ex_unit`.
+You can build the docs by using ExDoc's Mix task.
+
+```sh
+$ mix docs
+```
+
+## License
+
+Licensed under Apache-2, see [LICENSE](https://github.com/Chatatata/Legion/blob/master/LICENSE).
