@@ -93,12 +93,12 @@ defmodule Legion.Identity.Auth.Concrete do
 
   ## Return types
 
-  With a valid digest for the user, this function should either 
-  return a 
+  With a valid digest for the user, this function should either
+  return a
 
-  - `{:ok, :require, passkey}` tuple containing the passkey which 
-  should be transferred to the client-side device to be persisted on 
-  its secure storage, or 
+  - `{:ok, :require, passkey}` tuple containing the passkey which
+  should be transferred to the client-side device to be persisted on
+  its secure storage, or
 
   - `{:ok, :access, jwt}` tuple containing the JSON Web Token
    [*(RFC 7159)*] to perform stealth authentication directly, or
@@ -107,12 +107,12 @@ defmodule Legion.Identity.Auth.Concrete do
   information for proceeding to the next mandatory step of users
   preferred multi-factor-authentication method.
 
-  In such circumstances, these errors can also be returned from the 
+  In such circumstances, these errors can also be returned from the
   function:
 
   - `{:error, :no_user_verify}`: User cannot be found with given
   username.
-  - `{:error, :unsupported_scheme}`: The authentication scheme 
+  - `{:error, :unsupported_scheme}`: The authentication scheme
   of the user is not supported (in implementation). This is
   subject to change without a notice on further releases and
   left here for the regression of provisioning services.
@@ -145,7 +145,7 @@ defmodule Legion.Identity.Auth.Concrete do
           | {:error, :wrong_password}
           | {:error, :maximum_passphrases_exceeded}
           | {:error, INET.error_type()}
-  def generate_passphrase(username, password_hash, ip_addr, opts \\ []) do
+  def generate_passphrase(username, password_hash, ip_addr, _opts \\ []) do
     case Repo.transaction(fn ->
            with :ok <- INET.validate_addr(ip_addr),
                 {:ok, auth_info} <- Pair.retrieve_auth_info(username),

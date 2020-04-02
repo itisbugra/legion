@@ -13,7 +13,6 @@ defmodule Mix.Tasks.Legion.Check.Timezone do
   Run before starting any task to check the timezone of the database.
   """
   import Mix.Ecto
-  import Mix.EctoSQL
 
   alias Legion.Repo
   alias Legion.Mix.Check.Timezone.UnknownTimeZoneError
@@ -21,11 +20,10 @@ defmodule Mix.Tasks.Legion.Check.Timezone do
   @doc false
   def run(args) do
     repos = parse_repo(args)
-    {opts, _, _} = OptionParser.parse(args, switches: [quiet: :boolean])
 
     Enum.each(repos, fn repo ->
       ensure_repo(repo, args)
-      {:ok, pid, _apps} = ensure_started(repo, opts)
+    #   {:ok, pid, _apps} = ensure_started(repo, opts)
 
       Mix.shell().info("== Checking timezone configuration")
 
@@ -39,7 +37,7 @@ defmodule Mix.Tasks.Legion.Check.Timezone do
 
       Mix.shell().info("== Finished checking timezone configuration")
 
-      pid && repo.stop()
+      repo.stop()
     end)
   end
 end

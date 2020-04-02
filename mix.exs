@@ -8,7 +8,7 @@ defmodule Legion.Umbrella.Mixfile do
       deps: deps(),
       aliases: aliases(),
       docs: docs(),
-      elixir: "~> 1.7.3",
+      elixir: "~> 1.10.2",
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         coveralls: :test,

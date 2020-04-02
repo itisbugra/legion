@@ -37,26 +37,26 @@ defmodule Legion.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:postgrex, "~> 0.14.0"},
-      {:ecto_sql, "~> 3.0"},
-      {:ecto_enum, "~> 1.1"},
-      {:comeonin, "~> 4.1"},
-      {:argon2_elixir, "~> 1.3"},
-      {:bcrypt_elixir, "~> 1.1"},
-      {:pbkdf2_elixir, "~> 0.12.3"},
-      {:jose, "~> 1.8"},
-      {:ua_inspector, "~> 1.0"},
+      {:postgrex, "~> 0.15.3"},
+      {:ecto_sql, "~> 3.4.1"},
+      {:ecto_enum, "~> 1.4.0"},
+      {:comeonin, "~> 5.3.1"},
+      {:argon2_elixir, "~> 2.3.0"},
+      {:bcrypt_elixir, "~> 2.2.0"},
+      {:pbkdf2_elixir, "~> 1.2.1"},
+      {:jose, "~> 1.10.1"},
+      {:ua_inspector, "~> 2.0.0"},
       {:freegeoip, "~> 0.0.5"},
-      {:inet_cidr, "~> 1.0"},
-      {:ex_machina, "~> 2.2", only: :test},
+      {:inet_cidr, "~> 1.0.4"},
+      {:ex_machina, "~> 2.4.0", only: :test},
       {:rsa_ex, "~> 0.4.0"},
       {:keccakf1600, "~> 2.0.0", hex: :keccakf1600_orig},
-      {:liquid, "~> 0.8.0"},
-      {:entropy_string, "~> 1.3"},
-      {:nimble_csv, "~> 0.4.0"},
-      {:cidr, "~> 1.1"},
-      {:dialyxir, "~> 1.0.0-rc.3", only: [:dev], runtime: false},
-      {:ex_phone_number, "~> 0.1"}
+      {:liquid, "~> 0.9.1"},
+      {:entropy_string, "~> 1.3.4"},
+      {:nimble_csv, "~> 0.7.0"},
+      {:cidr, "~> 1.1.0"},
+      {:dialyxir, "~> 1.0.0", only: [:dev], runtime: false},
+      {:ex_phone_number, "~> 0.2.0"}
     ]
   end
 

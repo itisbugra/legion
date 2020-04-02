@@ -38,14 +38,14 @@ defmodule Legion.HTTP.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.4"},
-      {:phoenix_pubsub, "~> 1.1"},
-      {:phoenix_ecto, "~> 4.0"},
-      {:jason, "~> 1.0"},
-      {:gettext, "~> 0.16.0"},
+      {:phoenix, "~> 1.4.16"},
+      {:phoenix_pubsub, "~> 1.1.2"},
+      {:phoenix_ecto, "~> 4.1.0"},
+      {:jason, "~> 1.2.0"},
+      {:gettext, "~> 0.17.4"},
       {:legion, in_umbrella: true},
-      {:cowboy, "~> 2.5"},
-      {:plug_cowboy, "~> 2.0"}
+      {:cowboy, "~> 2.7"},
+      {:plug_cowboy, "~> 2.1.2"}
     ]
   end
 
