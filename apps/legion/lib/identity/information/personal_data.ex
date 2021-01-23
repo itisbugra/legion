@@ -40,13 +40,29 @@ defmodule Legion.Identity.Information.PersonalData do
     field :nickname, :string
     field :phonetic_representation, :string
     field :gender, Gender
-    belongs_to :nationality, Nationality, foreign_key: :nationality_abbreviation, references: :abbreviation, type: :binary
+
+    belongs_to :nationality, Nationality,
+      foreign_key: :nationality_abbreviation,
+      references: :abbreviation,
+      type: :binary
+
     timestamps inserted_at: false
   end
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id, :given_name, :middle_name, :family_name, :name_prefix, :name_postfix, :nickname, :phonetic_representation, :gender, :nationality_abbreviation])
+    |> cast(params, [
+      :user_id,
+      :given_name,
+      :middle_name,
+      :family_name,
+      :name_prefix,
+      :name_postfix,
+      :nickname,
+      :phonetic_representation,
+      :gender,
+      :nationality_abbreviation
+    ])
     |> validate_required([:user_id])
     |> validate_range(:given_name, @given_name_len)
     |> validate_range(:middle_name, @middle_name_len)

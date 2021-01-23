@@ -14,14 +14,22 @@ defmodule Legion.Networking.INET do
   """
   @type t() :: :inet.ip_address()
 
-  @type error_type() :: :self_reference | :private_use | :loopback | 
-                        :link_local | :ietf_protocol_assn | :test_net | 
-                        :bridge_relay_anycast | :network_interconnect |
-                        :multicast | :reserved | :limited_broadcast
+  @type error_type() ::
+          :self_reference
+          | :private_use
+          | :loopback
+          | :link_local
+          | :ietf_protocol_assn
+          | :test_net
+          | :bridge_relay_anycast
+          | :network_interconnect
+          | :multicast
+          | :reserved
+          | :limited_broadcast
 
-  @spec validate_addr(INET.t()) :: 
-    :ok |
-    {:error, error_type()}
+  @spec validate_addr(INET.t()) ::
+          :ok
+          | {:error, error_type()}
   def validate_addr(inet) do
     Enum.reduce_while(constraints(), :ok, fn {cidr, error}, _acc ->
       if validate_inclusion(inet, cidr) do

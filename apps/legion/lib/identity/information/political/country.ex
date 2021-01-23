@@ -22,8 +22,16 @@ defmodule Legion.Identity.Information.Political.Country do
     field :three_letter, :string
     field :iso_3166, :string
     belongs_to :region, Region, foreign_key: :region_name, references: :name, type: :string
-    belongs_to :subregion, Subregion, foreign_key: :subregion_name, references: :name, type: :string
-    belongs_to :intermediate_region, IntermediateRegion, foreign_key: :intermediate_region_name, references: :name, type: :string
+
+    belongs_to :subregion, Subregion,
+      foreign_key: :subregion_name,
+      references: :name,
+      type: :string
+
+    belongs_to :intermediate_region, IntermediateRegion,
+      foreign_key: :intermediate_region_name,
+      references: :name,
+      type: :string
   end
 
   def changeset(struct, params \\ %{}) do

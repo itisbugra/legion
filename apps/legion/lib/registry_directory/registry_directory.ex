@@ -118,7 +118,12 @@ defmodule Legion.RegistryDirectory do
         alias Legion.Identity.Information.Registration, as: User
 
         schema unquote("#{dirname}_registry_entries") do
-          belongs_to :register, :"#{unquote(namespace)}.Register", primary_key: true, foreign_key: :key, type: :string, references: :key
+          belongs_to :register, :"#{unquote(namespace)}.Register",
+            primary_key: true,
+            foreign_key: :key,
+            type: :string,
+            references: :key
+
           field :value, :map
           belongs_to :authority, User
           field :inserted_at, :naive_datetime_usec, read_after_writes: true
@@ -158,19 +163,21 @@ defmodule Legion.RegistryDirectory do
         `value`, on behalf of `user` authority.
         """
         @spec put(User.id() | User, String.t(), map()) ::
-          :ok |
-          :error
+                :ok
+                | :error
         def put(user = %User{}, key, value), do: put(user.id, key, value)
+
         def put(user_id, key, value) when is_binary(key) do
           changeset =
-            @registry_entry_schema.changeset(%@registry_entry_schema{},
-                                             %{key: key,
-                                               authority_id: user_id,
-                                               value: value})
+            @registry_entry_schema.changeset(
+              %@registry_entry_schema{},
+              %{key: key, authority_id: user_id, value: value}
+            )
 
           case Repo.insert(changeset) do
             {:ok, _setting} ->
               :ok
+
             {:error, _changeset} ->
               {:error, :unavailable}
           end
@@ -181,15 +188,16 @@ defmodule Legion.RegistryDirectory do
         `default` if there was no value registered (yet).
         """
         @spec get(String.t(), term()) ::
-          term()
+                term()
         def get(key, default \\ nil) when is_binary(key) do
           query =
             from re1 in @registry_entry_table_name,
-            left_join: re2 in @registry_entry_table_name,
+              left_join: re2 in @registry_entry_table_name,
               on: re1.key == re2.key and re1.id < re2.id,
-            where: is_nil(re2.id) and
-                   re1.key == ^key,
-            select: re1.value
+              where:
+                is_nil(re2.id) and
+                  re1.key == ^key,
+              select: re1.value
 
           if value = Repo.one(query), do: value, else: default
         end
@@ -197,15 +205,15 @@ defmodule Legion.RegistryDirectory do
         @doc """
         Takes the last `quantity` entries for the given `key`.
         """
-        @spec take(String.t, pos_integer()) ::
-          term()
+        @spec take(String.t(), pos_integer()) ::
+                term()
         def take(key, quantity) when is_binary(key) do
           query =
             from re in @registry_entry_table_name,
-            where: re.key == ^key,
-            limit: ^quantity,
-            order_by: [desc: re.id],
-            select: {re.value, re.inserted_at}
+              where: re.key == ^key,
+              limit: ^quantity,
+              order_by: [desc: re.id],
+              select: {re.value, re.inserted_at}
 
           Repo.all(query)
         end

@@ -13,18 +13,17 @@ defmodule Legion.HTTP.Identity.Auth.SignUp.RegistrationControllerTest do
     password = random_string(@password_length)
     password_hash = Keccak.hash(password)
 
-    %{conn: conn,
-      username: username,
-      password: password,
-      password_hash: password_hash}
+    %{conn: conn, username: username, password: password, password_hash: password_hash}
   end
 
-  test "registers a user with given username and password", %{conn: conn, username: username, password_hash: password_hash} do
-    params =
-      %{username: username,
-        password_hash: password_hash}
+  test "registers a user with given username and password", %{
+    conn: conn,
+    username: username,
+    password_hash: password_hash
+  } do
+    params = %{username: username, password_hash: password_hash}
 
-    conn = post conn, registration_path(conn, :create), params
+    conn = post(conn, registration_path(conn, :create), params)
     result = json_response(conn, 201)["registration_info"]
 
     assert result["username"] == username
@@ -32,12 +31,14 @@ defmodule Legion.HTTP.Identity.Auth.SignUp.RegistrationControllerTest do
     assert result["timestamp"]
   end
 
-  test "should not contain a sensitive field", %{conn: conn, username: username, password_hash: password_hash} do
-    params =
-      %{username: username,
-        password_hash: password_hash}
+  test "should not contain a sensitive field", %{
+    conn: conn,
+    username: username,
+    password_hash: password_hash
+  } do
+    params = %{username: username, password_hash: password_hash}
 
-    conn = post conn, registration_path(conn, :create), params
+    conn = post(conn, registration_path(conn, :create), params)
     result = json_response(conn, 201)["registration_info"]
 
     refute result["password"]

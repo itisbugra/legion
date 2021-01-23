@@ -30,6 +30,7 @@ defmodule Mix.Tasks.Legion.Reg.Nationality do
 
   defp downcase_if_not_nil(string) when is_binary(string),
     do: String.downcase(string)
+
   defp downcase_if_not_nil(string) when is_nil(string),
     do: nil
 

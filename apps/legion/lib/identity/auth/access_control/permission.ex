@@ -13,8 +13,8 @@ defmodule Legion.Identity.Auth.AccessControl.Permission do
     field :type, :string
 
     many_to_many :permission_sets,
-                  PermissionSet,
-                  join_through: "permission_set_permissions"
+                 PermissionSet,
+                 join_through: "permission_set_permissions"
   end
 
   def changeset(struct, params \\ %{}) do

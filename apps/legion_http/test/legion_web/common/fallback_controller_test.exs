@@ -8,7 +8,7 @@ defmodule Legion.HTTP.Common.FallbackControllerTest do
   alias Legion.HTTP.Common.FallbackController
 
   test "delegates the errored changeset to the view", %{conn: conn} do
-    changeset = 
+    changeset =
       %User{id: 2, has_gps_telemetry_consent?: true}
       |> change(%{has_gps_telemetry_consent?: false})
       |> add_error(:has_gps_telemetry_consent?, "this should be false")

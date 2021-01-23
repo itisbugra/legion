@@ -9,10 +9,11 @@ defmodule Legion.Testing.Random do
   Useful for generating test data in certain length.
   """
   def random_string(len) when is_integer(len) do
-    Enum.map_join 1..(len), fn _ ->
+    Enum.map_join(1..len, fn _ ->
       String.at(@alphabet, :rand.uniform(String.length(@alphabet)) - 1)
-    end
+    end)
   end
+
   def random_string(range) when is_map(range) do
     len = :rand.uniform(Enum.max(range) - Enum.min(range)) + Enum.min(range)
 

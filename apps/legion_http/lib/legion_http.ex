@@ -28,8 +28,9 @@ defmodule Legion.HTTP do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/legion_http/templates",
-                        namespace: Legion.HTTP
+      use Phoenix.View,
+        root: "lib/legion_http/templates",
+        namespace: Legion.HTTP
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]

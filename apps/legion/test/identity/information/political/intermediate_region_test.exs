@@ -4,9 +4,7 @@ defmodule Legion.Identity.Information.Political.IntermediateRegionTest do
 
   alias Legion.Identity.Information.Political.IntermediateRegion
 
-  @attr %{name: "name",
-          subregion_name: "subregion_name",
-          code: 123456}
+  @attr %{name: "name", subregion_name: "subregion_name", code: 123_456}
 
   test "changeset will error no matter what" do
     refute IntermediateRegion.changeset(%IntermediateRegion{}, @attr).valid?

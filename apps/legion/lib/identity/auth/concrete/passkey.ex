@@ -16,7 +16,7 @@ defmodule Legion.Identity.Auth.Concrete.Passkey do
   @doc """
   Generates a string passkey with an entropy size of #{@scale * @cofactor}.
   """
-  @spec generate() :: String.t
+  @spec generate() :: String.t()
   def generate(), do: EntropyString.random(@scale * @cofactor, :charset64)
 
   @doc """

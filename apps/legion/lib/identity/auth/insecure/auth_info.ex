@@ -11,20 +11,19 @@ defmodule Legion.Identity.Auth.Insecure.AuthInfo do
     :authentication_scheme
   ]
 
-  
   @type t() :: %__MODULE__{
-    user_id: User.id(),
-    password_digest: binary(),
-    digestion_algorithm: Pair.digestion_algorithm(),
-    authentication_scheme: :insecure
-  }
+          user_id: User.id(),
+          password_digest: binary(),
+          digestion_algorithm: Pair.digestion_algorithm(),
+          authentication_scheme: :insecure
+        }
 
   @doc """
   Checks if authentication schema is supported, returns error otherwise
   """
-  @spec check_authentication_schema(__MODULE__.t()) :: 
-    :ok |
-    {:error, :unsupported_scheme}
+  @spec check_authentication_schema(__MODULE__.t()) ::
+          :ok
+          | {:error, :unsupported_scheme}
   def check_authentication_schema(auth_info) do
     if auth_info.authentication_scheme == :insecure do
       :ok

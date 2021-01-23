@@ -10,11 +10,7 @@ defmodule Legion.Messaging.MessageTest do
   @body_len Keyword.fetch!(@env, :body_length)
   @subject random_string(@subject_len)
   @body random_string(@body_len)
-  @valid_params %{sender_id: 1,
-                  subject: @subject,
-                  body: @body,
-                  medium: :apm,
-                  send_after: 0}
+  @valid_params %{sender_id: 1, subject: @subject, body: @body, medium: :apm, send_after: 0}
 
   test "changeset with valid params" do
     changeset = Message.changeset(%Message{}, @valid_params)

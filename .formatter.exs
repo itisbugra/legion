@@ -25,7 +25,7 @@ locals_without_parens = [
 
   # Registry directory
   defregdir: 2,
-  register: 1
+  register: 1,
   put_nationality: 5
 ]
 

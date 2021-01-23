@@ -22,7 +22,10 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSet do
     |> cast(params, [:name, :description, :user_id])
     |> validate_required([:name, :description, :user_id])
     |> validate_length(:name, min: Enum.min(@name_length), max: Enum.max(@name_length))
-    |> validate_length(:description, min: Enum.min(@description_length), max: Enum.max(@description_length))
+    |> validate_length(:description,
+      min: Enum.min(@description_length),
+      max: Enum.max(@description_length)
+    )
     |> foreign_key_constraint(:user_id)
   end
 end

@@ -37,32 +37,70 @@ defmodule Legion.Identity.Telephony.Stub do
 
     # Safe but ignored
     safe_but_ignored = Factory.insert(:phone_number, user: owner)
-    Factory.insert(:phone_number_safety_trait, phone_number: safe_but_ignored, authority: owner_passphrase)
-    Factory.insert(:phone_number_neglection_trait, phone_number: safe_but_ignored, authority: authority_passphrase)
+
+    Factory.insert(:phone_number_safety_trait,
+      phone_number: safe_but_ignored,
+      authority: owner_passphrase
+    )
+
+    Factory.insert(:phone_number_neglection_trait,
+      phone_number: safe_but_ignored,
+      authority: authority_passphrase
+    )
 
     # Unsafe
     unsafe = Factory.insert(:phone_number, user: owner)
 
     # Unsafe and ignored
     unsafe_and_ignored = Factory.insert(:phone_number, user: owner)
-    Factory.insert(:phone_number_neglection_trait, phone_number: unsafe_and_ignored, authority: owner_passphrase)
+
+    Factory.insert(:phone_number_neglection_trait,
+      phone_number: unsafe_and_ignored,
+      authority: owner_passphrase
+    )
 
     # Safe and prioritized
     safe_and_prioritized_owner = Factory.insert(:user)
     safe_and_prioritized = Factory.insert(:phone_number, user: safe_and_prioritized_owner)
-    Factory.insert(:phone_number_safety_trait, phone_number: safe_and_prioritized, authority: owner_passphrase)
-    Factory.insert(:phone_number_prioritization_trait, phone_number: safe_and_prioritized, authority: authority_passphrase)
+
+    Factory.insert(:phone_number_safety_trait,
+      phone_number: safe_and_prioritized,
+      authority: owner_passphrase
+    )
+
+    Factory.insert(:phone_number_prioritization_trait,
+      phone_number: safe_and_prioritized,
+      authority: authority_passphrase
+    )
 
     # Safe and overprioritized
     safe_and_overprioritized_owner = Factory.insert(:user)
     safe_and_overprioritized = Factory.insert(:phone_number, user: safe_and_overprioritized_owner)
-    Factory.insert(:phone_number_safety_trait, phone_number: safe_and_overprioritized, authority: owner_passphrase)
-    Factory.insert(:phone_number_prioritization_trait, phone_number: safe_and_overprioritized, authority: authority_passphrase)
-    overprioritizing = Factory.insert(:phone_number, user: safe_and_overprioritized_owner)
-    Factory.insert(:phone_number_safety_trait, phone_number: overprioritizing, authority: owner_passphrase)
-    Factory.insert(:phone_number_prioritization_trait, phone_number: overprioritizing, authority: authority_passphrase)
 
-    %{owner: owner,
+    Factory.insert(:phone_number_safety_trait,
+      phone_number: safe_and_overprioritized,
+      authority: owner_passphrase
+    )
+
+    Factory.insert(:phone_number_prioritization_trait,
+      phone_number: safe_and_overprioritized,
+      authority: authority_passphrase
+    )
+
+    overprioritizing = Factory.insert(:phone_number, user: safe_and_overprioritized_owner)
+
+    Factory.insert(:phone_number_safety_trait,
+      phone_number: overprioritizing,
+      authority: owner_passphrase
+    )
+
+    Factory.insert(:phone_number_prioritization_trait,
+      phone_number: overprioritizing,
+      authority: authority_passphrase
+    )
+
+    %{
+      owner: owner,
       authority: authority,
       owner_passphrase: owner_passphrase,
       authority_passphrase: authority_passphrase,
@@ -71,6 +109,7 @@ defmodule Legion.Identity.Telephony.Stub do
       unsafe: unsafe,
       safe_and_prioritized: safe_and_prioritized,
       safe_and_overprioritized: safe_and_overprioritized,
-      number: @phone_number}
+      number: @phone_number
+    }
   end
 end

@@ -16,7 +16,7 @@ defmodule Legion.Messaging.Templatization.RenderingResult do
   - `:body`: Body rendering of the message.
   """
   @type t :: %__MODULE__{
-    subject: binary,
-    body: binary
-  }
+          subject: binary,
+          body: binary
+        }
 end

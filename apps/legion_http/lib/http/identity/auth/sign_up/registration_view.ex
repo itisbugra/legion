@@ -9,8 +9,10 @@ defmodule Legion.HTTP.Identity.Auth.SignUp.RegistrationView do
   end
 
   def render("registration_info.json", %{registration: registration}) do
-    %{username: registration.username,
+    %{
+      username: registration.username,
       user_id: registration.user_id,
-      timestamp: put_date(registration.inserted_at)}
+      timestamp: put_date(registration.inserted_at)
+    }
   end
 end

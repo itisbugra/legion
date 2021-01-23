@@ -79,7 +79,7 @@ defmodule Legion.Messaging.Switching.Globals do
   This macro curries the `enable_medium/2` function with corresponding medium.
   """
   defmacro enable_apm_medium(user_or_id),
-    do: (quote do: enable_medium(unquote(user_or_id), :apm))
+    do: quote(do: enable_medium(unquote(user_or_id), :apm))
 
   @doc """
   Enables push medium.
@@ -87,7 +87,7 @@ defmodule Legion.Messaging.Switching.Globals do
   This macro curries the `enable_medium/2` function with corresponding medium.
   """
   defmacro enable_push_medium(user_or_id),
-    do: (quote do: enable_medium(unquote(user_or_id), :push))
+    do: quote(do: enable_medium(unquote(user_or_id), :push))
 
   @doc """
   Enables mailing medium.
@@ -95,7 +95,7 @@ defmodule Legion.Messaging.Switching.Globals do
   This macro curries the `enable_medium/2` function with corresponding medium.
   """
   defmacro enable_mailing_medium(user_or_id),
-    do: (quote do: enable_medium(unquote(user_or_id), :mailing))
+    do: quote(do: enable_medium(unquote(user_or_id), :mailing))
 
   @doc """
   Enables SMS medium.
@@ -103,7 +103,7 @@ defmodule Legion.Messaging.Switching.Globals do
   This macro curries the `enable_medium/2` function with corresponding medium.
   """
   defmacro enable_sms_medium(user_or_id),
-    do: (quote do: enable_medium(unquote(user_or_id), :sms))
+    do: quote(do: enable_medium(unquote(user_or_id), :sms))
 
   @doc """
   Enables platform medium.
@@ -111,7 +111,7 @@ defmodule Legion.Messaging.Switching.Globals do
   This macro curries the `enable_medium/2` function with corresponding medium.
   """
   defmacro enable_platform_medium(user_or_id),
-    do: (quote do: enable_medium(unquote(user_or_id), :platform))
+    do: quote(do: enable_medium(unquote(user_or_id), :platform))
 
   @doc """
   Disables in-platform messaging medium.
@@ -119,7 +119,7 @@ defmodule Legion.Messaging.Switching.Globals do
   This macro curries the `disable_medium/2` function with corresponding medium.
   """
   defmacro disable_apm_medium(user_or_id),
-    do: (quote do: disable_medium(unquote(user_or_id), :apm))
+    do: quote(do: disable_medium(unquote(user_or_id), :apm))
 
   @doc """
   Disables push medium.
@@ -127,7 +127,7 @@ defmodule Legion.Messaging.Switching.Globals do
   This macro curries the `disable_medium/2` function with corresponding medium.
   """
   defmacro disable_push_medium(user_or_id),
-    do: (quote do: disable_medium(unquote(user_or_id), :push))
+    do: quote(do: disable_medium(unquote(user_or_id), :push))
 
   @doc """
   Disables mailing medium.
@@ -135,7 +135,7 @@ defmodule Legion.Messaging.Switching.Globals do
   This macro curries the `disable_medium/2` function with corresponding medium.
   """
   defmacro disable_mailing_medium(user_or_id),
-    do: (quote do: disable_medium(unquote(user_or_id), :mailing))
+    do: quote(do: disable_medium(unquote(user_or_id), :mailing))
 
   @doc """
   Disables SMS medium.
@@ -143,7 +143,7 @@ defmodule Legion.Messaging.Switching.Globals do
   This macro curries the `disable_medium/2` function with corresponding medium.
   """
   defmacro disable_sms_medium(user_or_id),
-    do: (quote do: disable_medium(unquote(user_or_id), :sms))
+    do: quote(do: disable_medium(unquote(user_or_id), :sms))
 
   @doc """
   Disables in-platform messaging medium.
@@ -151,14 +151,14 @@ defmodule Legion.Messaging.Switching.Globals do
   This macro curries the `disable_medium/2` function with corresponding medium.
   """
   defmacro disable_platform_medium(user_or_id),
-    do: (quote do: disable_medium(unquote(user_or_id), :platform))
+    do: quote(do: disable_medium(unquote(user_or_id), :platform))
 
   @doc """
   Enables given medium globally.
   """
   @spec enable_medium(User.user_or_id(), Medium.t()) ::
-    :ok |
-    :error
+          :ok
+          | :error
   def enable_medium(user_or_id, medium) when is_medium(medium),
     do: set_medium_availability(user_or_id, medium, true)
 
@@ -166,8 +166,8 @@ defmodule Legion.Messaging.Switching.Globals do
   Disables given medium globally.
   """
   @spec disable_medium(User.user_or_id(), Medium.t()) ::
-    :ok |
-    :error
+          :ok
+          | :error
   def disable_medium(user_or_id, medium) when is_medium(medium),
     do: set_medium_availability(user_or_id, medium, false)
 
@@ -188,7 +188,7 @@ defmodule Legion.Messaging.Switching.Globals do
   end
 
   defp set_medium_availability(user, medium, availability)
-  when is_boolean(availability) and is_medium(medium) do
+       when is_boolean(availability) and is_medium(medium) do
     if is_medium_enabled?(medium) == availability do
       :ok
     else
@@ -232,12 +232,12 @@ defmodule Legion.Messaging.Switching.Globals do
   See `cancel_redirection_for_medium/3` for cancelling redirections.
   """
   @spec redirect_medium(User.user_or_id(), Medium.t(), Medium.t(), Keyword.t()) ::
-    :ok |
-    {:error, :invalid_duration} |
-    {:error, :invalid_deferral} |
-    {:error, :unavailable}
+          :ok
+          | {:error, :invalid_duration}
+          | {:error, :invalid_deferral}
+          | {:error, :unavailable}
   def redirect_medium(user_or_id, from, to, options \\ [])
-  when is_medium(from) and is_medium(to) do
+      when is_medium(from) and is_medium(to) do
     key = medium_redirection_key(from)
     valid_for = Keyword.get(options, :for, nil)
     valid_after = Keyword.get(options, :after, 0)
@@ -245,10 +245,17 @@ defmodule Legion.Messaging.Switching.Globals do
     cond do
       valid_for < 0 ->
         {:error, :invalid_duration}
+
       valid_after < 0 ->
         {:error, :invalid_deferral}
+
       true ->
-        put(user_or_id, key, %{action: :redirect, to: to, valid_for: valid_for, valid_after: valid_after})
+        put(user_or_id, key, %{
+          action: :redirect,
+          to: to,
+          valid_for: valid_for,
+          valid_after: valid_after
+        })
     end
   end
 
@@ -263,11 +270,11 @@ defmodule Legion.Messaging.Switching.Globals do
   See `redirect_medium/4` for making redirections.
   """
   @spec cancel_redirection_for_medium(User.user_or_id(), Medium.t()) ::
-    :ok |
-    {:error, :no_entry} |
-    {:error, :unavailable}
+          :ok
+          | {:error, :no_entry}
+          | {:error, :unavailable}
   def cancel_redirection_for_medium(user_or_id, medium)
-  when is_medium(medium) do
+      when is_medium(medium) do
     if is_medium_redirected?(medium) do
       key = medium_redirection_key(medium)
 
@@ -280,9 +287,9 @@ defmodule Legion.Messaging.Switching.Globals do
   @doc """
   Returns true if given medium is redirected currently, otherwise false.
   """
-  @spec is_medium_redirected?(Medium.t) :: boolean()
+  @spec is_medium_redirected?(Medium.t()) :: boolean()
   def is_medium_redirected?(medium)
-  when is_medium(medium) do
+      when is_medium(medium) do
     redirection_for_medium(medium) != nil
   end
 
@@ -290,9 +297,9 @@ defmodule Legion.Messaging.Switching.Globals do
   Returns the redirection medium for the medium in given timestamp, if it is redirected.
   Otherwise, returns `nil`.
   """
-  @spec redirection_for_medium(Medium.t, NaiveDateTime.t) :: Medium.t() | nil
+  @spec redirection_for_medium(Medium.t(), NaiveDateTime.t()) :: Medium.t() | nil
   def redirection_for_medium(medium, timestamp \\ NaiveDateTime.utc_now())
-  when is_medium(medium) do
+      when is_medium(medium) do
     key = medium_redirection_key(medium)
 
     entries = take(key, @history_buffer_len)
@@ -300,6 +307,7 @@ defmodule Legion.Messaging.Switching.Globals do
     case find_affecting_redirection(entries, timestamp) do
       nil ->
         nil
+
       {%{"to" => medium}, _inserted_at} ->
         String.to_existing_atom(medium)
     end
@@ -308,8 +316,9 @@ defmodule Legion.Messaging.Switching.Globals do
   defp find_affecting_redirection([head | tail], timestamp) do
     if is_redirection_active(head, timestamp),
       do: head,
-    else: find_affecting_redirection(tail, timestamp)
+      else: find_affecting_redirection(tail, timestamp)
   end
+
   defp find_affecting_redirection([], _), do: nil
 
   defp is_redirection_active({entry, inserted_at}, timestamp) do
