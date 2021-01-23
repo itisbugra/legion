@@ -39,8 +39,9 @@ defmodule Legion.Umbrella.Mixfile do
       ],
       "legion.check": ["legion.check.timezone"],
       "legion.setup": [
+        "ecto.create",
         "legion.check",
-        "ecto.setup",
+        "ecto.reset",
         "legion.reg",
         "ua_inspector.download -f"
       ],
