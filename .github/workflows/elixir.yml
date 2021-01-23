@@ -38,48 +38,11 @@ jobs:
         run: mix deps.get
         env:
           MIX_ENV: test
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
       - name: Setup environment
         run: mix legion.setup
         env:
           MIX_ENV: test
       - name: Run tests
         run: mix test
-  coverage:
-    name: Analyze code coverage
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:12.5
-        ports: ["5432:5432"]
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Elixir
-        uses: actions/setup-elixir@v1
-        with:
-          elixir-version: "1.11.3"
-          otp-version: "23"
-      - name: Restore dependencies cache
-        uses: actions/cache@v2
-        with:
-          path: deps
-          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
-          restore-keys: ${{ runner.os }}-mix-
-      - name: Install dependencies
-        run: mix deps.get
-        env:
-          MIX_ENV: test
-      - name: Setup environment
-        run: mix legion.setup
-        env:
-          MIX_ENV: test
-      - name: Run code coverage tool
-        run: mix coveralls.github
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
