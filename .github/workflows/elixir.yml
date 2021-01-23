@@ -39,11 +39,6 @@ jobs:
         run: mix deps.get
         env:
           MIX_ENV: test
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        env:
-          POSTGRES_HOST: postgres
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
       - name: Setup environment
         run: mix legion.setup
         env:

@@ -12,18 +12,6 @@ config :legion, Legion.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
-# If running on GitHub Actions, configure the database accordingly
-if System.get_env("GITHUB_ACTIONS") do
-  config :legion, Legion.Repo,
-    adapter: Ecto.Adapters.Postgres,
-    username: "postgres",
-    password: "postgres",
-    database: "legion_test",
-    hostname: System.get_env("POSTGRES_HOST", "postgres"),
-    port: String.to_integer(System.get_env("POSTGRES_PORT", "5432")),
-    pool: Ecto.Adapters.SQL.Sandbox
-end
-
 config :argon2_elixir,
   t_cost: 2,
   m_cost: 12
