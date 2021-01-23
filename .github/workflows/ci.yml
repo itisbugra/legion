@@ -1,4 +1,4 @@
-name: Push coverage data to CodeCov
+name: Continuous integration
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [master]
 
 jobs:
-  codecov:
-    name: Push coverage data
+  test:
+    name: Run unit tests
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -43,8 +43,27 @@ jobs:
         run: mix legion.setup
         env:
           MIX_ENV: test
+      - name: Run tests
+        run: mix test
+  coverage:
+    name: Run code coverage tool
+    runs-on: ubuntu-latest
+    needs: test
+    services:
+      postgres:
+        image: postgres:12.5
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
       - name: Run code coverage tool
-        run: mix coveralls.json
+        run: mix coveralls.json --umbrella
         env:
           MIX_ENV: test
       - name: Push coverage data to the platform
