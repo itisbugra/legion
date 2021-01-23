@@ -43,7 +43,7 @@ jobs:
         uses: mxschmitt/action-tmate@v3
         env:
           POSTGRES_HOST: postgres
-          POSTGRES_PORT: $❴❴ job.services.postgres.ports[5432] ❵❵
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
       - name: Setup environment
         run: mix legion.setup
         env:
