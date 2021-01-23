@@ -7,6 +7,16 @@ defmodule Legion.Types.Point do
   def type, do: :point
 
   @doc """
+  Defines an embedding format for the object.
+  """
+  def embed_as(_), do: :self
+
+  @doc """
+  Compares two objects of this type.
+  """
+  defdelegate equal?(left, right), to: Kernel, as: :==
+
+  @doc """
   Handles casting to `Postgrex.Point`.
   """
   def cast(%Postgrex.Point{} = point), do: {:ok, point}

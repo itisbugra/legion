@@ -41,7 +41,7 @@ defmodule Legion.Identity.Telephony.PhoneNumber.FiniteStateMachine do
       # Or, at least, it is not a -modern- way.
       # But `Enum.max_by/2` does really great job shrinking the code
       # size here.
-      # 
+      #
       # Someday, we might change this implementation, who knows?
       trait_in_effect =
         Enum.max_by(safety_traits, fn e ->
@@ -348,8 +348,6 @@ defmodule Legion.Identity.Telephony.PhoneNumber.FiniteStateMachine do
 
   To provide an idempotent interface, you can match this function to
   `{:ok, _}`, which will cover all successful flows.
-
-  ## Applied configuration values
   """
   @spec mark_phone_number_safe(Passphrase.id(), PhoneNumber.id(), Keyword.t()) ::
           {:ok, SafetyTrait}

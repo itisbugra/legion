@@ -7,6 +7,16 @@ defmodule Legion.Types.INET do
   def type, do: :inet
 
   @doc """
+  Defines an embedding format for the object.
+  """
+  def embed_as(_), do: :self
+
+  @doc """
+  Compares two objects of this type.
+  """
+  def equal?(left, right), do: left == right
+
+  @doc """
   Handles casting to `Postgrex.INET`.
   """
   def cast(%Postgrex.INET{} = address), do: {:ok, address}

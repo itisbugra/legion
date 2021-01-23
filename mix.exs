@@ -8,7 +8,7 @@ defmodule Legion.Umbrella.Mixfile do
       deps: deps(),
       aliases: aliases(),
       docs: docs(),
-      elixir: "~> 1.10.2",
+      elixir: "~> 1.11",
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         coveralls: :test,
@@ -21,9 +21,9 @@ defmodule Legion.Umbrella.Mixfile do
 
   defp deps do
     [
-      {:ex_doc, "~> 0.19.1", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.10.2", only: :test},
-      {:credo, "~> 0.10.2", only: [:dev, :test], runtime: false}
+      {:ex_doc, "~> 0.23.0", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.13.4", only: :test},
+      {:credo, "~> 1.5.4", only: [:dev, :test], runtime: false}
     ]
   end
 

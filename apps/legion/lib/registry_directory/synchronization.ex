@@ -48,21 +48,16 @@ defmodule Legion.RegistryDirectory.Synchronization do
         import Mix.Ecto
 
         def run(args) do
+          Mix.Task.run("app.start")
           repos = parse_repo(args)
-          {opts, _, _} = OptionParser.parse(args, switches: [quiet: :boolean])
+          {opts, _, _} = OptionParser.parse(args)
 
           Enum.each(repos, fn repo ->
-            ensure_repo(repo, args)
-
-            pool = repo.config[:pool]
-
             Mix.shell().info("== Adding #{@site} registers")
 
             sync()
 
             Mix.shell().info("== Finished migrating #{@site} registers")
-
-            repo.stop()
           end)
         end
       end

@@ -1,6 +1,6 @@
-# @werkzeug / Legion
+# Quessly server-side infrastructure: Legion
 
-Central repository for the server-side installation of Werkzeug.
+Central repository for the server-side installation of Quessly.
 
 ## Installation
 

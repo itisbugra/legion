@@ -15,7 +15,7 @@ config :legion_http, Legion.HTTP.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "DHRSTmvLpbXKRzl9AukxTAAdlwziFv6hMm5o3C13Vu8j1+cEmUdO8U9va+PvBlw9",
   render_errors: [view: Legion.HTTP.ErrorView, accepts: ~w(json)],
-  pubsub: [name: Legion.HTTP.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub_server: Legion.HTTP.PubSub
 
 # Configures Elixir's Logger
 config :logger, :console,

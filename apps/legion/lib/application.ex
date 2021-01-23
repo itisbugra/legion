@@ -2,7 +2,7 @@ defmodule Legion.Application do
   @moduledoc """
   The Legion Application Service.
 
-  The legion system business domain lives in this application.
+  The business domain lives in this application.
 
   Exposes API to clients such as the `LegionWeb` application
   for use in channels, controllers, and elsewhere.
@@ -10,14 +10,8 @@ defmodule Legion.Application do
   use Application
 
   def start(_type, _args) do
-    import Supervisor.Spec, warn: false
+    children = [Legion.Repo]
 
-    Supervisor.start_link(
-      [
-        supervisor(Legion.Repo, [])
-      ],
-      strategy: :one_for_one,
-      name: Legion.Supervisor
-    )
+    Supervisor.start_link(children, strategy: :one_for_one)
   end
 end

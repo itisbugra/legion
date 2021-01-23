@@ -9,7 +9,7 @@ defmodule Legion.Mixfile do
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
-      elixir: "~> 1.7.3",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -37,26 +37,28 @@ defmodule Legion.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:postgrex, "~> 0.15.3"},
-      {:ecto_sql, "~> 3.4.1"},
+      {:postgrex, "~> 0.15.8"},
+      {:ecto_sql, "~> 3.5"},
       {:ecto_enum, "~> 1.4.0"},
-      {:comeonin, "~> 5.3.1"},
-      {:argon2_elixir, "~> 2.3.0"},
-      {:bcrypt_elixir, "~> 2.2.0"},
-      {:pbkdf2_elixir, "~> 1.2.1"},
-      {:jose, "~> 1.10.1"},
-      {:ua_inspector, "~> 2.0.0"},
+      {:comeonin, "~> 5.3.2"},
+      {:argon2_elixir, "~> 2.4.0"},
+      {:bcrypt_elixir, "~> 2.3.0"},
+      {:pbkdf2_elixir, "~> 1.3.0"},
+      {:jose, "~> 1.11.1"},
+      {:ua_inspector, "~> 2.2.0"},
       {:freegeoip, "~> 0.0.5"},
       {:inet_cidr, "~> 1.0.4"},
-      {:ex_machina, "~> 2.4.0", only: :test},
+      {:ex_machina, "~> 2.5.0", only: :test},
       {:rsa_ex, "~> 0.4.0"},
       {:keccakf1600, "~> 2.0.0", hex: :keccakf1600_orig},
       {:liquid, "~> 0.9.1"},
       {:entropy_string, "~> 1.3.4"},
-      {:nimble_csv, "~> 0.7.0"},
+      {:nimble_csv, "~> 1.1.0"},
       {:cidr, "~> 1.1.0"},
       {:dialyxir, "~> 1.0.0", only: [:dev], runtime: false},
-      {:ex_phone_number, "~> 0.2.0"}
+      {:ex_phone_number, "~> 0.2.1"},
+      {:phoenix, "~> 1.5.7"},
+      {:poison, "~> 4.0", override: true}
     ]
   end
 

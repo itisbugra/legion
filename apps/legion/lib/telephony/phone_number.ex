@@ -93,7 +93,7 @@ defmodule Legion.Telephony.PhoneNumber do
   Converts given number to RFC 3966-formatted string.
 
       iex> Legion.Telephony.PhoneNumber.to_rfc3966("+90 532 111 1111")
-      {:ok, "tel:+90-532-111-1111"}
+      {:ok, "tel:+90-532-111-11-11"}
 
       iex> Legion.Telephony.PhoneNumber.to_rfc3966("test")
       {:error, :invalid}
@@ -116,7 +116,7 @@ defmodule Legion.Telephony.PhoneNumber do
   @doc ~S"""
   Converts given number to E164-formatted string.
 
-  ## Examples  
+  ## Examples
 
       iex> Legion.Telephony.PhoneNumber.to_e164("+90 532 111 1111")
       {:ok, "+905321111111"}
@@ -144,10 +144,10 @@ defmodule Legion.Telephony.PhoneNumber do
   ## Examples
 
       iex> Legion.Telephony.PhoneNumber.humanize("+905321111111", :international)
-      {:ok, "+90 532 111 1111"}
+      {:ok, "+90 532 111 11 11"}
 
       iex> Legion.Telephony.PhoneNumber.humanize("+905321111111", :national)
-      {:ok, "0532 111 1111"}
+      {:ok, "0532 111 11 11"}
 
       iex> Legion.Telephony.PhoneNumber.humanize("test", :national)
       {:error, :invalid}
@@ -170,7 +170,7 @@ defmodule Legion.Telephony.PhoneNumber do
   ## Examples
 
       iex> Legion.Telephony.PhoneNumber.humanize("+905321111111")
-      {:ok, "+90 532 111 1111"}
+      {:ok, "+90 532 111 11 11"}
 
       iex> Legion.Telephony.PhoneNumber.humanize("test")
       {:error, :invalid}

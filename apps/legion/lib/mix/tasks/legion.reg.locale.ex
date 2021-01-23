@@ -32,6 +32,7 @@ defmodule Mix.Tasks.Legion.Reg.Locale do
     end
   end
 
+  @doc false
   def sync do
     Mix.shell().info("== Synchronizing locales")
 

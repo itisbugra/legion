@@ -29,9 +29,8 @@ locals_without_parens = [
 
 [
   inputs: [
-    "apps/*/{config,lib,test}/**/*.{ex,exs}",
-    "apps/*/{mix,.formatter}.exs",
-    "{mix,.formatter}.exs"
+    "{mix,.formatter}.exs",
+    "{config,lib,test}/**/*.{ex,exs}"
   ],
   locals_without_parens: locals_without_parens,
   export: [

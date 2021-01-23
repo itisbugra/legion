@@ -9,19 +9,24 @@ defmodule Legion.Types.CIDR do
   def type, do: :cidr
 
   @doc """
+  Defines an embedding format for the object.
+  """
+  def embed_as(_), do: :self
+
+  @doc """
+  Compares two objects of this type.
+  """
+  defdelegate equal?(left, right), to: Kernel, as: :==
+
+  @doc """
   Handles casting to `Postgrex.INET`.
   """
   def cast(%Postgrex.INET{} = address), do: {:ok, address}
 
   def cast(address) when is_binary(address) do
     try do
-      case parse(address, false) do
-        {start_address, _end_address, netmask} ->
-          {:ok, %Postgrex.INET{address: start_address, netmask: netmask}}
-
-        {:error, _einval} ->
-          :error
-      end
+      {start_addr, _end_addr, netmask} = parse(address, false)
+      {:ok, %Postgrex.INET{address: start_addr, netmask: netmask}}
     rescue
       _ -> :error
     end

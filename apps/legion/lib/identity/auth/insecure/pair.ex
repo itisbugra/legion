@@ -48,11 +48,16 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
   end
 
   def hashpwsalt(password_hash) do
-    mod_name = Naming.camelize(@password_digestion)
+    case @password_digestion do
+      :argon2 ->
+        Argon2.hash_pwd_salt(password_hash)
 
-    alg_module = Module.concat([Comeonin, mod_name])
+      other ->
+        mod_name = Naming.camelize(other)
+        alg_module = Module.concat([Comeonin, mod_name])
 
-    apply(alg_module, :hashpwsalt, [password_hash])
+        apply(alg_module, :hashpwsalt, [password_hash])
+    end
   end
 
   @doc """
@@ -96,11 +101,19 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
           :ok
           | {:error, :wrong_password}
   def checkpw(password_hash, digest, alg) do
-    mod_name = Naming.camelize(alg)
+    result =
+      case alg do
+        :argon2 ->
+          Argon2.verify_pass(password_hash, digest)
 
-    alg_module = Module.concat([Comeonin, mod_name])
+        other ->
+          mod_name = Naming.camelize(other)
+          alg_module = Module.concat([Comeonin, mod_name])
 
-    if apply(alg_module, :checkpw, [password_hash, digest]) do
+          apply(alg_module, :checkpw, [password_hash, digest])
+      end
+
+    if result do
       :ok
     else
       {:error, :wrong_password_hash}
@@ -108,10 +121,15 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
   end
 
   defp dummy_checkpw(alg) do
-    mod_name = Naming.camelize(alg)
+    case alg do
+      :argon2 ->
+        Argon2.no_user_verify()
 
-    alg_module = Module.concat([Comeonin, mod_name])
+      other ->
+        mod_name = Naming.camelize(other)
+        alg_module = Module.concat([Comeonin, mod_name])
 
-    apply(alg_module, :dummy_checkpw, [])
+        apply(alg_module, :dummy_checkpw, [])
+    end
   end
 end

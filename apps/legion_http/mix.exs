@@ -9,7 +9,7 @@ defmodule Legion.HTTP.Mixfile do
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
-      elixir: "~> 1.7.3",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -38,14 +38,14 @@ defmodule Legion.HTTP.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.4.16"},
-      {:phoenix_pubsub, "~> 1.1.2"},
-      {:phoenix_ecto, "~> 4.1.0"},
-      {:jason, "~> 1.2.0"},
-      {:gettext, "~> 0.17.4"},
+      {:phoenix, "~> 1.5.7"},
+      {:phoenix_pubsub, "~> 2.0.0"},
+      {:phoenix_ecto, "~> 4.2.1"},
+      {:jason, "~> 1.2.2"},
+      {:gettext, "~> 0.18.2"},
       {:legion, in_umbrella: true},
-      {:cowboy, "~> 2.7"},
-      {:plug_cowboy, "~> 2.1.2"}
+      {:cowboy, "~> 2.8.0"},
+      {:plug_cowboy, "~> 2.4.1"}
     ]
   end
 

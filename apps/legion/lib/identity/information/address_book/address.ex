@@ -48,8 +48,8 @@ defmodule Legion.Identity.Information.AddressBook.Address do
 
   schema "user_addresses" do
     belongs_to(:user, User)
-    field(:type, AddressType)
-    field(:name, :string)
+    field :type, AddressType
+    field :name, :string
     field(:description, :string)
     field(:state, :string)
     field(:city, :string)
