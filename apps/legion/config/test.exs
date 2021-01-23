@@ -19,7 +19,8 @@ if System.get_env("GITHUB_ACTIONS") do
     username: "postgres",
     password: "postgres",
     database: "legion_test",
-    hostname: "postgres",
+    hostname: System.get_env("POSTGRES_HOST", "postgres"),
+    port: String.to_integer(System.get_env("POSTGRES_PORT", "5432")),
     pool: Ecto.Adapters.SQL.Sandbox
 end
 
