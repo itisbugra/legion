@@ -1,6 +1,8 @@
 name: Continuous integration
 
 on:
+  schedule:
+    - cron: "0 20 * * *"
   push:
     branches: [master]
   pull_request:
