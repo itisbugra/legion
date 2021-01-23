@@ -50,7 +50,7 @@ defmodule Legion.Mixfile do
       {:inet_cidr, "~> 1.0.4"},
       {:ex_machina, "~> 2.5.0", only: :test},
       {:rsa_ex, "~> 0.4.0"},
-      {:keccakf1600, "~> 2.0.0", hex: :keccakf1600_orig},
+      {:keccakf1600, "~> 2.1.0", github: "chatatata/erlang-keccakf1600"},
       {:liquid, "~> 0.9.1"},
       {:entropy_string, "~> 1.3.4"},
       {:nimble_csv, "~> 1.1.0"},
