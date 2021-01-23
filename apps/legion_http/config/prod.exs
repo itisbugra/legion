@@ -15,7 +15,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :legion_http, Legion.HTTP.Endpoint,
   load_from_system_env: true,
-  url: [host: "example.com", port: 80],
+  url: [port: System.get_env("PORT", "4000") |> Integer.parse() |> elem(0)],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # ## SSL Support
@@ -55,7 +55,3 @@ config :legion_http, Legion.HTTP.Endpoint,
 #
 #     config :legion_http, Legion.HTTP.Endpoint, server: true
 #
-
-# Finally import the config/prod.secret.exs
-# which should be versioned separately.
-import_config "prod.secret.exs"
