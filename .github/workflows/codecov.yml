@@ -1,4 +1,4 @@
-name: Continuous integration
+name: Push coverage data to CodeCov
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [master]
 
 jobs:
-  test:
-    name: Run unit tests
+  codecov:
+    name: Push coverage data
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -43,5 +43,11 @@ jobs:
         run: mix legion.setup
         env:
           MIX_ENV: test
-      - name: Run tests
-        run: mix test
+      - name: Run code coverage tool
+        run: mix coveralls.json
+        env:
+          MIX_ENV: test
+      - name: Push coverage data to the platform
+        run: bash <(curl -s https://codecov.io/bash)
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

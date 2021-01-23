@@ -41,7 +41,8 @@ defmodule Legion.Umbrella.Mixfile do
       "legion.setup": [
         "ecto.create",
         "legion.check",
-        "ecto.reset",
+        "ecto.migrate",
+        "run apps/legion/priv/repo/seeds.exs",
         "legion.reg",
         "ua_inspector.download -f"
       ],
