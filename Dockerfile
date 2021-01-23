@@ -1,6 +1,3 @@
-# ./Dockerfile
-
-# Extend from the official Elixir image
 FROM elixir:latest
 
 # Create app directory and copy the Elixir projects into it
