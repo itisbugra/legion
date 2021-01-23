@@ -48,7 +48,7 @@ jobs:
     name: Analyze code coverage
     runs-on: ubuntu-latest
     services:
-      db:
+      postgres:
         image: postgres:12.5
         ports: ["5432:5432"]
         env:
@@ -79,7 +79,7 @@ jobs:
         run: mix legion.setup
         env:
           MIX_ENV: test
-      - name: Run tests
+      - name: Run code coverage tool
         run: mix coveralls.github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
