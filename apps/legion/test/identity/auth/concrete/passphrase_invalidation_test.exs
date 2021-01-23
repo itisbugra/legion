@@ -4,7 +4,8 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase.InvalidationTest do
 
   alias Legion.Identity.Auth.Concrete.Passphrase.Invalidation
 
-  @valid_attrs %{source_passphrase_id: 1, target_passphrase_id: 1}
+  @valid_attrs %{source_passphrase_id: 1,
+                 target_passphrase_id: 1}
 
   test "changeset with valid attributes" do
     changeset = Invalidation.changeset(%Invalidation{}, @valid_attrs)

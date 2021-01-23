@@ -12,18 +12,16 @@ defmodule Legion.Identity.Information.AddressBook.AddressTest do
   @neighborhood_len Keyword.fetch!(@env, :neighborhood_length)
   @zip_code_len Keyword.fetch!(@env, :zip_code_length)
 
-  @valid_attrs %{
-    user_id: 1,
-    type: :home,
-    name: random_string(@name_len),
-    description: random_string(@description_len),
-    state: random_string(@state_len),
-    city: random_string(@city_len),
-    neighborhood: random_string(@neighborhood_len),
-    zip_code: random_string(@zip_code_len),
-    location: %Postgrex.Point{x: 5, y: 4},
-    country_name: "saudi arabia"
-  }
+  @valid_attrs %{user_id: 1,
+                 type: :home,
+                 name: random_string(@name_len),
+                 description: random_string(@description_len),
+                 state: random_string(@state_len),
+                 city: random_string(@city_len),
+                 neighborhood: random_string(@neighborhood_len),
+                 zip_code: random_string(@zip_code_len),
+                 location: %Postgrex.Point{x: 5, y: 4},
+                 country_name: "saudi arabia"}
 
   test "changeset with valid attributes" do
     assert Address.changeset(%Address{}, @valid_attrs).valid?

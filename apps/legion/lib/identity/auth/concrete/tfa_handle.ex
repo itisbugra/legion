@@ -21,13 +21,13 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
   @regex Regex.compile!("#{@prefix}[0-9]{#{@length}}#{@postfix}")
 
   schema "concrete_tfa_handles" do
-    belongs_to(:user, User)
-    field(:otc_digest, :string)
-    belongs_to(:passphrase, Passphrase)
-    field(:attempts, :integer, default: 0)
-    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
+    belongs_to :user, User
+    field :otc_digest, :string
+    belongs_to :passphrase, Passphrase
+    field :attempts, :integer, default: 0
+    field :inserted_at, :naive_datetime_usec, read_after_writes: true
 
-    field(:otc, :string, virtual: true)
+    field :otc, :string, virtual: true
   end
 
   @doc """
@@ -80,15 +80,16 @@ defmodule Legion.Identity.Auth.Concrete.TFAHandle do
     if otc =~ @regex do
       case Repo.transaction(fn ->
              query =
-               from(th1 in TFAHandle,
+               from th1 in TFAHandle,
                  left_join: th2 in TFAHandle,
                  on: th1.user_id == th2.user_id and th1.id < th2.id,
                  where:
-                   is_nil(th2.id) and th1.user_id == ^user_id and is_nil(th1.passphrase_id) and
+                   is_nil(th2.id) and
+                     th1.user_id == ^user_id and
+                     is_nil(th1.passphrase_id) and
                      th1.attempts < @allowed_attempts and
                      th1.inserted_at > from_now(^(-1 * @lifetime), "second"),
                  select: th1
-               )
 
              case Repo.one(query) do
                nil ->

@@ -25,15 +25,15 @@ defmodule Mix.Tasks.Legion.Reg.Messaging do
   end
 
   def sync do
-    register("Messaging.Switching.Globals.is_apm_enabled?")
-    register("Messaging.Switching.Globals.is_push_enabled?")
-    register("Messaging.Switching.Globals.is_sms_enabled?")
-    register("Messaging.Switching.Globals.is_mailing_enabled?")
-    register("Messaging.Switching.Globals.is_platform_enabled?")
-    register("Messaging.Switching.Globals.apm_redirection")
-    register("Messaging.Switching.Globals.push_redirection")
-    register("Messaging.Switching.Globals.sms_redirection")
-    register("Messaging.Switching.Globals.mailing_redirection")
-    register("Messaging.Switching.Globals.platform_redirection")
+    register "Messaging.Switching.Globals.is_apm_enabled?"
+    register "Messaging.Switching.Globals.is_push_enabled?"
+    register "Messaging.Switching.Globals.is_sms_enabled?"
+    register "Messaging.Switching.Globals.is_mailing_enabled?"
+    register "Messaging.Switching.Globals.is_platform_enabled?"
+    register "Messaging.Switching.Globals.apm_redirection"
+    register "Messaging.Switching.Globals.push_redirection"
+    register "Messaging.Switching.Globals.sms_redirection"
+    register "Messaging.Switching.Globals.mailing_redirection"
+    register "Messaging.Switching.Globals.platform_redirection"
   end
 end

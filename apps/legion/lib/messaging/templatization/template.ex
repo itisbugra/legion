@@ -10,14 +10,14 @@ defmodule Legion.Messaging.Templatization.Template do
   @name_len Keyword.fetch!(@env, :template_name_length)
 
   schema "messaging_templates" do
-    belongs_to(:user, User)
-    field(:name, :string)
-    field(:is_available_for_apm?, :boolean, default: true)
-    field(:is_available_for_push?, :boolean, default: true)
-    field(:is_available_for_mailing?, :boolean, default: true)
-    field(:is_available_for_sms?, :boolean, default: false)
-    field(:is_available_for_platform?, :boolean, default: true)
-    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
+    belongs_to :user, User
+    field :name, :string
+    field :is_available_for_apm?, :boolean, default: true
+    field :is_available_for_push?, :boolean, default: true
+    field :is_available_for_mailing?, :boolean, default: true
+    field :is_available_for_sms?, :boolean, default: false
+    field :is_available_for_platform?, :boolean, default: true
+    field :inserted_at, :naive_datetime_usec, read_after_writes: true
   end
 
   def changeset(struct, params \\ %{}) do
@@ -44,8 +44,11 @@ defmodule Legion.Messaging.Templatization.Template do
     is_available_for_mailing? = get_field(changeset, :is_available_for_mailing?)
     is_available_for_platform? = get_field(changeset, :is_available_for_platform?)
 
-    if is_available_for_apm? or is_available_for_sms? or is_available_for_push? or
-         is_available_for_mailing? or is_available_for_platform?,
+    if is_available_for_apm? or
+         is_available_for_sms? or
+         is_available_for_push? or
+         is_available_for_mailing? or
+         is_available_for_platform?,
        do: changeset,
        else:
          add_error(changeset, :is_available_for_apm, "at least one medium should be available")

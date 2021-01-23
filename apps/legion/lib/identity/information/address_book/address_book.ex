@@ -30,17 +30,15 @@ defmodule Legion.Identity.Information.AddressBook do
   Adds an address entry to the user.
   To get more information about the fields, see `Legion.Identity.Information.AddressBook.Address`.
   """
-  @spec create_address(
-          User.id(),
-          Address.address_type(),
-          String.t(),
-          String.t(),
-          Keyword.t()
-        ) ::
-          {:ok, Address}
-          | {:error, Ecto.Changeset.t()}
+  @spec create_address(User.id(),
+                       Address.address_type(),
+                       String.t(),
+                       String.t(),
+                       Keyword.t()) ::
+    {:ok, Address} |
+    {:error, Ecto.Changeset.t()}
   def create_address(user_id, type, name, country_name, opts \\ [])
-      when is_integer(user_id) do
+  when is_integer(user_id) do
     description = Keyword.get(opts, :description)
     state = Keyword.get(opts, :state)
     city = Keyword.get(opts, :city)
@@ -48,22 +46,18 @@ defmodule Legion.Identity.Information.AddressBook do
     zip_code = Keyword.get(opts, :zip_code)
     location = Keyword.get(opts, :location)
 
-    changeset =
-      Address.changeset(
-        %Address{},
-        %{
-          user_id: user_id,
-          type: type,
-          name: name,
-          description: description,
-          state: state,
-          city: city,
-          neighborhood: neighborhood,
-          zip_code: zip_code,
-          location: location,
-          country_name: country_name
-        }
-      )
+    changeset = 
+      Address.changeset(%Address{},
+                        %{user_id: user_id,
+                          type: type,
+                          name: name,
+                          description: description,
+                          state: state,
+                          city: city,
+                          neighborhood: neighborhood,
+                          zip_code: zip_code,
+                          location: location,
+                          country_name: country_name})
 
     Repo.insert(changeset)
   end
@@ -76,11 +70,11 @@ defmodule Legion.Identity.Information.AddressBook do
   See the "Shared options" section at the module documentation.
   """
   @spec update_address(Address.id(), Address.address_type(), String.t(), String.t(), Keyword.t()) ::
-          {:ok, Address}
-          | {:error, Ecto.Changeset.t()}
-          | {:error, :not_found}
+    {:ok, Address} |
+    {:error, Ecto.Changeset.t()} |
+    {:error, :not_found}
   def update_address(address_id, type, name, country_name, opts \\ [])
-      when is_integer(address_id) do
+  when is_integer(address_id) do
     if address = Repo.get_by(Address, id: address_id) do
       description = Keyword.get(opts, :description)
       state = Keyword.get(opts, :state)
@@ -90,20 +84,16 @@ defmodule Legion.Identity.Information.AddressBook do
       location = Keyword.get(opts, :location)
 
       changeset =
-        Address.changeset(
-          address,
-          %{
-            type: type,
-            name: name,
-            description: description,
-            state: state,
-            city: city,
-            neighborhood: neighborhood,
-            zip_code: zip_code,
-            location: location,
-            country_name: country_name
-          }
-        )
+        Address.changeset(address,
+                          %{type: type,
+                            name: name,
+                            description: description,
+                            state: state,
+                            city: city,
+                            neighborhood: neighborhood,
+                            zip_code: zip_code,
+                            location: location,
+                            country_name: country_name})
 
       Repo.update(changeset)
     else
@@ -119,32 +109,25 @@ defmodule Legion.Identity.Information.AddressBook do
   - `:limit`: Limits the number of entities in result. Defaults to #{@default_page_size}.
   - `:offset`: Skips given number of entities in result.
   """
-  @spec list_addresses_of_user(User.id(), Keyword.t()) :: [Address]
+  @spec list_addresses_of_user(User.id(), Keyword.t()) ::
+    [Address]
   def list_addresses_of_user(user_id, opts \\ [])
-      when is_integer(user_id) do
+  when is_integer(user_id) do
     offset = Keyword.get(opts, :offset, 0)
     given_limit = Keyword.get(opts, :limit, @default_page_size)
-
-    limit =
+    limit = 
       [given_limit, @default_page_size]
       |> Enum.min()
 
     unless given_limit <= @default_page_size,
-      do:
-        Logger.warn(fn ->
-          "Paging violation: Expected page size was #{given_limit}, fenced to its default value #{
-            @default_page_size
-          }."
-        end)
+      do: Logger.warn(fn -> "Paging violation: Expected page size was #{given_limit}, fenced to its default value #{@default_page_size}." end)
 
-    query =
-      from(a in Address,
-        where: a.user_id == ^user_id,
-        offset: ^offset,
-        limit: ^limit,
-        order_by: [asc: :id],
-        select: a
-      )
+    query = from a in Address,
+            where: a.user_id == ^user_id,
+            offset: ^offset,
+            limit: ^limit,
+            order_by: [asc: :id],
+            select: a
 
     Repo.all(query)
   end
@@ -153,8 +136,8 @@ defmodule Legion.Identity.Information.AddressBook do
   Deletes an address with given identifier.
   """
   @spec delete_address!(Address.id()) ::
-          Address
-          | no_return()
+    Address |
+    no_return()
   def delete_address!(address_id) do
     address = Repo.get_by!(Address, id: address_id)
 

@@ -4,13 +4,11 @@ defmodule Legion.Messaging.Localization.EntryTest do
 
   alias Legion.Messaging.Localization.Entry
 
-  @valid_attrs %{
-    user_id: 1,
-    template_id: 1,
-    engine: :liquid,
-    subject_template: random_string(25),
-    body_template: random_string(25)
-  }
+  @valid_attrs %{user_id: 1,
+                 template_id: 1,
+                 engine: :liquid,
+                 subject_template: random_string(25),
+                 body_template: random_string(25)}
 
   test "changeset with valid attributes" do
     changeset = Entry.changeset(%Entry{}, @valid_attrs)

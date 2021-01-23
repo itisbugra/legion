@@ -72,7 +72,7 @@ defmodule Legion.Identity.Information.AddressBookTest do
     test "adds new address of user", %{user: user} do
       result = create_address(user.id, :work, "new addr", "turkey", city: "Istanbul")
 
-      assert match?({:ok, _}, result)
+      assert match? {:ok, _}, result
     end
 
     test "inserts new address of user", %{user: user} do
@@ -84,7 +84,7 @@ defmodule Legion.Identity.Information.AddressBookTest do
     test "returns error if data is not valid", %{user: user} do
       result = create_address(user.id, :invalid, "new addr", "turkey", city: "Istanbul")
 
-      assert match?({:error, _}, result)
+      assert match? {:error, _}, result
     end
 
     test "does not insert if data is not valid", %{user: user} do
@@ -96,7 +96,7 @@ defmodule Legion.Identity.Information.AddressBookTest do
     test "creates address with default params", %{user: user} do
       result = create_address(user.id, :work, "new addr", "turkey")
 
-      assert match?({:ok, _}, result)
+      assert match? {:ok, _}, result
     end
   end
 
@@ -105,7 +105,7 @@ defmodule Legion.Identity.Information.AddressBookTest do
       address = hd(addresses)
       result = update_address(address.id, :home, "new addr", "turkey", city: "Istanbul")
 
-      assert match?({:ok, _}, result)
+      assert match? {:ok, _}, result
     end
 
     test "upserts an existing address of user", %{addresses: addresses} do
@@ -121,7 +121,7 @@ defmodule Legion.Identity.Information.AddressBookTest do
       address = hd(addresses)
       result = update_address(address.id, :invalid, "new addr", "turkey", city: "Istanbul")
 
-      assert match?({:error, _}, result)
+      assert match? {:error, _}, result
     end
 
     test "does not update if data is not valid", %{addresses: addresses} do
@@ -137,7 +137,7 @@ defmodule Legion.Identity.Information.AddressBookTest do
       address = hd(addresses)
       result = update_address(address.id, :work, "new addr", "turkey")
 
-      assert match?({:ok, %Address{name: "new addr"}}, result)
+      assert match? {:ok, %Address{name: "new addr"}}, result
     end
   end
 end

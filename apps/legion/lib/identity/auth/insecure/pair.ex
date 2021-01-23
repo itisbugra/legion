@@ -18,12 +18,12 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
   @type digestion_algorithm :: :argon2 | :bcrypt | :pbkdf2
 
   schema "insecure_authentication_pairs" do
-    belongs_to(:user, User)
-    field(:username, :string)
-    field(:password_hash, :string, virtual: true)
-    field(:password_digest, :string)
-    field(:digestion_algorithm, Digestion, default: @password_digestion)
-    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
+    belongs_to :user, User
+    field :username, :string
+    field :password_hash, :string, virtual: true
+    field :password_digest, :string
+    field :digestion_algorithm, Digestion, default: @password_digestion
+    field :inserted_at, :naive_datetime_usec, read_after_writes: true
   end
 
   def changeset(struct, params \\ %{}) do
@@ -69,19 +69,20 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
           | {:error, :no_user_verify}
   def retrieve_auth_info(username) do
     query =
-      from(p1 in Pair,
+      from p1 in Pair,
         left_join: p2 in Pair,
         on: p1.id < p2.id and p1.user_id == p2.user_id,
         join: u in User,
         on: p1.user_id == u.id,
-        where: is_nil(p2.id) and p1.username == ^username,
+        where:
+          is_nil(p2.id) and
+            p1.username == ^username,
         select: %AuthInfo{
           user_id: u.id,
           password_digest: p1.password_digest,
           digestion_algorithm: p1.digestion_algorithm,
           authentication_scheme: u.authentication_scheme
         }
-      )
 
     case Repo.one(query) do
       nil ->

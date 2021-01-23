@@ -6,19 +6,18 @@ defmodule Legion.Telephony.PhoneNumber do
   @typedoc """
   Describes the type of the phone number.
   """
-  @type host_type() ::
-          :fixed_line
-          | :mobile
-          | :fixed_line_or_mobile
-          | :toll_free
-          | :premium_rate
-          | :shared_cost
-          | :voip
-          | :personal_number
-          | :pager
-          | :uan
-          | :voicemail
-          | :unknown
+  @type host_type() :: :fixed_line |
+                       :mobile |
+                       :fixed_line_or_mobile |
+                       :toll_free |
+                       :premium_rate |
+                       :shared_cost |
+                       :voip |
+                       :personal_number |
+                       :pager |
+                       :uan |
+                       :voicemail |
+                       :unknown
 
   @typedoc """
   Type for the phone number.
@@ -40,15 +39,14 @@ defmodule Legion.Telephony.PhoneNumber do
       {:error, :invalid}
   """
   @spec get_number_type(t()) ::
-          {:ok, host_type()}
-          | {:error, :invalid}
+    {:ok, host_type()} |
+    {:error, :invalid}
   def get_number_type(number) when is_binary(number) do
     case ExPhoneNumber.parse(number, nil) do
       {:ok, phone_number} ->
         number_type = ExPhoneNumber.get_number_type(phone_number)
 
         {:ok, number_type}
-
       {:error, _} ->
         {:error, :invalid}
     end
@@ -68,7 +66,6 @@ defmodule Legion.Telephony.PhoneNumber do
     case ExPhoneNumber.parse(number, nil) do
       {:ok, phone_number} ->
         ExPhoneNumber.is_valid_number?(phone_number)
-
       {:error, _} ->
         false
     end
@@ -86,7 +83,7 @@ defmodule Legion.Telephony.PhoneNumber do
       false
   """
   @spec is_possible_number?(t()) :: boolean()
-  def is_possible_number?(number) when is_binary(number),
+  def is_possible_number?(number) when is_binary(number), 
     do: ExPhoneNumber.is_possible_number?(number, "")
 
   @doc ~S"""
@@ -99,15 +96,14 @@ defmodule Legion.Telephony.PhoneNumber do
       {:error, :invalid}
   """
   @spec to_rfc3966(t()) ::
-          {:ok, String.t()}
-          | {:error, :invalid}
+    {:ok, String.t()} |
+    {:error, :invalid}
   def to_rfc3966(number) do
     case ExPhoneNumber.parse(number, nil) do
       {:ok, phone_number} ->
         rfc3966 = ExPhoneNumber.format(phone_number, :rfc3966)
 
         {:ok, rfc3966}
-
       {:error, _} ->
         {:error, :invalid}
     end
@@ -130,7 +126,6 @@ defmodule Legion.Telephony.PhoneNumber do
         e164 = ExPhoneNumber.format(phone_number, :e164)
 
         {:ok, e164}
-
       {:error, _} ->
         {:error, :invalid}
     end
@@ -158,7 +153,6 @@ defmodule Legion.Telephony.PhoneNumber do
         humanized = ExPhoneNumber.format(phone_number, format)
 
         {:ok, humanized}
-
       {:error, _} ->
         {:error, :invalid}
     end

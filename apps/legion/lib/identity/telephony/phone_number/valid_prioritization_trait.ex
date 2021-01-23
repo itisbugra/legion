@@ -33,8 +33,8 @@ defmodule Legion.Identity.Telephony.PhoneNumber.ValidPrioritizationTrait do
   end
 
   schema "user_phone_number_valid_prioritization_traits" do
-    belongs_to(:phone_number, PhoneNumber)
-    belongs_to(:authority, Passphrase)
-    field(:inserted_at, :naive_datetime_usec)
+    belongs_to :phone_number, PhoneNumber
+    belongs_to :authority, Passphrase
+    field :inserted_at, :naive_datetime_usec
   end
 end

@@ -5,12 +5,12 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrant do
   A grant action is formed with a permission set, a grantee and an authority.
 
   ## Time invariance
-  A permission set might have `valid_after` and `valid_for` values in second units. The 
+  A permission set might have `valid_after` and `valid_for` values in second units. The
   `valid_after` field determines the time of activation in terms of seconds passed
   after creation of the grant. On the other hand, grants might be available for some time interval,
   which is determined with `valid_for` field.
 
-  Briefly, the grant will be activated on `inserted_at + valid_after`. At the end, the grant will 
+  Briefly, the grant will be activated on `inserted_at + valid_after`. At the end, the grant will
   be ceased on `inserted_at + valid_after + valid_for`.
 
   ## Caching coherence
@@ -29,14 +29,14 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrant do
   @immediately 1
 
   schema "permission_set_grants" do
-    belongs_to(:permission_set, PermissionSet)
-    belongs_to(:grantee, Registration)
-    belongs_to(:authority, Registration)
-    field(:valid_after, :integer)
-    field(:valid_for, :integer)
-    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
+    belongs_to :permission_set, PermissionSet
+    belongs_to :grantee, Registration
+    belongs_to :authority, Registration
+    field :valid_after, :integer
+    field :valid_for, :integer
+    field :inserted_at, :naive_datetime_usec, read_after_writes: true
 
-    has_one(:invalidation, Invalidation, foreign_key: :grant_id)
+    has_one :invalidation, Invalidation, foreign_key: :grant_id
   end
 
   @spec changeset(PermissionSetGrant, map) :: Ecto.Changeset.t()

@@ -4,7 +4,8 @@ defmodule Legion.Messaging.Message.RecipientTest do
 
   alias Legion.Messaging.Message.Recipient
 
-  @valid_attrs %{message_id: 1, recipient_id: 1}
+  @valid_attrs %{message_id: 1,
+                 recipient_id: 1}
 
   test "changeset with valid attributes" do
     changeset = Recipient.changeset(%Recipient{}, @valid_attrs)

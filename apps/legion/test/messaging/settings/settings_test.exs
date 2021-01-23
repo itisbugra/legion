@@ -47,8 +47,7 @@ defmodule Legion.Messaging.SettingsTest do
 
   describe "take_last/2" do
     test "retrieves latest values for the key", %{key: key} do
-      registry_entry =
-        Factory.insert_list(@take_quantity, :messaging_settings_registry_entry, key: key)
+      registry_entry = Factory.insert_list(@take_quantity, :messaging_settings_registry_entry, key: key)
 
       result = take(key, @take_quantity)
 
@@ -57,9 +56,7 @@ defmodule Legion.Messaging.SettingsTest do
 
     test "retrieves all values for the key if number of values are lower", %{key: key} do
       quantity = 2
-
-      _registry_entry =
-        Factory.insert_list(quantity, :messaging_settings_registry_entry, key: key)
+      _registry_entry = Factory.insert_list(quantity, :messaging_settings_registry_entry, key: key)
 
       result = take(key, @take_quantity)
 
@@ -68,9 +65,7 @@ defmodule Legion.Messaging.SettingsTest do
 
     test "retrieves only latest values for the key if number of values are higher", %{key: key} do
       quantity = 20
-
-      _registry_entry =
-        Factory.insert_list(quantity, :messaging_settings_registry_entry, key: key)
+      _registry_entry = Factory.insert_list(quantity, :messaging_settings_registry_entry, key: key)
 
       result = take(key, @take_quantity)
 

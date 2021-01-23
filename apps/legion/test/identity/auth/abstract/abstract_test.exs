@@ -15,24 +15,23 @@ defmodule Legion.Identity.Auth.AbstractTest do
     setup do
       env = Application.get_env(:legion, Legion.Identity.Auth.Concrete)
       offset = Keyword.fetch!(env, :passphrase_lifetime) + 200_000
-      time = add(utc_now(), -1 * offset)
+      time = add(utc_now(), (-1) * offset)
 
       user = Factory.insert(:user)
       passphrase = Factory.insert(:passphrase, user: user)
       invalidated = Factory.insert(:passphrase, user: user)
       timed_out = Factory.insert(:passphrase, user: user, inserted_at: time)
 
-      _invalidation =
-        Factory.insert(:passphrase_invalidation,
-          source_passphrase: passphrase,
-          target_passphrase: invalidated
-        )
+      _invalidation = Factory.insert(:passphrase_invalidation, source_passphrase: passphrase, target_passphrase: invalidated)
 
-      %{user: user, passphrase: passphrase, invalidated: invalidated, timed_out: timed_out}
+      %{user: user, 
+        passphrase: passphrase,
+        invalidated: invalidated,
+        timed_out: timed_out}
     end
 
     test "generates a token for the user with valid passphrase", %{user: u, passphrase: p} do
-      assert match?({:ok, _token}, authenticate(u, p.passkey, @ua, @ip_addr, @coordinate))
+      assert match? {:ok, _token}, authenticate(u, p.passkey, @ua, @ip_addr, @coordinate)
     end
 
     test "returns error if passphrase is invalid", %{user: u, invalidated: ip} do
@@ -44,10 +43,9 @@ defmodule Legion.Identity.Auth.AbstractTest do
     end
 
     test "returns error if ip address is invalid", %{user: u, passphrase: p} do
-      ip_addr = {500, 500, 500, 500}
+      ip_addr = {500, 500, 500, 500} 
 
-      assert authenticate(u, p.passkey, @ua, ip_addr, @coordinate) ==
-               {:error, :incorrect_ip_range}
+      assert authenticate(u, p.passkey, @ua, ip_addr, @coordinate) == {:error, :incorrect_ip_range}
     end
 
     @tag :regression

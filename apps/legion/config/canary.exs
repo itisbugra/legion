@@ -5,7 +5,7 @@ half_of_an_hour = 3_600
 three_minutes = 180
 
 config :ua_inspector,
-  database_path: Path.join(Mix.Utils.mix_home(), "ua_inspector")
+  database_path: Path.join(Mix.Utils.mix_home, "ua_inspector")
 
 # Please check configuration documentation for the meanings of the values.
 
@@ -50,7 +50,8 @@ config :legion, Legion.Identity.Auth.Concrete.TFA,
   lifetime: three_minutes,
   allowed_attempts: 3
 
-config :legion, Legion.Identity.Auth.Algorithm, keccak_variant: :sha3_512
+config :legion, Legion.Identity.Auth.Algorithm,
+  keccak_variant: :sha3_512
 
 config :legion, Legion.Identity.Information.PersonalData,
   given_name_length: 1..80,
@@ -73,9 +74,10 @@ config :legion, Legion.Identity.Information.AddressBook,
 config :legion, Legion.Identity.Telephony.PhoneNumber,
   initial_safe_duration: six_months,
   default_safe_duration: six_months,
-  maximum_safe_duration: six_months * 2
+  maximum_safe_duration: (six_months * 2)
 
-config :legion, Legion.Messaging.Switching.Globals, history_buffer_length: 5
+config :legion, Legion.Messaging.Switching.Globals,
+  history_buffer_length: 5
 
 config :legion, Legion.Messaging.Medium.APM,
   subject_length: 2..40,
@@ -101,4 +103,5 @@ config :legion, Legion.Messaging.Medium.Platform,
   body_length: 5..255,
   is_enabled?: true
 
-config :legion, Legion.Messaging.Templatization, template_name_length: 5..50
+config :legion, Legion.Messaging.Templatization,
+  template_name_length: 5..50

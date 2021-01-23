@@ -47,16 +47,16 @@ defmodule Legion.Identity.Information.AddressBook.Address do
   @zip_code_len Keyword.fetch!(@env, :zip_code_length)
 
   schema "user_addresses" do
-    belongs_to(:user, User)
+    belongs_to :user, User
     field :type, AddressType
     field :name, :string
-    field(:description, :string)
-    field(:state, :string)
-    field(:city, :string)
-    field(:neighborhood, :string)
-    field(:zip_code, :string)
-    field(:location, Point)
-    belongs_to(:country, Country, foreign_key: :country_name, references: :name, type: :string)
+    field :description, :string
+    field :state, :string
+    field :city, :string
+    field :neighborhood, :string
+    field :zip_code, :string
+    field :location, Point
+    belongs_to :country, Country, foreign_key: :country_name, references: :name, type: :string
     timestamps()
   end
 

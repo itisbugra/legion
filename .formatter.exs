@@ -24,7 +24,9 @@ locals_without_parens = [
   embeds_many: 4,
 
   # Registry directory
-  defregdir: 2
+  defregdir: 2,
+  register: 1
+  put_nationality: 5
 ]
 
 [

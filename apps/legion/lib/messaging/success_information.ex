@@ -7,8 +7,8 @@ defmodule Legion.Messaging.Message.SuccessInformation do
   alias Legion.Messaging.Message
 
   schema "message_success_informations" do
-    belongs_to(:message, Message, primary_key: true)
-    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
+    belongs_to :message, Message, primary_key: true
+    field :inserted_at, :naive_datetime_usec, read_after_writes: true
   end
 
   def changeset(struct, params \\ %{}) do

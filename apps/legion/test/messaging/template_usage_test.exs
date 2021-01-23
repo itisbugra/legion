@@ -4,7 +4,10 @@ defmodule Legion.Messaging.Message.TemplateUsageTest do
 
   alias Legion.Messaging.Message.TemplateUsage
 
-  @valid_attrs %{message_id: 1, template_id: 1, subject_params: %{}, body_params: %{}}
+  @valid_attrs %{message_id: 1,
+                 template_id: 1,
+                 subject_params: %{},
+                 body_params: %{}}
 
   test "changeset with valid attributes" do
     changeset = TemplateUsage.changeset(%TemplateUsage{}, @valid_attrs)

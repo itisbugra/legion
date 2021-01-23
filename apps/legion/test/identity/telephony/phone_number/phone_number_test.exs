@@ -8,7 +8,9 @@ defmodule Legion.Identity.Telephony.PhoneNumberTest do
   @phone_number "+966558611111"
   @phone_type :work
 
-  @valid_attrs %{user_id: @user_id, number: @phone_number, type: @phone_type}
+  @valid_attrs %{user_id: @user_id,
+                 number: @phone_number,
+                 type: @phone_type}
 
   test "changeset with valid attrs" do
     assert PhoneNumber.changeset(%PhoneNumber{}, @valid_attrs).valid?

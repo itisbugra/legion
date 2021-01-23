@@ -61,17 +61,17 @@ defmodule Legion.Identity.Telephony.PhoneNumber do
   @type phone_type() :: :home | :mobile | :work | :home_fax | :work_fax | :pager
 
   schema "user_phone_numbers" do
-    belongs_to(:user, User)
-    field(:number, :string)
-    field(:type, PhoneType)
-    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
+    belongs_to :user, User
+    field :number, :string
+    field :type, PhoneType
+    field :inserted_at, :naive_datetime_usec, read_after_writes: true
 
-    has_many(:prioritization_traits, PrioritizationTrait)
-    has_many(:safety_traits, SafetyTrait)
-    has_one(:neglection_trait, NeglectionTrait)
+    has_many :prioritization_traits, PrioritizationTrait
+    has_many :safety_traits, SafetyTrait
+    has_one :neglection_trait, NeglectionTrait
 
-    has_many(:valid_safety_traits, ValidSafetyTrait)
-    has_one(:valid_prioritization_trait, ValidPrioritizationTrait)
+    has_many :valid_safety_traits, ValidSafetyTrait
+    has_one :valid_prioritization_trait, ValidPrioritizationTrait
   end
 
   def changeset(struct, params \\ %{}) do

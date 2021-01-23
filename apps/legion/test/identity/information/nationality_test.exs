@@ -5,15 +5,11 @@ defmodule Legion.Identity.Information.NationalityTest do
   alias Legion.Identity.Information.Nationality
 
   test "changeset cannot be valid no matter what" do
-    refute Nationality.changeset(
-             %Nationality{},
-             %{
-               country_name: "turkey",
-               preferred_demonym: "pd",
-               second_demonym: "pd",
-               third_demonym: "pd"
-             }
-           ).valid?
+    refute Nationality.changeset(%Nationality{},
+                                 %{country_name: "turkey",
+                                   preferred_demonym: "pd",
+                                   second_demonym: "pd",
+                                   third_demonym: "pd"}).valid?
   end
 
   test "changeset cannot be valid with default struct either" do

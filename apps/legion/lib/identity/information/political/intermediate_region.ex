@@ -9,13 +9,8 @@ defmodule Legion.Identity.Information.Political.IntermediateRegion do
   @primary_key {:name, :string, autogenerate: false}
 
   schema "intermediate_regions" do
-    belongs_to(:subregion, Subregion,
-      foreign_key: :subregion_name,
-      references: :name,
-      type: :string
-    )
-
-    field(:code, :integer)
+    belongs_to :subregion, Subregion, foreign_key: :subregion_name, references: :name, type: :string
+    field :code, :integer
   end
 
   def changeset(struct, params \\ %{}) do

@@ -19,14 +19,13 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetCache do
   @doc """
   Fetches the cached entry for the user with given identifier.
   """
-  @spec fetch(number) ::
-          {:ok, PermissionSetCacheEntry}
-          | {:error, :enoent}
+  @spec fetch(number) :: 
+    {:ok, PermissionSetCacheEntry} |
+    {:error, :enoent}
   def fetch(user_id) do
     case Repo.get_by(:user_id, user_id) do
       nil ->
         {:error, :enoent}
-
       entry ->
         {:ok, entry}
     end

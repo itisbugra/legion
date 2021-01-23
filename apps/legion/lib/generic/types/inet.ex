@@ -14,7 +14,7 @@ defmodule Legion.Types.INET do
   @doc """
   Compares two objects of this type.
   """
-  def equal?(left, right), do: left == right
+  defdelegate equal?(left, right), to: Kernel, as: :==
 
   @doc """
   Handles casting to `Postgrex.INET`.

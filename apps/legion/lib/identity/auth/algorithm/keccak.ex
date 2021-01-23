@@ -19,7 +19,7 @@ defmodule Legion.Identity.Auth.Algorithm.Keccak do
   Hashes the given binary with given Keccak algorithm.
   """
   @spec hash(algorithm(), binary()) :: hash()
-  def hash(algorithm, data) do
+  def hash(algorithm, data) do 
     algorithm
     |> :keccakf1600.hash(data)
     |> Base.encode16()

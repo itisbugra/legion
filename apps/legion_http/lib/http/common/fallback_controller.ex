@@ -2,7 +2,7 @@ defmodule Legion.HTTP.Common.FallbackController do
   @moduledoc """
   Handles fallback actions of controllers.
   """
-  use Legion.HTTP, :controller
+  use Legion.HTTP, :controller 
 
   @doc """
   A fallback handler to handle Ecto errors encoded as changesets.

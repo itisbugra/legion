@@ -32,12 +32,15 @@ defmodule Legion.Identity.Auth.Concrete do
   def register_internal_user(username, password_hash) do
     case Repo.transaction(fn ->
            query =
-             from(p1 in Pair,
+             from p1 in Pair,
                left_join: p2 in Pair,
-               on: p1.id < p2.id and p1.user_id == p2.user_id,
-               where: is_nil(p2.id) and p1.username == ^username,
+               on:
+                 p1.id < p2.id and
+                   p1.user_id == p2.user_id,
+               where:
+                 is_nil(p2.id) and
+                   p1.username == ^username,
                select: count(p1.id)
-             )
 
            unless Repo.one!(query) == 0,
              do: Repo.rollback(:already_registered)

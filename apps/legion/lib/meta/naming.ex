@@ -35,16 +35,15 @@ defmodule Legion.Meta.Naming do
       iex> Legion.Meta.Naming.camelize(:"SomeFixture", :lower)
       "someFixture"
   """
-  @spec camelize(atom() | binary()) ::
-          binary()
-          | atom()
-          | nil
+  @spec camelize(atom() | binary()) :: 
+    binary() |
+    atom() |
+    nil
   def camelize(value) when is_atom(value) do
     value
     |> Atom.to_string()
     |> Naming.camelize()
   end
-
   def camelize(value) when is_binary(value) do
     Naming.camelize(value)
   end
@@ -54,7 +53,6 @@ defmodule Legion.Meta.Naming do
     |> Atom.to_string()
     |> Naming.camelize(:lower)
   end
-
   def camelize(value, :lower) when is_binary(value) do
     Naming.camelize(value, :lower)
   end

@@ -82,8 +82,8 @@ defmodule Legion.Messaging.Message do
     @primary_key false
 
     schema "message_recipients" do
-      belongs_to(:message, Message)
-      belongs_to(:recipient, User)
+      belongs_to :message, Message
+      belongs_to :recipient, User
     end
 
     def changeset(struct, params \\ %{}) do
@@ -108,10 +108,10 @@ defmodule Legion.Messaging.Message do
     @primary_key {:message_id, :id, autogenerate: false}
 
     schema "message_template_usages" do
-      belongs_to(:message, Message, define_field: false)
-      belongs_to(:template, Template)
-      field(:subject_params, :map, default: %{})
-      field(:body_params, :map, default: %{})
+      belongs_to :message, Message, define_field: false
+      belongs_to :template, Template
+      field :subject_params, :map, default: %{}
+      field :body_params, :map, default: %{}
     end
 
     def changeset(struct, params \\ %{}) do
@@ -125,16 +125,16 @@ defmodule Legion.Messaging.Message do
   end
 
   schema "messages" do
-    belongs_to(:sender, User)
-    many_to_many(:recipients, User, join_through: Recipient)
-    field(:subject, :string)
-    field(:body, :string)
-    field(:medium, Medium)
-    field(:send_after, :integer, default: 0, read_after_writes: true)
-    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
+    belongs_to :sender, User
+    many_to_many :recipients, User, join_through: Recipient
+    field :subject, :string
+    field :body, :string
+    field :medium, Medium
+    field :send_after, :integer, default: 0, read_after_writes: true
+    field :inserted_at, :naive_datetime_usec, read_after_writes: true
 
-    has_one(:success_information, SuccessInformation)
-    has_one(:template_usage, TemplateUsage)
+    has_one :success_information, SuccessInformation
+    has_one :template_usage, TemplateUsage
   end
 
   @doc """

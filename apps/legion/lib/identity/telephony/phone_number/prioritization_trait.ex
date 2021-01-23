@@ -16,9 +16,9 @@ defmodule Legion.Identity.Telephony.PhoneNumber.PrioritizationTrait do
   alias Legion.Identity.Auth.Concrete.Passphrase
 
   schema "user_phone_number_prioritization_traits" do
-    belongs_to(:phone_number, PhoneNumber)
-    belongs_to(:authority, Passphrase)
-    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
+    belongs_to :phone_number, PhoneNumber
+    belongs_to :authority, Passphrase
+    field :inserted_at, :naive_datetime_usec, read_after_writes: true
   end
 
   def changeset(struct, params \\ %{}) do

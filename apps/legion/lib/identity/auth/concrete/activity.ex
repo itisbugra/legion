@@ -17,30 +17,30 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
   @allow_failsafe_reverse_geocoding Keyword.get(@env, :allow_failsafe_reverse_geocoding, false)
 
   schema "activities" do
-    belongs_to(:passphrase, Passphrase)
-    field(:user_agent, :string)
-    field(:engine, :string)
-    field(:engine_version, :string)
-    field(:client_name, :string)
-    field(:client_type, :string)
-    field(:client_version, :string)
-    field(:device_brand, :string)
-    field(:device_model, :string)
-    field(:device_type, :string)
-    field(:os_name, :string)
-    field(:os_platform, :string)
-    field(:os_version, :string)
-    field(:ip_addr, Legion.Types.INET)
-    field(:country_name, :string)
-    field(:country_code, :string)
-    field(:ip_location, Legion.Types.Point)
-    field(:metro_code, :integer)
-    field(:region_code, :string)
-    field(:region_name, :string)
-    field(:time_zone, :string)
-    field(:zip_code, :string)
-    field(:gps_location, Legion.Types.Point)
-    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
+    belongs_to :passphrase, Passphrase
+    field :user_agent, :string
+    field :engine, :string
+    field :engine_version, :string
+    field :client_name, :string
+    field :client_type, :string
+    field :client_version, :string
+    field :device_brand, :string
+    field :device_model, :string
+    field :device_type, :string
+    field :os_name, :string
+    field :os_platform, :string
+    field :os_version, :string
+    field :ip_addr, Legion.Types.INET
+    field :country_name, :string
+    field :country_code, :string
+    field :ip_location, Legion.Types.Point
+    field :metro_code, :integer
+    field :region_code, :string
+    field :region_name, :string
+    field :time_zone, :string
+    field :zip_code, :string
+    field :gps_location, Legion.Types.Point
+    field :inserted_at, :naive_datetime_usec, read_after_writes: true
   end
 
   @doc """
@@ -147,7 +147,7 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
 
   def last_activity(user_id) when is_integer(user_id) do
     query =
-      from(u in User,
+      from u in User,
         join: p in Passphrase,
         on: u.id == p.user_id,
         join: a1 in Activity,
@@ -158,7 +158,6 @@ defmodule Legion.Identity.Auth.Concrete.Activity do
         order_by: [desc: a2.id],
         limit: 1,
         select: a1
-      )
 
     Repo.one(query)
   end

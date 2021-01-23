@@ -1,7 +1,5 @@
 import EctoEnum
 
-defenum(
-  Legion.Identity.Information.Gender,
+defenum Legion.Identity.Information.Gender,
   :gender,
   [:male, :female, :other]
-)

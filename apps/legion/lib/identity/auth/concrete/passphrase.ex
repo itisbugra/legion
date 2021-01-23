@@ -20,15 +20,15 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   @type id() :: integer()
 
   schema "passphrases" do
-    belongs_to(:user, User)
-    field(:passkey_digest, :binary)
-    field(:ip_addr, Legion.Types.INET)
+    belongs_to :user, User
+    field :passkey_digest, :binary
+    field :ip_addr, Legion.Types.INET
     field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
 
-    has_one(:invalidation, Invalidation, foreign_key: :target_passphrase_id)
-    has_many(:activities, Activity)
+    has_one :invalidation, Invalidation, foreign_key: :target_passphrase_id
+    has_many :activities, Activity
 
-    field(:passkey, :binary, virtual: true)
+    field :passkey, :binary, virtual: true
   end
 
   @spec changeset(Passphrase, map) :: Ecto.Changeset.t()
@@ -42,7 +42,8 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   @doc """
   Generates a new passphrase changeset and returns it with the passkey itself in a tuple.
   """
-  @spec create_changeset(User.user_or_id(), INET.t()) :: {Passkey.t(), Ecto.Changeset.t()}
+  @spec create_changeset(User.user_or_id(), INET.t()) ::
+          {Passkey.t(), Ecto.Changeset.t()}
   def create_changeset(user_id, ip_addr) when is_integer(user_id) do
     passkey = Passkey.generate()
 
@@ -121,11 +122,12 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
     hash = Passkey.hash(passkey)
 
     query =
-      from(p in Passphrase,
+      from p in Passphrase,
         preload: :invalidation,
-        where: p.user_id == ^user_id and p.passkey_digest == ^hash,
+        where:
+          p.user_id == ^user_id and
+            p.passkey_digest == ^hash,
         select: p
-      )
 
     with passphrase when not is_nil(passphrase) <- Repo.one(query),
          :ok <- validate(passphrase) do
@@ -158,10 +160,9 @@ defmodule Legion.Identity.Auth.Concrete.Passphrase do
   def validate_id(passphrase_id) do
     if exists?(passphrase_id) do
       query =
-        from(p in Passphrase,
+        from p in Passphrase,
           preload: :invalidation,
           where: p.id == ^passphrase_id
-        )
 
       query
       |> Repo.one!()

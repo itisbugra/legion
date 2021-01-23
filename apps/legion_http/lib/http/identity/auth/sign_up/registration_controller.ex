@@ -6,7 +6,7 @@ defmodule Legion.HTTP.Identity.Auth.SignUp.RegistrationController do
 
   import Legion.Identity.Auth
 
-  action_fallback(Legion.HTTP.Common.FallbackController)
+  action_fallback Legion.HTTP.Common.FallbackController
 
   def create(conn, %{"username" => username, "password_hash" => password_hash}) do
     with {:ok, user_id, inserted_at} <- register_internal_user(username, password_hash) do

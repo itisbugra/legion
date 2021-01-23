@@ -8,8 +8,8 @@ defmodule Legion.Location.ReverseGeocodingTest do
 
   @tag :external
   test "queries for the geocode by using inet addr" do
-    unless match?({:ok, _}, Geocoding.trace(@inet_addr)) do
-      flunk("inet addr cannot be reverse geocoded, probably external service is down")
+    unless match? {:ok, _}, Geocoding.trace(@inet_addr) do
+      flunk "inet addr cannot be reverse geocoded, probably external service is down"
     end
   end
 end

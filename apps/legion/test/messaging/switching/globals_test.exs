@@ -80,7 +80,7 @@ defmodule Legion.Messaging.Switching.GlobalsTest do
   end
 
   describe "is_medium_enabled?/1" do
-    for push <- @available_pushes do
+    for push <- @available_pushes  do
       @push push
 
       test "retrieves status for the #{Atom.to_string(@push)} medium" do
@@ -106,24 +106,25 @@ defmodule Legion.Messaging.Switching.GlobalsTest do
 
   describe "cancel_redirection_for_medium/2" do
     test "cancels an existing redirection", %{user: user} do
-      Factory.insert(:messaging_settings_registry_entry,
-        key: "Messaging.Switching.Globals.apm_redirection",
-        value: %{"action" => "redirect", "to" => "sms", "valid_after" => 0}
-      )
+      Factory.insert(:messaging_settings_registry_entry, key: "Messaging.Switching.Globals.apm_redirection",
+                                                         value: %{"action" => "redirect",
+                                                                  "to" => "sms",
+                                                                  "valid_after" => 0})
 
       assert cancel_redirection_for_medium(user, :apm) == :ok
     end
 
     test "cancels an overriding redirection", %{user: user} do
-      Factory.insert(:messaging_settings_registry_entry,
-        key: "Messaging.Switching.Globals.apm_redirection",
-        value: %{"action" => "redirect", "to" => "sms", "valid_after" => 0}
-      )
+      Factory.insert(:messaging_settings_registry_entry, key: "Messaging.Switching.Globals.apm_redirection",
+                                                         value: %{"action" => "redirect",
+                                                                  "to" => "sms",
+                                                                  "valid_after" => 0})
 
-      Factory.insert(:messaging_settings_registry_entry,
-        key: "Messaging.Switching.Globals.apm_redirection",
-        value: %{"action" => "redirect", "to" => "platform", "valid_for" => 0, "valid_after" => 0}
-      )
+      Factory.insert(:messaging_settings_registry_entry, key: "Messaging.Switching.Globals.apm_redirection",
+                                                         value: %{"action" => "redirect",
+                                                                  "to" => "platform",
+                                                                  "valid_for" => 0,
+                                                                  "valid_after" => 0})
 
       assert cancel_redirection_for_medium(user, :apm) == :ok
     end
@@ -153,47 +154,43 @@ defmodule Legion.Messaging.Switching.GlobalsTest do
     end
 
     test "returns redirection if medium is redirected" do
-      Factory.insert(:messaging_settings_registry_entry,
-        key: "Messaging.Switching.Globals.apm_redirection",
-        value: %{"action" => "redirect", "to" => "sms", "valid_after" => 0}
-      )
+      Factory.insert(:messaging_settings_registry_entry, key: "Messaging.Switching.Globals.apm_redirection",
+                                                         value: %{"action" => "redirect",
+                                                                  "to" => "sms",
+                                                                  "valid_after" => 0})
 
       assert redirection_for_medium(:apm) == :sms
     end
 
     test "retrieves the overriding redirection" do
-      Factory.insert(:messaging_settings_registry_entry,
-        key: "Messaging.Switching.Globals.apm_redirection",
-        value: %{"action" => "redirect", "to" => "sms", "valid_after" => 0}
-      )
+      Factory.insert(:messaging_settings_registry_entry, key: "Messaging.Switching.Globals.apm_redirection",
+                                                         value: %{"action" => "redirect",
+                                                                  "to" => "sms",
+                                                                  "valid_after" => 0})
 
-      Factory.insert(:messaging_settings_registry_entry,
-        key: "Messaging.Switching.Globals.apm_redirection",
-        value: %{"action" => "redirect", "to" => "platform", "valid_after" => 0}
-      )
+      Factory.insert(:messaging_settings_registry_entry, key: "Messaging.Switching.Globals.apm_redirection",
+                                                         value: %{"action" => "redirect",
+                                                                  "to" => "platform",
+                                                                  "valid_after" => 0})
 
       assert redirection_for_medium(:apm) == :platform
     end
 
     test "returns nil if redirection is passed out" do
-      Factory.insert(:messaging_settings_registry_entry,
-        key: "Messaging.Switching.Globals.apm_redirection",
-        value: %{
-          "action" => "redirect",
-          "to" => "platform",
-          "valid_after" => -1_000_000,
-          "valid_for" => 0
-        }
-      )
+      Factory.insert(:messaging_settings_registry_entry, key: "Messaging.Switching.Globals.apm_redirection",
+                                                         value: %{"action" => "redirect",
+                                                                  "to" => "platform",
+                                                                  "valid_after" => -1_000_000,
+                                                                  "valid_for" => 0})
 
       refute redirection_for_medium(:apm)
     end
 
     test "returns nil if redirection is not active yet" do
-      Factory.insert(:messaging_settings_registry_entry,
-        key: "Messaging.Switching.Globals.apm_redirection",
-        value: %{"action" => "redirect", "to" => "platform", "valid_after" => 5_000}
-      )
+      Factory.insert(:messaging_settings_registry_entry, key: "Messaging.Switching.Globals.apm_redirection",
+                                                         value: %{"action" => "redirect",
+                                                                  "to" => "platform",
+                                                                  "valid_after" => 5_000})
 
       refute redirection_for_medium(:apm)
     end

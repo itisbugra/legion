@@ -8,9 +8,9 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetGrant.Invalidation do
   alias Legion.Identity.Information.Registration
 
   schema "permission_set_grant_invalidations" do
-    belongs_to(:grant, PermissionSetGrant)
-    belongs_to(:authority, Registration)
-    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
+    belongs_to :grant, PermissionSetGrant
+    belongs_to :authority, Registration
+    field :inserted_at, :naive_datetime_usec, read_after_writes: true
   end
 
   def changeset(struct, params \\ %{}) do

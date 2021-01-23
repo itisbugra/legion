@@ -19,9 +19,7 @@ defmodule Legion.Identity.Telephony.PhoneNumber.FiniteStateMachineTest do
       result = safe_until(pn.id)
 
       refute result == :unsafe
-
-      assert DateTime.to_iso8601(result) =~
-               ~r/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{6}Z/
+      assert DateTime.to_iso8601(result) =~ ~r/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{6}Z/
     end
 
     test "returns unsafe is number is not safe", %{unsafe: pn} do
@@ -37,48 +35,48 @@ defmodule Legion.Identity.Telephony.PhoneNumber.FiniteStateMachineTest do
 
   describe "safe?/1" do
     test "returns true if number is safe", %{safe: pn} do
-      assert safe?(pn.id)
+      assert safe? pn.id
     end
 
     test "returns false if number is not safe", %{unsafe: pn} do
-      refute safe?(pn.id)
+      refute safe? pn.id
     end
 
     test "raises if phone number does not exist" do
       assert_raise Ecto.NoResultsError, fn ->
-        safe?(-1)
+        safe? -1
       end
     end
   end
 
   describe "ignored?/1" do
     test "returns true if number is ignored", %{safe_but_ignored: pn} do
-      assert ignored?(pn.id)
+      assert ignored? pn.id
     end
 
     test "returns false if number is not ignored", %{safe: pn} do
-      refute ignored?(pn.id)
+      refute ignored? pn.id
     end
 
     test "raises if phone number does not exist" do
       assert_raise Ecto.NoResultsError, fn ->
-        ignored?(-1)
+        ignored? -1
       end
     end
   end
 
   describe "primary?/1" do
     test "returns true if number is prioritized", %{safe_and_prioritized: pn} do
-      assert primary?(pn.id)
+      assert primary? pn.id
     end
 
     test "returns false if number is not prioritized", %{safe_and_overprioritized: pn} do
-      refute primary?(pn.id)
+      refute primary? pn.id
     end
 
     test "raises if phone number does not exist" do
       assert_raise Ecto.NoResultsError, fn ->
-        primary?(-1)
+        primary? -1
       end
     end
 
@@ -88,20 +86,15 @@ defmodule Legion.Identity.Telephony.PhoneNumber.FiniteStateMachineTest do
       user = Factory.insert(:user)
       passphrase = Factory.insert(:passphrase, user: user)
       phone_number = Factory.insert(:phone_number, user: user)
+      _prioritization_trait = Factory.insert(:phone_number_prioritization_trait, phone_number: phone_number, authority: passphrase)
 
-      _prioritization_trait =
-        Factory.insert(:phone_number_prioritization_trait,
-          phone_number: phone_number,
-          authority: passphrase
-        )
-
-      assert primary?(phone_number.id)
+      assert primary? phone_number.id
     end
   end
 
   describe "create_phone_number/4" do
     test "creates a phone number", %{owner: u} do
-      assert match?({:ok, _}, create_phone_number(u.id, :work, @phone_number))
+      assert match? {:ok, _}, create_phone_number(u.id, :work, @phone_number)
       assert Repo.get_by(PhoneNumber, number: @phone_number)
     end
 
@@ -120,13 +113,12 @@ defmodule Legion.Identity.Telephony.PhoneNumber.FiniteStateMachineTest do
 
   describe "update_phone_number/3" do
     test "updates a phone number", %{safe: pn} do
-      assert match?({:ok, _}, update_phone_number(pn.id, :work, @changed_phone_number))
+      assert match? {:ok, _}, update_phone_number(pn.id, :work, @changed_phone_number)
       assert Repo.get_by(PhoneNumber, id: pn.id).number == @changed_phone_number
     end
 
     test "errors if type is invalid", %{safe: pn} do
-      assert update_phone_number(pn.id, :invalid, @changed_phone_number) ==
-               {:error, :unknown_type}
+      assert update_phone_number(pn.id, :invalid, @changed_phone_number) == {:error, :unknown_type}
     end
 
     test "errors if phone number does not exist" do
@@ -151,13 +143,10 @@ defmodule Legion.Identity.Telephony.PhoneNumber.FiniteStateMachineTest do
 
   describe "make_primary/2" do
     test "prioritizes a phone number", %{owner_passphrase: pp, safe: pn} do
-      assert match?({:ok, _}, make_primary(pp.id, pn.id))
+      assert match? {:ok, _}, make_primary(pp.id, pn.id)
     end
 
-    test "is a noop if phone number is already primary", %{
-      owner_passphrase: pp,
-      safe_and_prioritized: pn
-    } do
+    test "is a noop if phone number is already primary", %{owner_passphrase: pp, safe_and_prioritized: pn} do
       assert make_primary(pp.id, pn.id) == {:ok, :noop}
     end
 
@@ -180,14 +169,11 @@ defmodule Legion.Identity.Telephony.PhoneNumber.FiniteStateMachineTest do
 
   describe "ignore_phone_number/2" do
     test "ignores a phone number", %{owner_passphrase: pp, safe: pn} do
-      assert match?({:ok, _}, ignore_phone_number(pp.id, pn.id))
+      assert match? {:ok, _}, ignore_phone_number(pp.id, pn.id)
     end
 
-    test "does not error if phone number is already ignored", %{
-      owner_passphrase: pp,
-      safe_but_ignored: pn
-    } do
-      assert match?({:ok, _}, ignore_phone_number(pp.id, pn.id))
+    test "does not error if phone number is already ignored", %{owner_passphrase: pp, safe_but_ignored: pn} do
+      assert match? {:ok, _}, ignore_phone_number(pp.id, pn.id)
     end
 
     test "errors if phone number is primary", %{owner_passphrase: pp, safe_and_prioritized: pn} do
@@ -209,11 +195,11 @@ defmodule Legion.Identity.Telephony.PhoneNumber.FiniteStateMachineTest do
 
   describe "acknowledge_phone_number/1" do
     test "removes an ignore mark on a phone number", %{safe_but_ignored: pn} do
-      assert match?({:ok, _}, acknowledge_phone_number(pn.id))
+      assert match? {:ok, _}, acknowledge_phone_number(pn.id)
     end
 
     test "does not error if phone number is not ignored yet", %{safe: pn} do
-      assert match?({:ok, _}, acknowledge_phone_number(pn.id))
+      assert match? {:ok, _}, acknowledge_phone_number(pn.id)
     end
 
     test "errors if there is no such phone number" do
@@ -223,11 +209,11 @@ defmodule Legion.Identity.Telephony.PhoneNumber.FiniteStateMachineTest do
 
   describe "mark_phone_number_safe/2" do
     test "marks a phone number safe", %{owner_passphrase: pp, unsafe: pn} do
-      assert match?({:ok, _}, mark_phone_number_safe(pp.id, pn.id))
+      assert match? {:ok, _}, mark_phone_number_safe(pp.id, pn.id)
     end
 
     test "does not error if phone number is safe already", %{owner_passphrase: pp, safe: pn} do
-      assert match?({:ok, _}, mark_phone_number_safe(pp.id, pn.id))
+      assert match? {:ok, _}, mark_phone_number_safe(pp.id, pn.id)
     end
 
     test "errors if there is no such phone number", %{owner_passphrase: pp} do
@@ -241,11 +227,11 @@ defmodule Legion.Identity.Telephony.PhoneNumber.FiniteStateMachineTest do
 
   describe "mark_phone_number_unsafe/2" do
     test "marks a phone number unsafe", %{owner_passphrase: pp, safe: pn} do
-      assert match?({:ok, _}, mark_phone_number_unsafe(pp.id, pn.id))
+      assert match? {:ok, _}, mark_phone_number_unsafe(pp.id, pn.id)
     end
 
     test "does not error if phone number is marked unsafe", %{owner_passphrase: pp, unsafe: pn} do
-      assert match?({:ok, _}, mark_phone_number_unsafe(pp.id, pn.id))
+      assert match? {:ok, _}, mark_phone_number_unsafe(pp.id, pn.id)
     end
 
     test "errors if there is no such phone number", %{owner_passphrase: pp} do

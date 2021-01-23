@@ -24,10 +24,8 @@ defmodule Legion.Networking.HTTP.UserAgent do
       cond do
         is_map(value) ->
           Map.replace!(acc, key, replace_unknowns(value))
-
         value == :unknown ->
           Map.replace!(acc, key, nil)
-
         true ->
           acc
       end

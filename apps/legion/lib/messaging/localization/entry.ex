@@ -9,12 +9,12 @@ defmodule Legion.Messaging.Localization.Entry do
   alias Legion.Templating.Renderer.Engine
 
   schema "messaging_template_localization_entry" do
-    belongs_to(:user, User)
-    belongs_to(:template, Template)
-    field(:engine, Engine)
-    field(:subject_template, :string)
-    field(:body_template, :string)
-    field(:inserted_at, :naive_datetime_usec, read_after_writes: true)
+    belongs_to :user, User
+    belongs_to :template, Template
+    field :engine, Engine
+    field :subject_template, :string
+    field :body_template, :string
+    field :inserted_at, :naive_datetime_usec, read_after_writes: true
   end
 
   def changeset(struct, params \\ %{}) do

@@ -7,7 +7,7 @@ defmodule Legion.Identity.Information.Political.Region do
   @primary_key {:name, :string, autogenerate: false}
 
   schema "regions" do
-    field(:code, :integer)
+    field :code, :integer
   end
 
   def changeset(struct, params \\ %{}) do

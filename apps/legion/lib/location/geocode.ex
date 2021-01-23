@@ -1,6 +1,6 @@
 defmodule Legion.Location.Geocode do
   @moduledoc """
-  Represents information about a location geocode. A geocode is a locational 
+  Represents information about a location geocode. A geocode is a locational
   estimation of a location identified by a connection artifact or such.
   The data can be mostly used to analytic purposes, rather than transactional
   operations.

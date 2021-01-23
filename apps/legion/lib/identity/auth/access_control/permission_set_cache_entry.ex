@@ -9,10 +9,10 @@ defmodule Legion.Identity.Auth.AccessControl.PermissionSetCacheEntry do
   alias Legion.Identity.Auth.AccessControl.PermissionSet
 
   schema "permission_set_cache_entries" do
-    belongs_to(:user, Registration)
-    belongs_to(:permission_set, PermissionSet)
-    field(:valid_until, :naive_datetime_usec)
-    field(:updated_at, :naive_datetime_usec, read_after_writes: true)
+    belongs_to :user, Registration
+    belongs_to :permission_set, PermissionSet
+    field :valid_until, :naive_datetime_usec
+    field :updated_at, :naive_datetime_usec, read_after_writes: true
   end
 
   @spec changeset(PermissionSetCacheEntry, map) :: Ecto.Changeset.t()
