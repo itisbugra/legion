@@ -2,6 +2,8 @@
 
 Central repository for the server-side installation of Quessly.
 
+![CI status](https://github.com/Chatatata/Legion/workflows/Continuous%20integration/badge.svg)
+
 ## Installation
 
 Install the umbrella dependencies, configure the project from the configuration files located in `**/config/${ENVIRONMENT}.exs`.
