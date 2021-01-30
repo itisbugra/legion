@@ -47,19 +47,6 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
     end
   end
 
-  def hashpwsalt(password_hash) do
-    case @password_digestion do
-      :argon2 ->
-        Argon2.hash_pwd_salt(password_hash)
-
-      other ->
-        mod_name = Naming.camelize(other)
-        alg_module = Module.concat([Comeonin, mod_name])
-
-        apply(alg_module, :hashpwsalt, [password_hash])
-    end
-  end
-
   @doc """
   Retrieves a struct containing the required information to perform instantiation
   of concrete authentication process on a user.
@@ -95,6 +82,21 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
     end
   end
 
+  def hashpwsalt(password_hash) do
+    case @password_digestion do
+      :argon2 ->
+        Argon2.hash_pwd_salt(password_hash)
+
+      other ->
+        # coveralls-ignore-start
+        mod_name = Naming.camelize(other)
+        alg_module = Module.concat([Comeonin, mod_name])
+
+        apply(alg_module, :hashpwsalt, [password_hash])
+        # coveralls-ignore-stop
+    end
+  end
+
   @doc """
   Checks password with given digestion algorithm.
   """
@@ -108,10 +110,12 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
           Argon2.verify_pass(password_hash, digest)
 
         other ->
+          # coveralls-ignore-start
           mod_name = Naming.camelize(other)
           alg_module = Module.concat([Comeonin, mod_name])
 
           apply(alg_module, :checkpw, [password_hash, digest])
+          # coveralls-ignore-stop
       end
 
     if result do
@@ -127,10 +131,12 @@ defmodule Legion.Identity.Auth.Insecure.Pair do
         Argon2.no_user_verify()
 
       other ->
+        # coveralls-ignore-start
         mod_name = Naming.camelize(other)
         alg_module = Module.concat([Comeonin, mod_name])
 
         apply(alg_module, :dummy_checkpw, [])
+        # coveralls-ignore-stop
     end
   end
 end
