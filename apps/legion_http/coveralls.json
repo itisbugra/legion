@@ -7,16 +7,13 @@
     "using",
     "setup"
   ],
-
   "coverage_options": {
     "treat_no_relevant_lines_as_covered": true,
     "output_dir": "coverage/"
   },
-
   "terminal_options": {
-    "file_column_width": 100
+    "file_column_width": 60
   },
-
   "skip_files": [
     "test/support",
     "priv",

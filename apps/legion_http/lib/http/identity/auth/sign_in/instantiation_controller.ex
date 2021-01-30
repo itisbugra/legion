@@ -6,9 +6,9 @@ defmodule Legion.HTTP.Identity.Auth.SignIn.InstantiationController do
 
   import Legion.Identity.Auth, only: [generate_passphrase: 4]
 
-  action_fallback(Legion.HTTP.Common.FallbackController)
+  action_fallback Legion.HTTP.Common.FallbackController
 
-  plug(:put_view, Legion.HTTP.Identity.Auth.SignInView)
+  plug :put_view, Legion.HTTP.Identity.Auth.SignInView
 
   def create(conn, %{
         "username" => username,
