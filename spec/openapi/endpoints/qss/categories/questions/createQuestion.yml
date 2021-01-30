@@ -1,0 +1,188 @@
+summary: Create a new question
+description: |
+  Adds a new question to the question pool.
+tags:
+  - 'Service: Questionbase'
+  - 'Resource: Questions'
+  - 'Stability: 0 - Unavailable'
+operationId: createQuestion
+security:
+  - OAuth2:
+    - createQuestion
+parameters:
+  - in: header
+    name: Accept-Language
+    description: |
+      The locale of the localizable response elements, according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+      default: en-US
+    example: en-US, en;q=0.9, *;q=0.5
+    required: true
+  - in: header
+    name: Accept-Charset
+    description: |
+      The charset of the response body according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+      default: utf-8
+    example: utf-8, iso-8859-1;q=0.5, *;q=0.1
+    required: true
+  - in: path
+    name: categoryId
+    description: |
+      The identifier of the category that question is pooled into.
+    required: true
+    schema:
+      type: integer
+    example: 1
+requestBody:
+  description: |
+    The information for the new question.
+  required: true
+  content:
+    application/json; charset=utf-8:
+      schema:
+        type: object
+        required:
+          - body
+          - type
+          - mimeType
+        properties:
+          interactivity:
+            $ref: '../../../../../variants/qss/questionInteractivity.yml'
+          body:
+            type: string
+            description: >
+              Body of the question.
+
+              ## Interpretation
+
+              The body is evaluated in client-side devices with their given
+              MIME type.
+
+              #### Plain text
+              Clients can render plain text question bodies, without any
+              additional styling.
+
+              This is determined by the `text/plain` MIME type.
+
+              #### Markdown
+
+              Clients can use [CommonMark](https://commonmark.org/)
+              flavor of Markdown to render question bodies.
+
+              This is determined by the `text/markdown` MIME type.
+
+              #### HTML
+
+              Clients can use restricted set of
+              [HTML](https://tools.ietf.org/html/rfc1866) with
+              [MathJax](https://www.mathjax.org/) capabilities.
+
+              This is determined by the `text/html` MIME type.
+
+              ## Examples
+
+              #### An HTML-based question
+
+              ```html
+              Which one of the following is a <strong>mammal</strong>?
+              ```
+
+              #### A Markdown-based question
+
+              ```markdown
+              Which one of the following is a **mammal**?
+              ```
+            example: Which one of the following is a **mammal**?
+            minLength: 1
+          mime_type:
+            type: string
+            description: |
+              MIME type for the question body.
+              Must be
+              [RFC 2045-2046](https://tools.ietf.org/html/rfc2045)-compliant.
+            example: text/markdown; charset=utf-8
+          visible?:
+            type: boolean
+            description: |
+              Determines the visibility for the question.
+            default: false
+          options:
+            type: array
+            description: |
+              Determines the valid options for the question.
+              *Valid if and only if interactivity is either
+              `single_selected`, `multiple_inclusive` or `multiple_exclusive`.*
+            items:
+              type: object
+              properties:
+                body:
+                  type: string
+                  description: |
+                    Body of the option.
+
+                    **Same formatting methodology applies with the body of the
+                    question itself.**
+                  example: Whale
+                mime_type:
+                  type: string
+                  description: |
+                    MIME type for the option.
+                    Must be
+                    [RFC 2045-2046](https://tools.ietf.org/html/rfc2045)-compliant.
+                  example: text/markdown; charset=utf-8
+                correct?:
+                  type: boolean
+                  description: |
+                    Determines whether the answer is correct, or not.
+
+                    Conditions apply, if question is
+
+                    - `single_selected`, then exatcly one option should be
+                    marked as correct, or if
+
+                    - `multiple_inclusive`, then at least one option should be
+                    marked as not correct.
+                  default: false
+          answer:
+            type: string
+            description: |
+              The answer for the question.
+              *Valid if and only if interactivity is `freeform`.
+            minLength: 1
+            example: Whale
+responses:
+  '201':
+    description: The question has been added to the pool.
+    headers:
+      Location:
+        schema:
+          type: string
+        description: The location for the category created.
+        example: /qss/categories/1
+    content:
+      application/json; charset=utf-8:
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: Identifier of the new category.
+              example: 1
+              minimum: 0
+  '409':
+    description: |
+      The category could not be registered due to a conflict.
+
+      Possibly, there is another category with same parent association and name.
+    content:
+      $ref: '../../../../../variants/common/error.yml#/content'
+  '422':
+    description: |
+      TODO...
+    content:
+      $ref: '../../../../../variants/common/error.yml#/content'

@@ -1,0 +1,54 @@
+summary: List contexts
+description: |
+  Operates as a query tool for question contexts.
+operationId: listContexts
+tags:
+  - 'Service: Questionbase'
+  - 'Resource: Question contexts'
+  - 'Stability: 0 - Unavailable'
+security:
+  - OAuth2:
+    - readQuestionContexts
+parameters:
+  - in: query
+    name: offset
+    schema:
+      type: integer
+      minimum: 0
+      default: 0
+    description: The number of items to skip before starting to collect the result set.
+  - in: query
+    name: limit
+    schema:
+      type: integer
+      minimum: 1
+      maximum: 20
+      default: 10
+    description: The numbers of items to return.
+  - in: header
+    name: Accept-Language
+    description: |
+      The locale of the localizable response elements, according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+    example: en-US, en;q=0.9, *;q=0.5
+    required: true
+  - in: header
+    name: Accept-Charset
+    description: |
+      The charset of the response body according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+    example: utf-8, iso-8859-1;q=0.5, *;q=0.1
+    required: true
+responses:
+  '200':
+    description: An array of contexts.
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: string

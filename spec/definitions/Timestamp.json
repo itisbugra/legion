@@ -1,4 +1,0 @@
-{
-  "type": "string",
-  "description": "An ISO 8601-compatible timestamp format without time zone."
-}

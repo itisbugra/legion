@@ -1,0 +1,12 @@
+summary: Check availability for the service
+description: |
+  Useful for checking network reachability to the remote platform services.
+  Client devices may also use the `Date` response header to perform time
+  synchronization between platform and device.
+tags:
+  - 'Service: Core services'
+  - 'Stability: 0 - Unavailable'
+operationId: checkAvailability
+responses:
+  '204':
+    description: Empty response.

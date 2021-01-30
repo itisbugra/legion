@@ -2,7 +2,8 @@
 
 Central repository for the server-side installation of Quessly.
 
-![CI status](https://github.com/Chatatata/Legion/workflows/Continuous%20integration/badge.svg)
+![CI status](https://github.com/Chatatata/Legion/workflows/CI/badge.svg)
+![Docs available](https://img.shields.io/static/v1?label=Docs&message=available&color=informational)
 
 ## Installation
 
@@ -27,4 +28,4 @@ $ mix docs
 
 ## License
 
-Licensed under Apache-2, see [LICENSE](https://github.com/Chatatata/Legion/blob/master/LICENSE).
+Licensed under Apache-2, see [LICENSE](https://github.com/Chatatata/Legion/blob/main/LICENSE).

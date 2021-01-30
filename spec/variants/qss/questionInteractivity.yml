@@ -1,0 +1,35 @@
+type: string
+enum:
+  - single_selected
+  - multiple_inclusive
+  - multiple_exclusive
+  - freeform
+  - fill_in_the_blanks
+description: >
+  Determines the type of the question interactivity.
+
+  ## Options
+
+  * `single_selected`: Questions that have multiple options,
+  but a only one answer is true. This type of the questions are mostly
+  seen in wide-spread exams, such as [SAT](https://en.wikipedia.org/wiki/SAT).
+  Also known as 'test' questions.
+
+  * `multiple_inclusive`: Questions that have multiple options,
+  but everything could be selected. If any correct option is selected by
+  the user, the question will be counted as correct. *Consider using
+  `single_selected` option while preparing question groups
+  instead of this option, since it limits the number of possible answers a
+  user can provide.*
+
+  * `multiple_exclusive`: Similar to `multiple_inclusive`, everything could
+  be selected. However, there is only one correct combination of options set,
+  otherwise, will be counted as failed. *Consider using `single_selected`
+  option while preparing question groups instead of this option, since it
+  limits the number of possible answers a user can provide.*
+
+  * `freeform`: Questions that provide freeform text input, possibly with
+  constraints. Mostly seen in college prep-exams.
+
+  * `fill_in_the_blanks`: Questions that provide partial body, with a
+  collidable answer input.

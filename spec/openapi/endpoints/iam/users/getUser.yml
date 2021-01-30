@@ -1,0 +1,171 @@
+summary: Get a user with identifier
+description: |
+  TODO...
+tags:
+  - 'Service: Identity & Access Management'
+  - 'Resource: Users'
+  - 'Stability: 0 - Unavailable'
+operationId: getUser
+security:
+  - OAuth2:
+    - readUsers
+parameters:
+  - in: path
+    name: userId
+    schema:
+      type: integer
+    required: true
+    description: The identifier of the user.
+  - in: header
+    name: Accept-Language
+    description: |
+      The locale of the localizable response elements, according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+    example: en-US, en;q=0.9, *;q=0.5
+    required: true
+  - in: header
+    name: Accept-Charset
+    description: |
+      The charset of the response body according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+    example: utf-8, iso-8859-1;q=0.5, *;q=0.1
+    required: true
+responses:
+  '200':
+    description: The user, which has the given identifier.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+            username:
+              type: string
+            emails:
+              type: array
+              items:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    description: Email address found in entry.
+                  is_primary:
+                    type: boolean
+                    description: If true, this email address is primary, which can be
+                      used in user authentication.
+                  inserted_at:
+                    $ref: ../../../../variants/common/timestamp.yml
+                    description: The time email was created.
+            personal_information:
+              type: object
+              properties:
+                given_name:
+                  type: string
+                  description: A name given to a individual to differentiate them from
+                    members of such group or family. May be referred as "family name"
+                    or "forename".
+                middle_name:
+                  type: string
+                  description: A name given to a individual to differentiate them from
+                    members of such group or family with members having same given name.
+                family_name:
+                  type: string
+                  description: A name given to a individual to represent its family or
+                    group.
+                name_prefix:
+                  type: string
+                  description: Prefix of the name to vocal the individual, such as "Mr.".
+                name_postfix:
+                  type: string
+                  description: Postfix of the name to vocal the individual, such as "-san",
+                    which may expand to something like "Suguro-san".
+                nickname:
+                  type: string
+                  description: A nick given to an individual, generally pronounced informally.
+                phonetic_representation:
+                  type: string
+                  description: Phonetic representation of the name of the user.
+                nationality:
+                  type: string
+                  description: Nationality of a user.
+                  enum:
+                  - en
+                  - au
+                  - us
+                  - tr
+                  - de
+                  - it
+                  - ar
+                gender:
+                  type: string
+                  description: Gender of a user.
+                  enum:
+                  - male
+                  - female
+                  - other
+                url:
+                  type: string
+                  description: Web site of a user.
+                image:
+                  type: string
+                  description: Image URL of a user.
+                phone_numbers:
+                  type: array
+                  items:
+                    $ref: ../../../../variants/common/timestamp.yml
+                addresses:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        format: int64
+                        description: Remote identifier of the address.
+                      type:
+                        type: string
+                        enum:
+                        - home
+                        - work
+                        - other
+                        description: Type of the address.
+                      name:
+                        type: string
+                        description: The given name for the address of the user.
+                      country:
+                        type: string
+                        description: The country of the residence.
+                      state:
+                        type: string
+                        description: The state of the residence.
+                      city:
+                        type: string
+                        description: The city of the residence.
+                      neighborhood:
+                        type: string
+                        description: The neighborhood of the residence.
+                      address:
+                        type: string
+                        description: Optional details for the address.
+                      description:
+                        type: string
+                        description: Description for the address to enhance ease of search.
+                      zip_code:
+                        type: string
+                        description: The zip code of the residence.
+            last_activity_at:
+              type: string
+              description: Date of last activity of the user in ISO 8601 format.
+            inserted_at:
+              type: string
+              description: Registration date of the user in ISO 8601 format.
+  '404':
+    description: User could not be found with specified identifier.
+    content:
+      $ref: '../../../../variants/common/error.yml#/content'

@@ -55,7 +55,7 @@ defmodule Legion.Umbrella.Mixfile do
     [
       name: "Legion",
       main: "up-and-running",
-      source_url: "http://95.177.215.207/STMS/Chat/Legion",
+      source_url: "https://github.com/Chatatata/Legion",
       extra_section: "GUIDES",
       extras: extras(),
       groups_for_extras: groups_for_extras(),

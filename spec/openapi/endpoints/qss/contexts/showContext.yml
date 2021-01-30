@@ -1,0 +1,52 @@
+summary: Show the context with given identifier
+description: |
+  Retrieves the information about the context with the specified identifier.
+operationId: showContext
+tags:
+  - 'Service: Questionbase'
+  - 'Resource: Question contexts'
+  - 'Stability: 0 - Unavailable'
+security:
+  - OAuth2:
+    - readQuestionContexts
+parameters:
+  - in: header
+    name: Accept-Language
+    description: |
+      The locale of the localizable response elements, according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+    example: en-US, en;q=0.9, *;q=0.5
+    required: true
+  - in: header
+    name: Accept-Charset
+    description: |
+      The charset of the response body according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+    example: utf-8, iso-8859-1;q=0.5, *;q=0.1
+    required: true
+  - in: path
+    name: contextId
+    description: |
+      The identifier of the context.
+    schema:
+      type: integer
+    example: 0
+    required: true
+responses:
+  '200':
+    description: The context object, if it exists.
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: string
+  '404':
+    description: |
+      The context with given identifier could not be found.
+    content:
+      $ref: '../../../../variants/common/error.yml#/content'

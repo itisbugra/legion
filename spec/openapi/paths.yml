@@ -1,0 +1,65 @@
+/:
+  head:
+    $ref: './endpoints/checkAvailability.yml'
+/identity-access-management/users:
+  get:
+    $ref: './endpoints/iam/users/listUsers.yml'
+/identity-access-management/users/{userId}:
+  get:
+    $ref: './endpoints/iam/users/getUser.yml'
+/identity-access-management/users/{user_id}/permissions:
+  get:
+    $ref: './endpoints/iam/users/permissions/listPermissions.yml'
+/identity-access-management/users/{user_id}/activities:
+  get:
+    $ref: './endpoints/iam/users/activities/listUserActivities.yml'
+/identity-access-management/authentication/register:
+  post:
+    $ref: './endpoints/iam/authentication/signUp.yml'
+/identity-access-management/authentication/insecure-authentication/change-password:
+  post:
+    $ref: './endpoints/iam/authentication/insecure/changePassword.yml'
+/identity-access-management/authentication/two-factor-authentication/finalize:
+  post:
+    $ref: './endpoints/iam/authentication/tfa/completeSignIn.yml'
+/identity-access-management/access-control/permissions:
+  get:
+    $ref: './endpoints/iam/access-control/authorization/permissions/listPermissions.yml'
+/identity-access-management/access-control/permission-sets:
+  get:
+    $ref: './endpoints/iam/access-control/authorization/permission-sets/listPermissionSets.yml'
+  post:
+    $ref: './endpoints/iam/access-control/authorization/permission-sets/createPermissionSet.yml'
+/identity-access-management/access-control/permission-sets/{permission_set_id}:
+  put:
+    $ref: './endpoints/iam/access-control/authorization/permission-sets/updatePermissionSet.yml'
+  delete:
+    $ref: './endpoints/iam/access-control/authorization/permission-sets/deletePermissionSet.yml'
+/questionbase/contexts:
+  get:
+    $ref: './endpoints/qss/contexts/listContexts.yml'
+  post:
+    $ref: './endpoints/qss/contexts/createContext.yml'
+/questionbase/contexts/{contextId}:
+  get:
+    $ref: './endpoints/qss/contexts/showContext.yml'
+  patch:
+    $ref: './endpoints/qss/contexts/updateContext.yml'
+  delete:
+    $ref: './endpoints/qss/contexts/deleteContext.yml'
+/questionbase/categories:
+  get:
+    $ref: './endpoints/qss/categories/listCategories.yml'
+  post:
+    $ref: './endpoints/qss/categories/createCategory.yml'
+/questionbase/categories/{categoryId}:
+  get:
+    $ref: './endpoints/qss/categories/showCategory.yml'
+  delete:
+    $ref: './endpoints/qss/categories/deleteCategory.yml'
+/questionbase/categories/{categoryId}/questions:
+  post:
+    $ref: './endpoints/qss/categories/questions/createQuestion.yml'
+/questionbase/categories/{categoryId}/questions/pick-random:
+  head:
+    $ref: './endpoints/qss/categories/questions/pickRandom.yml'

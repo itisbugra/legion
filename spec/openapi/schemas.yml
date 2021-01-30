@@ -1,0 +1,4 @@
+PermissionSet:
+  $ref: '../variants/iam/permissionSet.yml'
+QuestionInteractivity:
+  $ref: '../variants/qss/questionInteractivity.yml'

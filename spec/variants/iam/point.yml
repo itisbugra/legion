@@ -1,0 +1,10 @@
+type: object
+properties:
+  latitude:
+    type: number
+    format: float
+    description: Latitude of the coordinate.
+  longitude:
+    type: number
+    format: float
+    description: Longitude of the coordinate.

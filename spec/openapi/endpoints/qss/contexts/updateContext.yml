@@ -1,0 +1,116 @@
+summary: Patch an existing question context with identifier
+description: |
+  Patches the question context with given identifier by provided values.
+tags:
+  - 'Service: Questionbase'
+  - 'Resource: Question contexts'
+  - 'Stability: 0 - Unavailable'
+operationId: updateContext
+security:
+  - OAuth2:
+    - manageQuestionContexts
+parameters:
+  - in: header
+    name: Accept-Language
+    description: |
+      The locale of the localizable response elements, according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+      default: en-US
+    example: en-US, en;q=0.9, *;q=0.5
+    required: true
+  - in: header
+    name: Accept-Charset
+    description: |
+      The charset of the response body according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+      default: utf-8
+    example: utf-8, iso-8859-1;q=0.5, *;q=0.1
+    required: true
+  - in: path
+    name: contextId
+    description: |
+      The identifier of the context.
+    schema:
+      type: integer
+    example: 0
+    required: true
+requestBody:
+  description: |
+    The new metadata information for the context.
+  required: true
+  content:
+    application/json; charset=utf-8:
+      schema:
+        type: object
+        required:
+          - name
+        properties:
+          name:
+            type: string
+            description: |
+              Default name of the context. Will be shown if no localizable
+              entry is available to the client.
+            example: Scholastic Aptitude Test
+            minLength: 1
+          description:
+            type: string
+            description: |
+              Default description of the context, supports
+              [CommonMark](https://commonmark.org/) to enable rich text.
+              Will be shown if no localizable entry is available to the client.
+            example: |
+              National Curriculum assessment usually refers to the statutory
+              assessments carried out in primary schools in England,
+              colloquially known as standard attainment tests (SATs).
+              The assessments are made up of a combination of testing and
+              teacher assessment judgements, and are used in all
+              government-funded primary schools in England to assess the
+              attainment of pupils against the programmes of study of the
+              National Curriculum at the end of Key Stages 1 and 2, when most
+              pupils are aged 7 and 11 respectively. Until 2008, assessments
+              were also required at the end of Key Stage 3 (14-year-olds)
+              in secondary schools.
+
+              > Source: [Wikipedia](https://en.wikipedia.org/wiki/National_Curriculum_assessment)
+            minLength: 1
+          short_name:
+            type: string
+            description: |
+              Short name for the context in native locale.
+
+              *Currently, this field does not enforce any casing, however
+              forward changes in the API may do so.*
+            example: SAT
+            minLength: 1
+          visible:
+            type: boolean
+            description: Specifies visibility of the context to the platform users.
+            default: false
+responses:
+  '200':
+    description: The context has been updated.
+    headers:
+      Location:
+        schema:
+          type: string
+        description: The location for the context updated.
+        example: /qss/contexts/1
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: Identifier of the context.
+              example: 1
+              minimum: 0
+  '422':
+    description: |
+      TODO...
+    content:
+      $ref: '../../../../variants/common/error.yml#/content'

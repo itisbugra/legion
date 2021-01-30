@@ -1,0 +1,32 @@
+#!/bin/bash
+
+BUILD_FOLDER="build"
+
+# Abort the shell script execution if anything returns non-zero (pipes included)
+set -e
+set -o pipefail
+
+if ! command -v json-refs 2&> /dev/null; then
+  if ! command -v npm 2&> /dev/null; then
+    echo "npm is missing, you can install from https://nodejs.org/en/download/"
+
+    exit 11
+  fi
+
+  echo "Installing json-refs..."
+  npm i -g json-refs > /dev/null
+fi
+
+echo "Removing build directory."
+rm -fr $BUILD_FOLDER
+
+echo "Creating a new build directory."
+mkdir $BUILD_FOLDER
+
+echo "Resolving cross-references for HTTP API."
+json-refs resolve -y http.yml > $BUILD_FOLDER/http.yml
+
+echo "Resolving cross-references for Streaming API."
+json-refs resolve -y ws.yml > $BUILD_FOLDER/ws.yml
+
+echo "Build completed."

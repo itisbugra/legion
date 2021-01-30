@@ -1,0 +1,52 @@
+summary: Show the category with given identifier.
+description: |
+  Retrieves the information about the category with the specified identifier.
+operationId: showCategory
+tags:
+  - 'Service: Questionbase'
+  - 'Resource: Question categories'
+  - 'Stability: 0 - Unavailable'
+security:
+  - OAuth2:
+    - readQuestionCategories
+parameters:
+  - in: header
+    name: Accept-Language
+    description: |
+      The locale of the localizable response elements, according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+    example: en-US, en;q=0.9, *;q=0.5
+    required: true
+  - in: header
+    name: Accept-Charset
+    description: |
+      The charset of the response body according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+    example: utf-8, iso-8859-1;q=0.5, *;q=0.1
+    required: true
+  - in: path
+    name: categoryId
+    description: |
+      The identifier of the category.
+    schema:
+      type: integer
+    example: 0
+    required: true
+responses:
+  '200':
+    description: The category object, if it exists.
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: string
+  '404':
+    description: |
+      The category with given identifier could not be found.
+    content:
+      $ref: '../../../../variants/common/error.yml#/content'

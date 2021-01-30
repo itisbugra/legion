@@ -1,0 +1,97 @@
+summary: Register a new user
+description: |
+  Registers a new user to the platform with given credentials.
+operationId: signUp
+tags:
+  - 'Service: Identity & Access Management'
+  - 'Resource: Users'
+  - 'Stability: 0 - Unavailable'
+parameters:
+  - in: header
+    name: Accept-Language
+    description: |
+      The locale of the localizable response elements, according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+      default: en-US
+    example: en-US, en;q=0.9, *;q=0.5
+    required: true
+  - in: header
+    name: Accept-Charset
+    description: |
+      The charset of the response body according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+      default: utf-8
+    example: utf-8, iso-8859-1;q=0.5, *;q=0.1
+    required: true
+requestBody:
+  description: |
+    The credential information for the new user.
+  required: true
+  content:
+    application/json; charset=utf-8:
+      schema:
+        type: object
+        required:
+          - email
+          - password_hash
+          - hash_algorithm
+        properties:
+          email:
+            type: string
+            format: email
+            description: E-mail address of the new user.
+            example: example@mail.com
+            minLength: 3
+          password_hash:
+            type: string
+            description: Password hash of the new user.
+            example: 5043c660adbc89189e1903580a3fc3d9a16801587ebc8fe9637748ea2acdf4f8e3a5f500b1329ac9dd6c13bcbfa7656b4713acf5517177b8076d2df9fa1eeb0d
+          hash_algorithm:
+            type: string
+            description: Hashing algorithm being used in hash generation.
+            example: sha3_512
+            enum:
+              - sha3_224
+              - sha3_256
+              - sha3_384
+              - sha3_512
+responses:
+  '201':
+    description: The user has been created.
+    headers:
+      Location:
+        schema:
+          type: string
+        description: The location for the registered user.
+        example: /users/1
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: Identifier of the new user.
+              example: 1
+              minimum: 0
+  '409':
+    description: |
+      The user could not be registered due to a conflict.
+
+      Developers can assert that there is a user associated with the same e-mail
+      address, which denies any other registration further to the given e-mail
+      address.
+    content:
+      $ref: '../../../../variants/common/error.yml#/content'
+  '422':
+    description: |
+      The user could not be registered due to an invalid parameter.
+
+      This could be either due to e-mail address validation or incorrect hash
+      length given as a request body parameter.
+    content:
+      $ref: '../../../../variants/common/error.yml#/content'

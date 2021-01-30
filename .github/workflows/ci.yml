@@ -1,12 +1,12 @@
-name: Continuous integration
+name: CI
 
 on:
   schedule:
     - cron: "0 20 * * *"
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 jobs:
   test:

@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  title: Quessly HTTP API
+  description: >
+    ## API stability
+
+    We stage our APIs from numbers ranging from 0 to 6.
+
+    #### 0 - Unavailable
+
+    This feature was introduced very recently, and it is
+    not implemented in current versions, but may be available in future.
+
+    #### 1 - Experimental
+
+    This feature was introduced recently, and may change
+    or be removed in future versions. Please try it out and provide feedback.
+    If it addresses a use-case that is important to you, tell the core team.
+
+    #### 2 - Unstable
+
+    The API is in the process of settling, but has not yet had
+    sufficient real-world testing to be considered stable. Backwards-compatibility
+    will be maintained if reasonable.
+
+    #### 3 - Stable
+
+    The API has proven satisfactory, but cleanup in the underlying
+    code may cause minor changes. Backwards-compatibility is guaranteed.
+
+    #### 4 - Frozen
+
+    This API has been tested extensively in production and is
+    unlikely to ever have to change.
+
+    #### 5 - Locked
+
+    Unless serious bugs are found, this code will not ever
+    change. Please do not suggest changes in this area, they will be refused.
+
+    #### 6 - Deprecated
+
+    This feature is known to be problematic, and changes are
+    planned. Do not rely on it. Use of the feature may cause warnings. Backwards
+    compatibility should not be expected.
+  termsOfService: https://quessly.com/terms-of-service
+  contact:
+    name: 'Buğra Ekuklu'
+    url: https://github.com/Chatatata
+    email: ekuklu@icloud.com
+  license:
+    name: Proprietary
+    url: https://github.com/Quessly
+  version: 0.0.1-beta
+servers:
+  - url: https://api.quessly.com/v1
+    description: Main (production) server
+  - url: https://staging.api.quessly.com
+    description: Staging server
+tags:
+  $ref: './tags.yml'
+paths:
+  $ref: './openapi/paths.yml'
+components:
+  schemas:
+    $ref: './openapi/schemas.yml'
+  responses:
+    $ref: './openapi/responses.yml'
+  securitySchemes:
+    $ref: './openapi/securitySchemes.yml'

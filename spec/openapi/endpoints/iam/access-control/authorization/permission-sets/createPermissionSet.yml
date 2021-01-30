@@ -1,0 +1,36 @@
+summary: Create a new permission set
+description: |
+  Inserts a new permission set entry (e.g. store employee) for with
+  given data.
+operationId: createPermissionSet
+tags:
+  - 'Service: Identity & Access Management'
+  - 'Resource: Permission sets'
+  - 'Stability: 0 - Unavailable'
+requestBody:
+  description: Properties of the new permission set.
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Name of the new permission set.
+          description:
+            type: string
+            description: Description of the new permission set.
+          permission_ids:
+            type: array
+            description: Permission identifier list of the new permission set.
+            items:
+              type: integer
+              format: int64
+responses:
+  '201':
+    description: Permission set is saved succesfully.
+  '422':
+    description: |
+      The supplied permission set parameters is invalid, the action is
+      rolled back. *Refer to the body of the response.*

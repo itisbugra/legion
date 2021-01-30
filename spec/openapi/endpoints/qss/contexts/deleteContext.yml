@@ -1,0 +1,23 @@
+summary: Delete an existing question context with identifier
+description: |
+  Removes the question context with given identifier from the platform.
+tags:
+  - 'Service: Questionbase'
+  - 'Resource: Question contexts'
+  - 'Stability: 0 - Unavailable'
+operationId: deleteContext
+security:
+  - OAuth2:
+    - manageQuestionContexts
+parameters:
+  - in: path
+    name: contextId
+    description: |
+      The identifier of the context.
+    schema:
+      type: integer
+    example: 0
+    required: true
+responses:
+  '204':
+    description: Empty response.

@@ -1,0 +1,13 @@
+OAuth2:
+  type: oauth2
+  flows:
+    authorizationCode:
+      authorizationUrl: https://api.quessly.io/oauth/authorize
+      tokenUrl: https://api.quessly.io/oauth/token
+      scopes:
+        readUsers: Grants read access to user base
+        readQuestionContexts: Grants read access to question contexts
+        manageQuestionContexts: Grants write access to question contexts
+        readQuestionCategories: Grants read access to question categories
+        manageQuestionCategories: Grants write access to question categories
+        createQuestion: Grants access to create questions

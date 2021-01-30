@@ -1,0 +1,2 @@
+SingletonError:
+  $ref: '../variants/common/error.yml'

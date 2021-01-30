@@ -1,0 +1,40 @@
+summary: Pick a random question from the category pool
+description: |
+  Returns a location for the picked question.
+tags:
+  - 'Service: Questionbase'
+  - 'Resource: Questions'
+  - 'Stability: 0 - Unavailable'
+operationId: pickRandom
+security:
+  - OAuth2:
+    - readQuestion
+parameters:
+  - in: path
+    name: categoryId
+    description: |
+      The identifier of the category that question is pooled into.
+    required: true
+    schema:
+      type: integer
+    example: 1
+  - in: query
+    name: unique
+    description: |
+      If marked as a truthy value, the question to be dispatched will be
+      guaranteed to be fundamentally unique (per user).
+    schema:
+      type: boolean
+      default: false
+    required: false
+responses:
+  '204':
+    description: Empty response.
+    headers:
+      Location:
+        description: |
+          Location of the picked question.
+        schema:
+          type: string
+          format: url
+        example: https://api.quessly.com/v1/questionbase/categories/{categoryId}/questions

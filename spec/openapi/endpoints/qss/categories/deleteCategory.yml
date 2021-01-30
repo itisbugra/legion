@@ -1,0 +1,23 @@
+summary: Delete an existing question category with identifier
+description: |
+  Removes the question category with given identifier from the platform.
+tags:
+  - 'Service: Questionbase'
+  - 'Resource: Question categories'
+  - 'Stability: 0 - Unavailable'
+operationId: deleteCategory
+security:
+  - OAuth2:
+    - manageQuestionContexts
+parameters:
+  - in: path
+    name: categoryId
+    description: |
+      The identifier of the category.
+    schema:
+      type: integer
+    example: 0
+    required: true
+responses:
+  '204':
+    description: Empty response.

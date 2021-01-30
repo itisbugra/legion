@@ -1,0 +1,48 @@
+summary: Update a permission set
+description: |
+  Upserts given permissions and name to the existing permission set entry
+  of the permission set's given identifier.
+operationId: updatePermissionSet
+tags:
+  - 'Service: Identity & Access Management'
+  - 'Resource: Permission sets'
+  - 'Stability: 0 - Unavailable'
+parameters:
+  - name: permission_set_id
+    in: path
+    required: true
+    description: Identifier of the permission set.
+    schema:
+      type: integer
+      format: int64
+requestBody:
+  description: Properties of the permission set.
+  required: true
+  content:
+    application/json; charset=utf-8:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Name of the updating permission set.
+          description:
+            type: string
+            description: Description of the updating permission set.
+          permission_ids:
+            type: array
+            description: Permission identifier list of the permission set being updated.
+            items:
+              type: integer
+              format: int64
+responses:
+  '200':
+    description: Permission set is updated.
+  '400':
+    description: |
+      The supplied permission set is invalid, the action is rolled back.
+      *Refer to the body of the response.*
+  '404':
+    description: |
+      The permission set with given identifier could not be found. *Refer
+      to the body of the response.*

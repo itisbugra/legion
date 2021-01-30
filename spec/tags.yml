@@ -1,0 +1,24 @@
+- name: 'Stability: 0 - Unavailable'
+  description: |
+    APIs introduced very recently, and not implemented in current versions
+- name: 'Service: Core services'
+  description: |
+    Provides services for availability and reachability.
+- name: 'Service: Identity & Access Management'
+  description: |
+    Manages authentication and authorization of the users, and data retrieval
+- name: 'Service: Questionbase'
+  description: |
+    Manages the domain context for the central business logic
+- name: 'Resource: Users'
+  description: |
+    Represents the users of the platform
+- name: 'Resource: Questions'
+  description: |
+    Represents questions found in the pool
+- name: 'Resource: Question contexts'
+  description: |
+    Represents context of questions, mostly matched with an exam
+- name: 'Resource: Question categories'
+  description: |
+    Represents categories of the questions

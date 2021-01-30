@@ -1,0 +1,55 @@
+description: |
+  Represents an error occurred during execution of the operation.
+content:
+  application/vnd.error+json:
+    schema:
+      anyOf:
+        - type: object
+          required:
+            - message
+            - path
+            - _links
+          properties:
+            message:
+              type: string
+              description: The localized error message.
+              example: Validation failed.
+            'path':
+              type: string
+              description: The path of the endpoint that released the error.
+              example: /some-endpoint
+            logref:
+              type: string
+              description: The UUID-based log reference for the error.
+              example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+            _links:
+              type: object
+              description: An object containing hyper-reference to the resources.
+              example:
+                about:
+                  href: http://path.to/user/resource/1
+                describes:
+                  href": http://path.to/describes
+                help:
+                  href: http://path.to/help
+        - type: object
+          required:
+            - total
+            - _embedded
+          properties:
+            total:
+              type: integer
+              description: Number of errors.
+              example: 1
+            _embedded:
+              type: object
+              description: Contains the objects related to the embedded errors.
+              required:
+                - errors
+              properties:
+                errors:
+                  type: array
+                  description: Object containing embedded errors.
+                  example: []
+                  items:
+                    $ref: '#/content/application~1vnd.error+json/schema/anyOf/0'

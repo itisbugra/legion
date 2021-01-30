@@ -1,0 +1,158 @@
+summary: List activities of a user
+description: Retrieves a list of activities of user with given identifier.
+operationId: listUserActivities
+tags:
+  - 'Service: Identity & Access Management'
+  - 'Registry: Activities'
+  - 'Stability: 0 - Unavailable'
+parameters:
+  - name: user_id
+    in: path
+    required: true
+    description: Identifier of the platform user.
+    schema:
+      type: integer
+      format: int64
+  - name: passphrase_id
+    in: query
+    required: false
+    description: Identifier of the passphrase.
+    schema:
+      type: integer
+      format: int64
+  - name: from_timestamp
+    in: query
+    required: false
+    description: Filters the activities, starting from given ISO-8601 formatted timestamp.
+      are shown.
+    schema:
+      type: string
+  - name: to_timestamp
+    in: query
+    required: false
+    description: Filters the activities, created up to given ISO-8601 formatted timestamp.
+      are shown
+    schema:
+      type: string
+  - in: query
+    name: offset
+    schema:
+      type: integer
+      minimum: 0
+      default: 0
+    description: The number of items to skip before starting to collect the result set.
+  - in: query
+    name: limit
+    schema:
+      type: integer
+      minimum: 1
+      maximum: 20
+      default: 10
+    description: The numbers of items to return.
+  - in: header
+    name: Accept-Language
+    description: |
+      The locale of the localizable response elements, according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+    example: en-US, en;q=0.9, *;q=0.5
+    required: true
+  - in: header
+    name: Accept-Charset
+    description: |
+      The charset of the response body according to the
+      [RFC 7231, section 5.3.3: Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+    schema:
+      type: string
+    example: utf-8, iso-8859-1;q=0.5, *;q=0.1
+    required: true
+responses:
+  '200':
+    description: Response contains activities of user.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            activities:
+              type: array
+              items:
+                type: object
+                properties:
+                  device_blueprint:
+                    type: object
+                    properties:
+                      engine:
+                        type: string
+                        description: Name of the engine of the client.
+                      engine_version:
+                        type: string
+                        description: Version of the engine of the client.
+                      client_name:
+                        type: string
+                        description: Name of the client.
+                      client_type:
+                        type: string
+                        description: Type of the client.
+                      client_version:
+                        type: string
+                        description: Version of the client.
+                      device_brand:
+                        type: string
+                        description: Brand of the device.
+                      device_model:
+                        type: string
+                        description: Model of the device.
+                      device_type:
+                        type: string
+                        description: Type of the device.
+                      os_name:
+                        type: string
+                        description: Name of the operating system of device.
+                      os_platform:
+                        type: string
+                        description: Platform of the operating system of device.
+                      os_version:
+                        type: string
+                        description: Version of the operating system of device.
+                    description: Blueprint information of the device.
+                  latest_snapshot:
+                    type: object
+                    properties:
+                      ip_addr:
+                        type: string
+                        description: IP address of the last activity.
+                      country_name:
+                        type: string
+                        description: Name of the country user connected from.
+                      country_code:
+                        type: string
+                        description: Code of the country user connected from.
+                      ip_location:
+                        $ref: ../../../../../variants/iam/point.yml
+                      metro_code:
+                        type: string
+                        description: Metro code of the coordinate user connected from.
+                      region_code:
+                        type: string
+                        description: Code of the region of the area user connected from.
+                      region_name:
+                        type: string
+                        description: Name of the region of the area user connected from.
+                      time_zone:
+                        type: string
+                        description: Time zone of the user.
+                      zip_code:
+                        type: string
+                        description: Zip code of the coordinate.
+                      geo_location:
+                        $ref: ../../../../../variants/iam/point.yml
+                      inserted_at:
+                        type: string
+                        description: The timestamp of the activity.
+                    description: Last visible activity of the user.
+                  passphrase_id:
+                    type: integer
+                    format: int64
+                    description: Identifier of the passphrase.
