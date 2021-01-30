@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>Up and running — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="extras">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>Up and running</h1><p>Author: <a href="mailto:bekuklu@stcpay.com.sa">Buğra Ekuklu</a></p><h3 id="revision-history" class="section-heading">
+  <a href="#revision-history" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Revision history
+</h3>
+<ol><li>Initial draft, 18-06-14, <a href="mailto:bekuklu@stcpay.com.sa">Buğra Ekuklu</a>.</li></ol><hr class="thin"></hr><h2 id="prerequisites" class="section-heading">
+  <a href="#prerequisites" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Prerequisites
+</h2>
+<p>To run Legion, you need to have following applications running.</p><table><thead><tr><th style="text-align: left;">Name</th><th style="text-align: left;">Version</th><th style="text-align: left;">Docker image</th><th style="text-align: left;">Host</th><th style="text-align: left;">Additional information</th></tr></thead><tbody><tr><td style="text-align: left;">PostgreSQL</td><td style="text-align: left;">10.4</td><td style="text-align: left;"><a href="https://hub.docker.com/_/postgres/"><code class="inline">postgres</code></a></td><td style="text-align: left;"><code class="inline">postgres:5432</code></td><td style="text-align: left;"><a href="https://www.postgresql.org">Website</a></td></tr><tr><td style="text-align: left;">Freegeoip</td><td style="text-align: left;">3.5.0</td><td style="text-align: left;"><a href="https://hub.docker.com/r/fiorix/freegeoip/"><code class="inline">fiorix/freegeoip</code></a></td><td style="text-align: left;"><code class="inline">fiorix-freegeoip:8080</code></td><td style="text-align: left;"><a href="https://github.com/apilayer/freegeoip">Website</a></td></tr></tbody></table><p>Legion connects to those applications with respective hostnames.
+It is recommended to install those applications as Docker services.</p><h3 id="elixir-1-6-5-or-later" class="section-heading">
+  <a href="#elixir-1-6-5-or-later" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Elixir 1.6.5 or later
+</h3>
+<p>The application is written in Elixir, you might check out instructions here to install it.
+If you are installed Elixir and using it for the first time, you will need to install <a href="https://hex.pm" title="">Hex.pm</a> package manager.
+<a href="https://hex.pm" title="">Hex.pm</a> is necessary to install all of the application dependencies for the Legion.
+You may run the following command to install it, or update the local Mix task.</p><pre><code class="nohighlight makeup elixir"><span class="err">$</span><span class="w"> </span><span class="n">mix</span><span class="w"> </span><span class="n">local</span><span class="o">.</span><span class="n">hex</span><span class="w"> </span><span class="o">--</span><span class="n">force</span></code></pre><h3 id="erlang-20-or-later" class="section-heading">
+  <a href="#erlang-20-or-later" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Erlang 20 or later
+</h3>
+<p>Elixir code compiles to Erlang byte code, which runs on a virtual machine called <a href="https://en.wikipedia.org/wiki/BEAM_(Erlang_virtual_machine)" title="">BEAM</a>.
+Our application is also dependent to few Erlang libraries, compiled by the <a href="http://www.rebar3.org" title="">Rebar3</a> build tool.
+Similarly to installing <a href="https://hex.pm" title="">Hex.pm</a>, you might install local Mix task for <a href="http://www.rebar3.org" title="">Rebar3</a> with the following command.</p><pre><code class="nohighlight makeup elixir"><span class="err">$</span><span class="w"> </span><span class="n">mix</span><span class="w"> </span><span class="n">local</span><span class="o">.</span><span class="n">rebar</span><span class="w"> </span><span class="o">--</span><span class="n">force</span></code></pre><h2 id="installing-dependencies" class="section-heading">
+  <a href="#installing-dependencies" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Installing dependencies
+</h2>
+<p>Dependencies can be installed by using <a href="https://hex.pm" title="">Hex.pm</a> package manager and <a href="http://www.rebar3.org" title="">Rebar3</a> build tool.
+To install those tools and the dependencies of the application, you may run the following.</p><pre><code class="nohighlight makeup elixir"><span class="err">$</span><span class="w"> </span><span class="n">mix</span><span class="w"> </span><span class="n">deps</span><span class="o">.</span><span class="n">get</span></code></pre><h2 id="setting-up-the-application-environment" class="section-heading">
+  <a href="#setting-up-the-application-environment" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Setting up the application environment
+</h2>
+<p>Legion needs to execute certain actions in the environment to operate.
+Those actions contain database migrations, bootstrapping etc.
+You need to run setup script for once to run the application.</p><pre><code class="nohighlight makeup elixir"><span class="err">$</span><span class="w"> </span><span class="n">mix</span><span class="w"> </span><span class="n">legion</span><span class="o">.</span><span class="n">setup</span></code></pre><p>The command will create the database, insert the registrations, perform the migrations
+and finally download datasets for particular features (i.e. IP reverse geocoding).</p><h4>Setting up the PostgreSQL</h4><p>Legion handles migrations, and all other types of schema manipulations automatically.
+However, you might need to set the proper timezone in its configuration file, since our application uses naive date-times (timestamps without timezones) to persist server-side created time codes.</p><p>In <code class="inline">postgresql.conf</code>, you will need to change following entries to respective values to set the default timezone for the database to UTC.</p><pre><code class="nohighlight makeup elixir"><span class="n">log_timezone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;UTC&#39;</span><span class="w">
+</span><span class="n">timezone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;UTC&#39;</span></code></pre><p>Afterwards, you should restart the PostgreSQL server to make changes in effect.</p><h2 id="configuration" class="section-heading">
+  <a href="#configuration" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Configuration
+</h2>
+<p>Head over to <a href="configuration.html">configuration</a> to configure the behavior of the application, enable and disable particular features by simply editing respective configuration files.</p><h2 id="running" class="section-heading">
+  <a href="#running" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Running
+</h2>
+<p>Currently, the web interface is not implemented.
+Nevertheless, you can load the umbrella application to the <em>Interactive Elixir - IEx</em>.</p><pre><code class="nohighlight makeup elixir"><span class="err">$</span><span class="w"> </span><span class="n">iex</span><span class="w"> </span><span class="o">-</span><span class="nc">S</span><span class="w"> </span><span class="n">mix</span><span class="w"> </span><span class="n">run</span></code></pre><h2 id="tests" class="section-heading">
+  <a href="#tests" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Tests
+</h2>
+<p>The application codebase is extensively tested with unit tests using <a href="https://hexdocs.pm/ex_unit/ExUnit.html" title="">ExUnit</a>.</p><pre><code class="nohighlight makeup elixir"><span class="err">$</span><span class="w"> </span><span class="n">mix</span><span class="w"> </span><span class="n">test</span></code></pre><p>You can also measure code coverage by using <a href="https://hex.pm/packages/excoveralls" title="">ExCoveralls</a>.</p><pre><code class="nohighlight makeup elixir"><span class="err">$</span><span class="w"> </span><span class="nc">MIX_ENV</span><span class="o">=</span><span class="n">test</span><span class="w"> </span><span class="n">mix</span><span class="w"> </span><span class="n">coveralls</span><span class="w">        </span><span class="c1"># plain-text output</span><span class="w">
+</span><span class="err">$</span><span class="w"> </span><span class="nc">MIX_ENV</span><span class="o">=</span><span class="n">test</span><span class="w"> </span><span class="n">mix</span><span class="w"> </span><span class="n">coveralls</span><span class="o">.</span><span class="n">html</span><span class="w">   </span><span class="c1"># HTML output</span></code></pre><p>Or, you may use the convenience command, which behaves identical to the former command allowing you to get plain-text coverage information.</p><pre><code class="nohighlight makeup elixir"><span class="err">$</span><span class="w"> </span><span class="n">mix</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="o">--</span><span class="n">cover</span></code></pre>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

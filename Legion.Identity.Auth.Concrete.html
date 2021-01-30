@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>Legion.Identity.Auth.Concrete — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+Legion.Identity.Auth.Concrete <small class="app-vsn">(legion vdev)</small>
+
+          <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/auth/concrete/concrete.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Functions for performing concrete authentication.</p>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#generate_passphrase/4">generate_passphrase(username, password_hash, ip_addr, opts \\ [])</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Performs concrete authentication for the user with given username,
+and client-side produced hash. Note that password <em>hash</em> is not
+password <em>digest</em>, where digest is a time-variant, salted hash of
+the client-side produced hash.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#register_internal_user/2">register_internal_user(username, password_hash)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Registers an internal user with given username and password hash.</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="generate_passphrase/4">
+
+    <span id="generate_passphrase/3"></span>
+
+  <div class="detail-header">
+    <a href="#generate_passphrase/4" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">generate_passphrase(username, password_hash, ip_addr, opts \\ [])</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/auth/concrete/concrete.ex#L151" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>generate_passphrase(
+  <a href="Legion.Identity.Information.Registration.html#t:username/0">Legion.Identity.Information.Registration.username</a>(),
+  <a href="Legion.Identity.Auth.Algorithm.Keccak.html#t:hash/0">Legion.Identity.Auth.Algorithm.Keccak.hash</a>(),
+  <a href="Legion.Networking.INET.html#t:t/0">Legion.Networking.INET.t</a>(),
+  <a href="https://hexdocs.pm/elixir/Keyword.html#t:t/0">Keyword.t</a>()
+) ::
+  {:ok, :access, <a href="Legion.Identity.Auth.Abstract.Token.html#t:t/0">Legion.Identity.Auth.Abstract.Token.t</a>()}
+  | {:ok, :require, <a href="Legion.Identity.Auth.Concrete.Passkey.html#t:t/0">Legion.Identity.Auth.Concrete.Passkey.t</a>()}
+  | {:ok, :advance, Advance.t()}
+  | {:error, :no_user_verify}
+  | {:error, :unsupported_scheme}
+  | {:error, :wrong_password}
+  | {:error, :maximum_passphrases_exceeded}
+  | {:error, <a href="Legion.Networking.INET.html#t:error_type/0">Legion.Networking.INET.error_type</a>()}</pre>
+
+      </div>
+
+<p>Performs concrete authentication for the user with given username,
+and client-side produced hash. Note that password <em>hash</em> is not
+password <em>digest</em>, where digest is a time-variant, salted hash of
+the client-side produced hash.</p><h2 id="generate_passphrase/4-options" class="section-heading">
+  <a href="#generate_passphrase/4-options" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Options
+</h2>
+<ul><li><code class="inline">:one_shot</code>: If <code class="inline">true</code>, the authentication will be fallthrough,
+it will not generate any passphrases, but return a token without
+requiring any further abstract authentication. This is useful
+when user does not need to store the passphrase in the
+authenticating device. The lifetime of the token is determined
+seperately from the regular abstract authentication flow.
+Defaults to <code class="inline">false</code>.</li></ul><h2 id="generate_passphrase/4-return-types" class="section-heading">
+  <a href="#generate_passphrase/4-return-types" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Return types
+</h2>
+<p>With a valid digest for the user, this function should either
+return a</p><ul><li><p><code class="inline">{:ok, :require, passkey}</code> tuple containing the passkey which
+should be transferred to the client-side device to be persisted on
+its secure storage, or</p></li><li><p><code class="inline">{:ok, :access, jwt}</code> tuple containing the JSON Web Token
+<a href="https://tools.ietf.org/html/rfc7519" title=""><em>(RFC 7159)</em></a> to perform stealth authentication directly, or</p></li><li><p><code class="inline">{:ok, :advance, advance_artifact}</code> tuple containing the artifact
+information for proceeding to the next mandatory step of users
+preferred multi-factor-authentication method.</p></li></ul><p>In such circumstances, these errors can also be returned from the
+function:</p><ul><li><code class="inline">{:error, :no_user_verify}</code>: User cannot be found with given
+username.</li><li><code class="inline">{:error, :unsupported_scheme}</code>: The authentication scheme
+of the user is not supported (in implementation). This is
+subject to change without a notice on further releases and
+left here for the regression of provisioning services.</li><li><code class="inline">{:error, :wrong_password_hash}</code>: The password hash is wrong.</li><li><code class="inline">{:error, :maximum_passphrases_exceeded}</code>: The number of the
+passphrases (5) are exceeded.
+User might either reset his/her password, authentication will
+not proceed.</li><li><code class="inline">{:error, :bad_host, :reserve_reason}</code>: The IP address provided
+is reserved by IETF (IANA).</li><li><code class="inline">{:error, :blacklist, &quot;reason&quot;}</code>: The IP address provided is
+blacklisted by server authority.</li></ul><h2 id="generate_passphrase/4-applied-configuration-values" class="section-heading">
+  <a href="#generate_passphrase/4-applied-configuration-values" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Applied configuration values
+</h2>
+<p>If <code class="inline">:one_shot</code> option is enabled, the function takes
+<code class="inline">Legion.Identity.Auth.Concrete.JOSE.extended_lifetime</code>
+configuration value to provide an expiration time to the token
+issuer.</p>
+  </section>
+</section>
+<section class="detail" id="register_internal_user/2">
+
+  <div class="detail-header">
+    <a href="#register_internal_user/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">register_internal_user(username, password_hash)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/auth/concrete/concrete.ex#L32" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>register_internal_user(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) ::
+  {:ok, <a href="Legion.Identity.Information.Registration.html#t:id/0">Legion.Identity.Information.Registration.id</a>(),
+   <a href="Legion.Identity.Information.Registration.html#t:username/0">Legion.Identity.Information.Registration.username</a>()}
+  | {:error, :already_registered}</pre>
+
+      </div>
+
+<p>Registers an internal user with given username and password hash.</p><h2 id="register_internal_user/2-caveats" class="section-heading">
+  <a href="#register_internal_user/2-caveats" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Caveats
+</h2>
+<p>The new user will have the insecure authentication scheme set initially,
+client-side implementations are expected to ask whether user prefers
+another authentication scheme or not at the time of the completion of this
+action.</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

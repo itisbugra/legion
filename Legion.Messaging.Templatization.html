@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>Legion.Messaging.Templatization — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+Legion.Messaging.Templatization <small class="app-vsn">(legion vdev)</small>
+
+          <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/templatization/templatization.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Functions for templatization of parametric messages.</p><p>A message can be parametrized using a supported templating language (i.e. <em>Liquid</em>).
+Parameterized messages can be sent to multiple platform users, with variadic subjects and bodies.
+Recipients of a templated message are enumerated over the message subject and body.
+The parameters for a certain user are injected during sending a message.</p><p>Templatized messages can be sent using any messaging medium, same rules available for messaging
+apply for the templatized messages.</p><h2 id="module-creating-a-message-template" class="section-heading">
+  <a href="#module-creating-a-message-template" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Creating a message template
+</h2>
+<p>Assume that we want to create an email template to send a terms of conditions change notification
+to the users.</p><pre><code class="nohighlight makeup elixir"><span class="n">subject_template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  Changes in Terms of Conditions by {{ date }}
+&quot;&quot;&quot;</span><span class="w">
+
+</span><span class="n">body_template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+  &lt;!doctype html&gt;
+  &lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;{{ subject }}&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+      &lt;h6&gt;Dear, {{ recipient.name }}&lt;/h6&gt;
+      &lt;p&gt;Our Terms of Conditions are changed.&lt;/p&gt;
+    &lt;/body&gt;
+  &lt;/html&gt;
+&quot;&quot;&quot;</span><span class="w">
+
+</span><span class="p" data-group-id="3853255177-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">template</span><span class="p" data-group-id="3853255177-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">template_from_string</span><span class="w"> </span><span class="n">owner</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;toc change&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">subject_template</span><span class="p">,</span><span class="w"> </span><span class="n">body_template</span><span class="p">,</span><span class="w"> </span><span class="ss">mediums</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3853255177-2">[</span><span class="ss">:mailing</span><span class="p" data-group-id="3853255177-2">]</span><span class="w">
+
+</span><span class="n">recipient_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3853255177-3">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p" data-group-id="3853255177-3">]</span><span class="w">
+
+</span><span class="p" data-group-id="3853255177-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p" data-group-id="3853255177-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">send_mail</span><span class="p" data-group-id="3853255177-5">(</span><span class="n">recipient_ids</span><span class="p">,</span><span class="w"> </span><span class="n">template</span><span class="p" data-group-id="3853255177-5">)</span></code></pre><p>Here, we are creating two template strings using <em>Liquid</em> templating language.
+The subject template uses the <code class="inline">data</code> attribute; which is a localized, human readable date format (i.e. <code class="inline">January 5, 2017</code>).
+The body template uses the subject attribute, which is the evaluated result of subject template.
+Finally, we define the available push methods for this particular template, here it is available for
+<em>mailing</em> medium.</p>
+        </section>
+
+
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

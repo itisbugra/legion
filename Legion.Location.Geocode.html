@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>Legion.Location.Geocode — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+Legion.Location.Geocode <small class="app-vsn">(legion vdev)</small>
+
+          <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/location/geocode.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Represents information about a location geocode. A geocode is a locational
+estimation of a location identified by a connection artifact or such.
+The data can be mostly used to analytic purposes, rather than transactional
+operations.</p>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:channel/0">channel()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Shows the method of the retrieval of geocode data.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents information about a location.</p></div>
+
+</div>
+
+  </div>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#new/0">new()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Returns a new empty geocode.</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types
+          </h1>
+          <div class="types-list">
+<section class="detail" id="t:channel/0">
+
+  <div class="detail-header">
+    <a href="#t:channel/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">channel()</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/location/geocode.ex#L30" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>channel() :: :inet | :gps</pre>
+
+      </div>
+
+<p>Shows the method of the retrieval of geocode data.</p>
+  </section>
+</section>
+<section class="detail" id="t:t/0">
+
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">t()</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/location/geocode.ex#L50" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>t() :: %Legion.Location.Geocode{
+  channel: <a href="#t:channel/0">channel</a>(),
+  country_code: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(),
+  country_name: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(),
+  geocoder: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(),
+  location: <a href="Legion.Location.Coordinate.html#t:t/0">Legion.Location.Coordinate.t</a>(),
+  meta: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(),
+  metro_code: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(),
+  region_code: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(),
+  region_name: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(),
+  time_zone: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(),
+  timestamp: <a href="https://hexdocs.pm/elixir/NaiveDateTime.html#t:t/0">NaiveDateTime.t</a>(),
+  zip_code: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()
+}</pre>
+
+      </div>
+
+<p>Represents information about a location.</p><h2 id="t:t/0-fields" class="section-heading">
+  <a href="#t:t/0-fields" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Fields
+</h2>
+<ul><li><code class="inline">:location</code>: Roughly estimated location for the geocode.</li><li><code class="inline">:country_name</code>: Name of the country, e.g. <code class="inline">&quot;Turkey&quot;</code>.</li><li><code class="inline">:country_code</code>: Code of the country, e.g. <code class="inline">&quot;TR&quot;</code>.</li><li><code class="inline">:metro_code</code>: Metro code.</li><li><code class="inline">:region_code</code>: Code of the region, e.g. <code class="inline">&quot;34&quot;</code>.</li><li><code class="inline">:region_name</code>: Name of the region, e.g. <code class="inline">&quot;Istanbul&quot;</code>.</li><li><code class="inline">:time_zone</code>: Time zone of the location, e.g. <code class="inline">&quot;Europe/Istanbul&quot;</code>.</li><li><code class="inline">:zip_code</code>: Zip code of the location, e.g. <code class="inline">&quot;34134&quot;</code>.</li><li><code class="inline">:geocoder</code>: The toolchain used to create the geocode.</li><li><code class="inline">:channel</code>: The channel used as a metaartifact of the geocode.</li><li><code class="inline">:meta</code>: Additional metadata given by the geocoder.</li><li><code class="inline">:timestamp</code>: The time of the geocoding lookup.</li></ul>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="new/0">
+
+  <div class="detail-header">
+    <a href="#new/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">new()</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/location/geocode.ex#L73" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Returns a new empty geocode.</p><h2 id="new/0-examples" class="section-heading">
+  <a href="#new/0-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Location.Geocode</span><span class="o">.</span><span class="n">new</span><span class="p" data-group-id="9703160421-1">(</span><span class="p" data-group-id="9703160421-1">)</span><span class="w">
+</span><span class="p" data-group-id="9703160421-2">%</span><span class="nc" data-group-id="9703160421-2">Legion.Location.Geocode</span><span class="p" data-group-id="9703160421-2">{</span><span class="ss">location</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">country_name</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">country_code</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">metro_code</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">region_code</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">region_name</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">time_zone</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">zip_code</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">geocoder</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">channel</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">meta</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9703160421-3">%{</span><span class="p" data-group-id="9703160421-3">}</span><span class="p">,</span><span class="w"> </span><span class="ss">timestamp</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p" data-group-id="9703160421-2">}</span></code></pre>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

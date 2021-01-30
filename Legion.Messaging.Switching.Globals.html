@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>Legion.Messaging.Switching.Globals — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+Legion.Messaging.Switching.Globals <small class="app-vsn">(legion vdev)</small>
+
+          <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Provides functions for altering/retrieving global switches to messaging.</p><p><strong>This module is NOT transaction-safe.</strong></p><h2 id="module-enabling-disabling-mediums" class="section-heading">
+  <a href="#module-enabling-disabling-mediums" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Enabling/disabling mediums
+</h2>
+<p>Suppose you need to disable the a medium globally. You might use <a href="#enable_medium/2"><code class="inline">enable_medium/2</code></a> and
+<a href="#disable_medium/2"><code class="inline">disable_medium/2</code></a> functions to alter the runtime configuration.</p><pre><code class="nohighlight makeup elixir"><span class="n">enable_medium</span><span class="p" data-group-id="1443875049-1">(</span><span class="n">some_user_or_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:apm</span><span class="p" data-group-id="1443875049-1">)</span><span class="w">
+</span><span class="n">disable_medium</span><span class="p" data-group-id="1443875049-2">(</span><span class="n">some_user_or_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:apm</span><span class="p" data-group-id="1443875049-2">)</span></code></pre><p>Or, rather you can use convenience macros if you <code class="inline">require</code> them in your module.</p><pre><code class="nohighlight makeup elixir"><span class="kn">require</span><span class="w"> </span><span class="nc">Legion.Messaging.Switching.Globals</span><span class="w">
+
+</span><span class="n">enable_apm_medium</span><span class="p" data-group-id="6700420577-1">(</span><span class="n">some_user_or_id</span><span class="p" data-group-id="6700420577-1">)</span><span class="w">
+</span><span class="n">disable_apm_medium</span><span class="p" data-group-id="6700420577-2">(</span><span class="n">some_user_or_id</span><span class="p" data-group-id="6700420577-2">)</span></code></pre><p>Notice that, the underlying implementation will not insert a new registry entry if value for the
+setting has not changed. Hence, calling those functions multiple times will not perform any write
+operation.</p><h2 id="module-redirecting-a-medium-to-another-medium" class="section-heading">
+  <a href="#module-redirecting-a-medium-to-another-medium" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Redirecting a medium to another medium
+</h2>
+<p>Sometimes you may want to redirect a messaging medium to another medium, probably due to cost
+reduction and integration maintenance.</p><p>You can redirect a medium to another medium with the following call.</p><pre><code class="nohighlight makeup elixir"><span class="n">redirect_medium</span><span class="p" data-group-id="3951070694-1">(</span><span class="n">some_user_or_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:mailing</span><span class="p">,</span><span class="w"> </span><span class="ss">:apm</span><span class="p">,</span><span class="w"> </span><span class="ss">for</span><span class="p">:</span><span class="w"> </span><span class="mi">3_600</span><span class="p" data-group-id="3951070694-1">)</span></code></pre><p>The above API call will redirect all mailing messages to APM medium.
+However, while sending a message, you might opt for restricting redirections on such operations.</p><pre><code class="nohighlight makeup elixir"><span class="n">send_sms_message</span><span class="p" data-group-id="0774321654-1">(</span><span class="n">some_user_or_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;this is the message&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">redirection</span><span class="p">:</span><span class="w"> </span><span class="ss">:restrict</span><span class="p" data-group-id="0774321654-1">)</span></code></pre><p>The message will not be sent to the user no matter what, what is more, it will throw an error to the user.</p><p>Some messages, like one-time-codes, should not be redirected to another medium.
+The user of the messaging API can also force the actual medium to be run instead of redirection.</p><pre><code class="nohighlight makeup elixir"><span class="n">send_sms_message</span><span class="p" data-group-id="3488957462-1">(</span><span class="n">some_user_or_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;some pretty otc&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">redirection</span><span class="p">:</span><span class="w"> </span><span class="ss">:ignore</span><span class="p" data-group-id="3488957462-1">)</span></code></pre><p>If there was a redirection, it will be ignored, although the same rules for enabling/disabling medium for the actual
+medium will be still applied.</p>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#cancel_redirection_for_medium/2">cancel_redirection_for_medium(user_or_id, medium)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Cancels redirection setting currently applied for specified medium.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#disable_apm_medium/1">disable_apm_medium(user_or_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Disables in-platform messaging medium.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#disable_mailing_medium/1">disable_mailing_medium(user_or_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Disables mailing medium.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#disable_medium/2">disable_medium(user_or_id, medium)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Disables given medium globally.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#disable_platform_medium/1">disable_platform_medium(user_or_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Disables in-platform messaging medium.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#disable_push_medium/1">disable_push_medium(user_or_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Disables push medium.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#disable_sms_medium/1">disable_sms_medium(user_or_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Disables SMS medium.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#enable_apm_medium/1">enable_apm_medium(user_or_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Enables APM medium.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#enable_mailing_medium/1">enable_mailing_medium(user_or_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Enables mailing medium.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#enable_medium/2">enable_medium(user_or_id, medium)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Enables given medium globally.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#enable_platform_medium/1">enable_platform_medium(user_or_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Enables platform medium.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#enable_push_medium/1">enable_push_medium(user_or_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Enables push medium.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#enable_sms_medium/1">enable_sms_medium(user_or_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Enables SMS medium.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#is_medium_enabled?/1">is_medium_enabled?(medium)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Returns a boolean value indicating if medium is enabled globally.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#is_medium_redirected?/1">is_medium_redirected?(medium)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Returns true if given medium is redirected currently, otherwise false.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#redirect_medium/4">redirect_medium(user_or_id, from, to, options \\ [])</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Redirects a medium to another medium.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#redirection_for_medium/2">redirection_for_medium(medium, timestamp \\ NaiveDateTime.utc_now())</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Returns the redirection medium for the medium in given timestamp, if it is redirected.
+Otherwise, returns <code class="inline">nil</code>.</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="cancel_redirection_for_medium/2">
+
+  <div class="detail-header">
+    <a href="#cancel_redirection_for_medium/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">cancel_redirection_for_medium(user_or_id, medium)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L276" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>cancel_redirection_for_medium(
+  <a href="Legion.Identity.Information.Registration.html#t:user_or_id/0">Legion.Identity.Information.Registration.user_or_id</a>(),
+  <a href="Legion.Messaging.Message.Medium.html#t:t/0">Legion.Messaging.Message.Medium.t</a>()
+) :: :ok | {:error, :no_entry} | {:error, :unavailable}</pre>
+
+      </div>
+
+<p>Cancels redirection setting currently applied for specified medium.</p><h2 id="cancel_redirection_for_medium/2-examples" class="section-heading">
+  <a href="#cancel_redirection_for_medium/2-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="nohighlight makeup elixir"><span class="n">redirect_medium</span><span class="p" data-group-id="0234078037-1">(</span><span class="n">user_or_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:apm</span><span class="p">,</span><span class="w"> </span><span class="ss">:mailing</span><span class="p">,</span><span class="w"> </span><span class="ss">for</span><span class="p">:</span><span class="w"> </span><span class="mi">3_600</span><span class="p" data-group-id="0234078037-1">)</span><span class="w"> </span><span class="c1"># redirects APM medium to mailing medium for an hour</span><span class="w">
+</span><span class="n">cancel_redirection_for_medium</span><span class="p" data-group-id="0234078037-2">(</span><span class="n">user_or_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:apm</span><span class="p" data-group-id="0234078037-2">)</span><span class="w"> </span><span class="c1"># all redirections for the APM medium are now cancelled</span></code></pre><p>See <a href="#redirect_medium/4"><code class="inline">redirect_medium/4</code></a> for making redirections.</p>
+  </section>
+</section>
+<section class="detail" id="disable_apm_medium/1">
+
+  <div class="detail-header">
+    <a href="#disable_apm_medium/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">disable_apm_medium(user_or_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L121" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(macro)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Disables in-platform messaging medium.</p><p>This macro curries the <a href="#disable_medium/2"><code class="inline">disable_medium/2</code></a> function with corresponding medium.</p>
+  </section>
+</section>
+<section class="detail" id="disable_mailing_medium/1">
+
+  <div class="detail-header">
+    <a href="#disable_mailing_medium/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">disable_mailing_medium(user_or_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L137" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(macro)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Disables mailing medium.</p><p>This macro curries the <a href="#disable_medium/2"><code class="inline">disable_medium/2</code></a> function with corresponding medium.</p>
+  </section>
+</section>
+<section class="detail" id="disable_medium/2">
+
+  <div class="detail-header">
+    <a href="#disable_medium/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">disable_medium(user_or_id, medium)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L171" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>disable_medium(
+  <a href="Legion.Identity.Information.Registration.html#t:user_or_id/0">Legion.Identity.Information.Registration.user_or_id</a>(),
+  <a href="Legion.Messaging.Message.Medium.html#t:t/0">Legion.Messaging.Message.Medium.t</a>()
+) :: :ok | :error</pre>
+
+      </div>
+
+<p>Disables given medium globally.</p>
+  </section>
+</section>
+<section class="detail" id="disable_platform_medium/1">
+
+  <div class="detail-header">
+    <a href="#disable_platform_medium/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">disable_platform_medium(user_or_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L153" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(macro)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Disables in-platform messaging medium.</p><p>This macro curries the <a href="#disable_medium/2"><code class="inline">disable_medium/2</code></a> function with corresponding medium.</p>
+  </section>
+</section>
+<section class="detail" id="disable_push_medium/1">
+
+  <div class="detail-header">
+    <a href="#disable_push_medium/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">disable_push_medium(user_or_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L129" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(macro)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Disables push medium.</p><p>This macro curries the <a href="#disable_medium/2"><code class="inline">disable_medium/2</code></a> function with corresponding medium.</p>
+  </section>
+</section>
+<section class="detail" id="disable_sms_medium/1">
+
+  <div class="detail-header">
+    <a href="#disable_sms_medium/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">disable_sms_medium(user_or_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L145" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(macro)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Disables SMS medium.</p><p>This macro curries the <a href="#disable_medium/2"><code class="inline">disable_medium/2</code></a> function with corresponding medium.</p>
+  </section>
+</section>
+<section class="detail" id="enable_apm_medium/1">
+
+  <div class="detail-header">
+    <a href="#enable_apm_medium/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">enable_apm_medium(user_or_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L81" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(macro)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Enables APM medium.</p><p>This macro curries the <a href="#enable_medium/2"><code class="inline">enable_medium/2</code></a> function with corresponding medium.</p>
+  </section>
+</section>
+<section class="detail" id="enable_mailing_medium/1">
+
+  <div class="detail-header">
+    <a href="#enable_mailing_medium/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">enable_mailing_medium(user_or_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L97" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(macro)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Enables mailing medium.</p><p>This macro curries the <a href="#enable_medium/2"><code class="inline">enable_medium/2</code></a> function with corresponding medium.</p>
+  </section>
+</section>
+<section class="detail" id="enable_medium/2">
+
+  <div class="detail-header">
+    <a href="#enable_medium/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">enable_medium(user_or_id, medium)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L162" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>enable_medium(
+  <a href="Legion.Identity.Information.Registration.html#t:user_or_id/0">Legion.Identity.Information.Registration.user_or_id</a>(),
+  <a href="Legion.Messaging.Message.Medium.html#t:t/0">Legion.Messaging.Message.Medium.t</a>()
+) :: :ok | :error</pre>
+
+      </div>
+
+<p>Enables given medium globally.</p>
+  </section>
+</section>
+<section class="detail" id="enable_platform_medium/1">
+
+  <div class="detail-header">
+    <a href="#enable_platform_medium/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">enable_platform_medium(user_or_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L113" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(macro)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Enables platform medium.</p><p>This macro curries the <a href="#enable_medium/2"><code class="inline">enable_medium/2</code></a> function with corresponding medium.</p>
+  </section>
+</section>
+<section class="detail" id="enable_push_medium/1">
+
+  <div class="detail-header">
+    <a href="#enable_push_medium/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">enable_push_medium(user_or_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L89" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(macro)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Enables push medium.</p><p>This macro curries the <a href="#enable_medium/2"><code class="inline">enable_medium/2</code></a> function with corresponding medium.</p>
+  </section>
+</section>
+<section class="detail" id="enable_sms_medium/1">
+
+  <div class="detail-header">
+    <a href="#enable_sms_medium/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">enable_sms_medium(user_or_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L105" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(macro)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Enables SMS medium.</p><p>This macro curries the <a href="#enable_medium/2"><code class="inline">enable_medium/2</code></a> function with corresponding medium.</p>
+  </section>
+</section>
+<section class="detail" id="is_medium_enabled?/1">
+
+  <div class="detail-header">
+    <a href="#is_medium_enabled?/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">is_medium_enabled?(medium)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L177" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Returns a boolean value indicating if medium is enabled globally.</p>
+  </section>
+</section>
+<section class="detail" id="is_medium_redirected?/1">
+
+  <div class="detail-header">
+    <a href="#is_medium_redirected?/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">is_medium_redirected?(medium)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L291" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>is_medium_redirected?(<a href="Legion.Messaging.Message.Medium.html#t:t/0">Legion.Messaging.Message.Medium.t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
+      </div>
+
+<p>Returns true if given medium is redirected currently, otherwise false.</p>
+  </section>
+</section>
+<section class="detail" id="redirect_medium/4">
+
+    <span id="redirect_medium/3"></span>
+
+  <div class="detail-header">
+    <a href="#redirect_medium/4" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">redirect_medium(user_or_id, from, to, options \\ [])</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L239" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>redirect_medium(
+  <a href="Legion.Identity.Information.Registration.html#t:user_or_id/0">Legion.Identity.Information.Registration.user_or_id</a>(),
+  <a href="Legion.Messaging.Message.Medium.html#t:t/0">Legion.Messaging.Message.Medium.t</a>(),
+  <a href="Legion.Messaging.Message.Medium.html#t:t/0">Legion.Messaging.Message.Medium.t</a>(),
+  <a href="https://hexdocs.pm/elixir/Keyword.html#t:t/0">Keyword.t</a>()
+) ::
+  :ok
+  | {:error, :invalid_duration}
+  | {:error, :invalid_deferral}
+  | {:error, :unavailable}</pre>
+
+      </div>
+
+<p>Redirects a medium to another medium.</p><h2 id="redirect_medium/4-examples" class="section-heading">
+  <a href="#redirect_medium/4-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="nohighlight makeup elixir"><span class="n">redirect_medium</span><span class="p" data-group-id="1051174787-1">(</span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:apm</span><span class="p">,</span><span class="w"> </span><span class="ss">:push</span><span class="p" data-group-id="1051174787-1">)</span><span class="w"> </span><span class="c1"># redirects APM medium to push medium</span><span class="w">
+</span><span class="n">redirect_medium</span><span class="p" data-group-id="1051174787-2">(</span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:apm</span><span class="p">,</span><span class="w"> </span><span class="ss">:platform</span><span class="p" data-group-id="1051174787-2">)</span><span class="w"> </span><span class="c1"># redirects APM medium to platform medium</span></code></pre><h2 id="redirect_medium/4-timed-redirections" class="section-heading">
+  <a href="#redirect_medium/4-timed-redirections" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Timed redirections
+</h2>
+<p>You may also redirect a medium to another medium for a given amount of time.</p><pre><code class="nohighlight makeup elixir"><span class="n">redirect_medium</span><span class="p" data-group-id="3044704781-1">(</span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:apm</span><span class="p">,</span><span class="w"> </span><span class="ss">:push</span><span class="p">,</span><span class="w"> </span><span class="ss">for</span><span class="p">:</span><span class="w"> </span><span class="mi">3_600</span><span class="p" data-group-id="3044704781-1">)</span><span class="w"> </span><span class="c1"># redirects APM medium to push medium for an hour</span></code></pre><h2 id="redirect_medium/4-deferring-redirections" class="section-heading">
+  <a href="#redirect_medium/4-deferring-redirections" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Deferring redirections
+</h2>
+<p>Redirections could be also deferred for a given amount of time.</p><pre><code class="nohighlight makeup elixir"><span class="n">redirect_medium</span><span class="p" data-group-id="9388798495-1">(</span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:apm</span><span class="p">,</span><span class="w"> </span><span class="ss">:push</span><span class="p">,</span><span class="w"> </span><span class="ss">after</span><span class="p">:</span><span class="w"> </span><span class="mi">3_600</span><span class="p" data-group-id="9388798495-1">)</span><span class="w"> </span><span class="c1"># redirects APM medium to push medium after an hour</span></code></pre><p>Redirections could be both deferred and timed.
+The following usage implies both applications.</p><pre><code class="nohighlight makeup elixir"><span class="n">redirect_medium</span><span class="p" data-group-id="2787594700-1">(</span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:apm</span><span class="p">,</span><span class="w"> </span><span class="ss">:push</span><span class="p">,</span><span class="w"> </span><span class="ss">after</span><span class="p">:</span><span class="w"> </span><span class="mi">3_600</span><span class="p">,</span><span class="w"> </span><span class="ss">for</span><span class="p">:</span><span class="w"> </span><span class="mi">6_400</span><span class="p" data-group-id="2787594700-1">)</span><span class="w"> </span><span class="c1"># same redirection, but active after an hour for two hours</span></code></pre><p>Note that redirections can override each other.
+The user interface for performing redirections should prompt whether the user is aware of overriding an existing redirection.</p><pre><code class="nohighlight makeup elixir"><span class="n">redirect_medium</span><span class="p" data-group-id="4421711178-1">(</span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:apm</span><span class="p">,</span><span class="w"> </span><span class="ss">:push</span><span class="p" data-group-id="4421711178-1">)</span><span class="w"> </span><span class="c1"># redirects APM medium to push medium</span><span class="w">
+</span><span class="n">redirect_medium</span><span class="p" data-group-id="4421711178-2">(</span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:apm</span><span class="p">,</span><span class="w"> </span><span class="ss">:mailing</span><span class="p">,</span><span class="w"> </span><span class="ss">for</span><span class="p">:</span><span class="w"> </span><span class="mi">3_600</span><span class="p" data-group-id="4421711178-2">)</span><span class="w"> </span><span class="c1"># redirects APM medium to mailing medium for an hour, afterwards push redirection will be active until further cancellation</span></code></pre><p>See <code class="inline">cancel_redirection_for_medium/3</code> for cancelling redirections.</p>
+  </section>
+</section>
+<section class="detail" id="redirection_for_medium/2">
+
+    <span id="redirection_for_medium/1"></span>
+
+  <div class="detail-header">
+    <a href="#redirection_for_medium/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">redirection_for_medium(medium, timestamp \\ NaiveDateTime.utc_now())</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/switching/globals.ex#L301" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>redirection_for_medium(<a href="Legion.Messaging.Message.Medium.html#t:t/0">Legion.Messaging.Message.Medium.t</a>(), <a href="https://hexdocs.pm/elixir/NaiveDateTime.html#t:t/0">NaiveDateTime.t</a>()) ::
+  <a href="Legion.Messaging.Message.Medium.html#t:t/0">Legion.Messaging.Message.Medium.t</a>() | nil</pre>
+
+      </div>
+
+<p>Returns the redirection medium for the medium in given timestamp, if it is redirected.
+Otherwise, returns <code class="inline">nil</code>.</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

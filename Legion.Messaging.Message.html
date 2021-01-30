@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>Legion.Messaging.Message — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+Legion.Messaging.Message <small class="app-vsn">(legion vdev)</small>
+
+          <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/message.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Represents a message requested to be sent to user(s) using a messaging medium.</p>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:medium/0">medium()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>A medium to send the message by.</p></div>
+
+</div>
+
+  </div>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#changeset/2">changeset(struct, params \\ %{})</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Validates changeset with given params.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#is_medium/1">is_medium(term)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Returns <code class="inline">true</code> if <code class="inline">term</code> is a medium atom (i.e. <code class="inline">:apm</code>, <code class="inline">:push</code>).</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types
+          </h1>
+          <div class="types-list">
+<section class="detail" id="t:medium/0">
+
+  <div class="detail-header">
+    <a href="#t:medium/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">medium()</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/message.ex#L46" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>medium() :: :apm | :push | :mailing | :sms | :platform</pre>
+
+      </div>
+
+<p>A medium to send the message by.</p><h2 id="t:medium/0-values" class="section-heading">
+  <a href="#t:medium/0-values" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Values
+</h2>
+<ul><li><code class="inline">:apm</code>: Platform-native push services (i.e. Apple Push Notification Service - APNS, Google Cloud
+Messaging - GCM, Microsoft Push Notification Service - MPNS, Windows Push Notification Services -
+WPN). See <code class="inline">Legion.Messaging.Medium.APM</code> for more information.</li><li><code class="inline">:push</code>: Pseudo-push using local push APIs of devices. Might not be supported on all devices.</li><li><code class="inline">:mailing</code>: Sends email using email services.</li><li><code class="inline">:sms</code>: Push using Smart Message Service (SMS).</li><li><code class="inline">:platform</code>: Sends message using real-time messaging system.</li></ul>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="changeset/2">
+
+    <span id="changeset/1"></span>
+
+  <div class="detail-header">
+    <a href="#changeset/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">changeset(struct, params \\ %{})</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/message.ex#L147" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Validates changeset with given params.</p><h2 id="changeset/2-caveats" class="section-heading">
+  <a href="#changeset/2-caveats" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Caveats
+</h2>
+<ul><li><code class="inline">:body</code> and <code class="inline">:medium</code> fields are required to build a valid changeset.</li><li><code class="inline">:subject</code> is required if selected <code class="inline">:medium</code> is not <code class="inline">:sms</code>.</li></ul>
+  </section>
+</section>
+<section class="detail" id="is_medium/1">
+
+  <div class="detail-header">
+    <a href="#is_medium/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">is_medium(term)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/messaging/message.ex#L71" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(macro)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Returns <code class="inline">true</code> if <code class="inline">term</code> is a medium atom (i.e. <code class="inline">:apm</code>, <code class="inline">:push</code>).</p><p>Allowed in guard tests. Inlined by the compiler.</p><h2 id="is_medium/1-examples" class="section-heading">
+  <a href="#is_medium/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Messaging.Message</span><span class="o">.</span><span class="n">is_medium</span><span class="p" data-group-id="9465925458-1">(</span><span class="ss">:apm</span><span class="p" data-group-id="9465925458-1">)</span><span class="w">
+</span><span class="no">true</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Messaging.Message</span><span class="o">.</span><span class="n">is_medium</span><span class="p" data-group-id="9465925458-2">(</span><span class="ss">:platform</span><span class="p" data-group-id="9465925458-2">)</span><span class="w">
+</span><span class="no">true</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Messaging.Message</span><span class="o">.</span><span class="n">is_medium</span><span class="p" data-group-id="9465925458-3">(</span><span class="p" data-group-id="9465925458-4">&lt;&lt;</span><span class="mi">1</span><span class="o">::</span><span class="mi">3</span><span class="p" data-group-id="9465925458-4">&gt;&gt;</span><span class="p" data-group-id="9465925458-3">)</span><span class="w">
+</span><span class="no">false</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Messaging.Message</span><span class="o">.</span><span class="n">is_medium</span><span class="p" data-group-id="9465925458-5">(</span><span class="s">&quot;apm&quot;</span><span class="p" data-group-id="9465925458-5">)</span><span class="w">
+</span><span class="no">false</span></code></pre>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

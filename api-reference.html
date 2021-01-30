@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>API Reference — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="extras">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+  API Reference <small class="app-vsn">legion vdev</small>
+</h1>
+
+  <section class="details-list">
+    <h2 id="modules" class="section-heading">
+  <a href="#modules" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Modules
+</h2>
+
+    <div class="summary">
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.html">Legion</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Legion keeps the contexts that define your domain
+and business logic.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Application.html">Legion.Application</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The Legion Application Service.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.html">Legion.HTTP</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The entrypoint for defining your web interface, such
+as controllers, views, channels and so on.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.Application.html">Legion.HTTP.Application</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The HTTP web server interface application service.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.Common.ChangesetView.html">Legion.HTTP.Common.ChangesetView</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides a common error traverser for displaying errors found in changesets.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.Common.FallbackController.html">Legion.HTTP.Common.FallbackController</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Handles fallback actions of controllers.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.Endpoint.html">Legion.HTTP.Endpoint</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.ErrorHelpers.html">Legion.HTTP.ErrorHelpers</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Conveniences for translating and building error messages.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.ErrorView.html">Legion.HTTP.ErrorView</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.Gettext.html">Legion.HTTP.Gettext</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>A module providing Internationalization with a gettext-based API.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.Identity.Auth.SignIn.InstantiationController.html">Legion.HTTP.Identity.Auth.SignIn.InstantiationController</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Starts the authentication process of a user with an HTTP interface.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.Identity.Auth.SignInView.html">Legion.HTTP.Identity.Auth.SignInView</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Renders responses and errors for the sign in process.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.Identity.Auth.SignUp.RegistrationController.html">Legion.HTTP.Identity.Auth.SignUp.RegistrationController</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Registers users from internal API or external services.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.Identity.Auth.SignUp.RegistrationView.html">Legion.HTTP.Identity.Auth.SignUp.RegistrationView</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Renders a map with given registration info.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.Nonclassified.HealthCheckController.html">Legion.HTTP.Nonclassified.HealthCheckController</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides a health check route.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.Router.html">Legion.HTTP.Router</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.Router.Helpers.html">Legion.HTTP.Router.Helpers</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Module with named helpers generated from Legion.HTTP.Router.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.HTTP.Utils.DateConversion.html">Legion.HTTP.Utils.DateConversion</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Converts native timestamp units to endpoint-to-endpoint compatible format.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.html">Legion.Identity.Auth</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Delegates contextual functions to use the authentication/authorization APIs.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Abstract.html">Legion.Identity.Auth.Abstract</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Functions for performing abstract (stealth) authentication.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Abstract.Token.html">Legion.Identity.Auth.Abstract.Token</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Defines credential-based authentication functions in order to authenticate users.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.AccessControl.ControllerAction.html">Legion.Identity.Auth.AccessControl.ControllerAction</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.AccessControl.Permission.html">Legion.Identity.Auth.AccessControl.Permission</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Permissions.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.AccessControl.PermissionSet.html">Legion.Identity.Auth.AccessControl.PermissionSet</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Contains a group of permissions to enhance ease of usage.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.AccessControl.PermissionSetCache.html">Legion.Identity.Auth.AccessControl.PermissionSetCache</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Caching-related functions for permission sets of users.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.AccessControl.PermissionSetCacheEntry.html">Legion.Identity.Auth.AccessControl.PermissionSetCacheEntry</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents an entity for the permission set cache.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.AccessControl.PermissionSetGrant.html">Legion.Identity.Auth.AccessControl.PermissionSetGrant</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents grant of a permission set to a user.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.AccessControl.PermissionSetGrant.Invalidation.html">Legion.Identity.Auth.AccessControl.PermissionSetGrant.Invalidation</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents an invalidation order of permission set grant.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Algorithm.Digestion.html">Legion.Identity.Auth.Algorithm.Digestion</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Algorithm.Keccak.html">Legion.Identity.Auth.Algorithm.Keccak</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides functions for hashing data with FIPS-202 compliant Keccak variants.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Concrete.html">Legion.Identity.Auth.Concrete</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Functions for performing concrete authentication.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Concrete.ActivePassphrase.html">Legion.Identity.Auth.Concrete.ActivePassphrase</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>A view for the passphrases showing currently active entries.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Concrete.Activity.html">Legion.Identity.Auth.Concrete.Activity</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Activities represent token generation from passphrases.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Concrete.Passkey.html">Legion.Identity.Auth.Concrete.Passkey</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Property representing the secure data of an access token.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Concrete.Passphrase.html">Legion.Identity.Auth.Concrete.Passphrase</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Passphrase (a.k.a. access token) is an artifact of a successful concrete authentication.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Concrete.Passphrase.Invalidation.html">Legion.Identity.Auth.Concrete.Passphrase.Invalidation</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Manual invalidation of passphrases.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Concrete.Scheme.html">Legion.Identity.Auth.Concrete.Scheme</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Concrete.TFAHandle.html">Legion.Identity.Auth.Concrete.TFAHandle</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Two-factor authentication handles for concrete authentication.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Insecure.AuthInfo.html">Legion.Identity.Auth.Insecure.AuthInfo</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>A struct for processing authentication process during insecure challange.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Insecure.Blacklist.html">Legion.Identity.Auth.Insecure.Blacklist</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides functionality for blacklisting password hashes.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Insecure.Blacklist.Entry.html">Legion.Identity.Auth.Insecure.Blacklist.Entry</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents a password blacklisting entry.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.Insecure.Pair.html">Legion.Identity.Auth.Insecure.Pair</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents a credential pair to perform insecure authentication in
+concrete authentication stage.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Auth.TFA.OneTimeCode.html">Legion.Identity.Auth.TFA.OneTimeCode</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>One time codes allow users to enable two-factor authentication (2FA). One may decide to use
+OTCs with SMS or e-mail. OTC is server-generated, and it cannot be resembled by any client.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Information.html">Legion.Identity.Information</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Delegates contextual functions to use the identity APIs.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Information.AddressBook.html">Legion.Identity.Information.AddressBook</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Functions for using the address book.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Information.AddressBook.Address.html">Legion.Identity.Information.AddressBook.Address</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents an entry found in address book.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Information.AddressBook.AddressType.html">Legion.Identity.Information.AddressBook.AddressType</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Information.Gender.html">Legion.Identity.Information.Gender</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Information.Nationality.html">Legion.Identity.Information.Nationality</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>ISO-3116 standardized nationalities for the users of the application.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Information.PersonalData.html">Legion.Identity.Information.PersonalData</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents personal information of the user.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Information.Political.Country.html">Legion.Identity.Information.Political.Country</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents countries in the world. This model is pregenerated during setup of the application.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Information.Political.IntermediateRegion.html">Legion.Identity.Information.Political.IntermediateRegion</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents groups of countries found in specific subregions.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Information.Political.Region.html">Legion.Identity.Information.Political.Region</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents political regions of the world.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Information.Political.Subregion.html">Legion.Identity.Information.Political.Subregion</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents subparts of political regions.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Information.Registration.html">Legion.Identity.Information.Registration</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents registrations of users.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Information.User.html">Legion.Identity.Information.User</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides repository functionality for the users.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Telephony.html">Legion.Identity.Telephony</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Telephony.PhoneNumber.html">Legion.Identity.Telephony.PhoneNumber</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents a phone number entry of a user.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Telephony.PhoneNumber.FiniteStateMachine.html">Legion.Identity.Telephony.PhoneNumber.FiniteStateMachine</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Manages phone numbers of users, performs redirections of phone calls.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Telephony.PhoneNumber.NeglectionTrait.html">Legion.Identity.Telephony.PhoneNumber.NeglectionTrait</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Marks a phone number as neglected upon grant.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Telephony.PhoneNumber.PrioritizationTrait.html">Legion.Identity.Telephony.PhoneNumber.PrioritizationTrait</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Prioritizes a phone number upon grant.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Telephony.PhoneNumber.SafetyTrait.html">Legion.Identity.Telephony.PhoneNumber.SafetyTrait</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Marks a phone number as safe for given amount of time.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Telephony.PhoneNumber.SafetyTrait.Invalidation.html">Legion.Identity.Telephony.PhoneNumber.SafetyTrait.Invalidation</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Invalidates a safety trait immediately.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Telephony.PhoneNumber.ValidPrioritizationTrait.html">Legion.Identity.Telephony.PhoneNumber.ValidPrioritizationTrait</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>A view for the prioritization traits filtering only valid ones.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Telephony.PhoneNumber.ValidSafetyTrait.html">Legion.Identity.Telephony.PhoneNumber.ValidSafetyTrait</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>A view for the safety traits of phone numbers filtering only valid ones.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Identity.Telephony.PhoneType.html">Legion.Identity.Telephony.PhoneType</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Internationalization.Locale.html">Legion.Internationalization.Locale</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents a locale, containing a language and its variant.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Location.Coordinate.html">Legion.Location.Coordinate</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides functions and data structures for two-dimensional coordinates.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Location.Geocode.html">Legion.Location.Geocode</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents information about a location geocode. A geocode is a locational
+estimation of a location identified by a connection artifact or such.
+The data can be mostly used to analytic purposes, rather than transactional
+operations.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Localization.Entry.html">Legion.Messaging.Localization.Entry</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents a localization entry to make the template available in such language/region.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Message.html">Legion.Messaging.Message</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents a message requested to be sent to user(s) using a messaging medium.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Message.Medium.html">Legion.Messaging.Message.Medium</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Message.Recipient.html">Legion.Messaging.Message.Recipient</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Defines a recipient relationship of a message.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Message.SuccessInformation.html">Legion.Messaging.Message.SuccessInformation</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Bounded to a message upon receiving a success callback from the integrated service.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Message.TemplateUsage.html">Legion.Messaging.Message.TemplateUsage</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents a template usage reference.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Settings.html">Legion.Messaging.Settings</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Manages global settings for registry modules.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Settings.Register.html">Legion.Messaging.Settings.Register</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Defines a settings register.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Settings.RegistryEntry.html">Legion.Messaging.Settings.RegistryEntry</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Configures runtime configurable settings.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Switching.Globals.html">Legion.Messaging.Switching.Globals</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides functions for altering/retrieving global switches to messaging.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Switching.UserPreferences.html">Legion.Messaging.Switching.UserPreferences</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides functions for altering/retrieving messaging preferences of users.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Templatization.html">Legion.Messaging.Templatization</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Functions for templatization of parametric messages.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Templatization.RenderingResult.html">Legion.Messaging.Templatization.RenderingResult</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents the rendering result of templatized text.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Messaging.Templatization.Template.html">Legion.Messaging.Templatization.Template</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides persistence logic for templatization of parametric messages sent to the platform users.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Meta.Naming.html">Legion.Meta.Naming</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Functions for dealing with Elixir naming conventions &amp; module syntax.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Networking.HTTP.UserAgent.html">Legion.Networking.HTTP.UserAgent</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Definitions for user agents of HTTP clients.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Networking.INET.html">Legion.Networking.INET</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides functions and types for INET data structures.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Networking.INET.Geocoding.html">Legion.Networking.INET.Geocoding</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Reverse geocoding support for the INET addresses.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.RegistryDirectory.html">Legion.RegistryDirectory</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides metaprogramming tools to register singleton directories.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.RegistryDirectory.Synchronization.html">Legion.RegistryDirectory.Synchronization</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Synchronization support for managing registry keys.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Repo.html">Legion.Repo</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Stereotype.html">Legion.Stereotype</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Defines stereotypes for the modules of the application.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Stereotype.ViewDecl.html">Legion.Stereotype.ViewDecl</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Telephony.PhoneNumber.html">Legion.Telephony.PhoneNumber</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Declares types and utility functions for working with phone numbers.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Templating.Renderer.html">Legion.Templating.Renderer</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides utility functions and a behaviour for injecting external
+templating engines.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Templating.Renderer.Engine.html">Legion.Templating.Renderer.Engine</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Templating.Renderer.EngineStereotype.html">Legion.Templating.Renderer.EngineStereotype</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides stereotype for modules implementing templating engines.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Types.CIDR.html">Legion.Types.CIDR</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Support for using Ecto with <code class="inline">:cidr</code> fields.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Types.INET.html">Legion.Types.INET</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Support for using Ecto with <code class="inline">:inet</code> fields.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Legion.Types.Point.html">Legion.Types.Point</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Support for using Ecto with <code class="inline">:point</code> fields.</p></div>
+
+</div>
+
+    </div>
+  </section>
+
+
+  <section class="details-list">
+    <h2 id="mix-tasks" class="section-heading">
+  <a href="#mix-tasks" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Mix Tasks
+</h2>
+
+    <div class="summary">
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Mix.Tasks.Legion.Check.Timezone.html">mix legion.check.timezone</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Run before starting any task to check the timezone of the database.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Mix.Tasks.Legion.Reg.Locale.html">mix legion.reg.locale</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Registers locales to the repository.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Mix.Tasks.Legion.Reg.Messaging.html">mix legion.reg.messaging</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Synchronizes messaging subsystem registers, such as global switches
+and redirection keys.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Mix.Tasks.Legion.Reg.Nationality.html">mix legion.reg.nationality</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Registers nationalities to the repository.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Mix.Tasks.Legion.Reg.Political.html">mix legion.reg.political</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Registers nationalities to the repository.</p></div>
+
+</div>
+
+    </div>
+  </section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

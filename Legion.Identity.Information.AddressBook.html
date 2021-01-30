@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>Legion.Identity.Information.AddressBook — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+Legion.Identity.Information.AddressBook <small class="app-vsn">(legion vdev)</small>
+
+          <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/information/address_book/address_book.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Functions for using the address book.</p><h2 id="module-shared-options" class="section-heading">
+  <a href="#module-shared-options" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Shared options
+</h2>
+<p>Functions <a href="#create_address/5"><code class="inline">create_address/5</code></a> and <a href="#update_address/5"><code class="inline">update_address/5</code></a> are subject to options below.</p><ul><li><code class="inline">:type</code>: The new type of the address.</li><li><code class="inline">:name</code>: The new name of the address.</li><li><code class="inline">:country_name</code>: The name of the country.</li><li><code class="inline">:description</code>: The description of the address entry.</li><li><code class="inline">:state</code>: The new name of the state.</li><li><code class="inline">:city</code>: The new name of the city.</li><li><code class="inline">:neighborhood</code>: The new name of the neighborhood.</li><li><code class="inline">:zip_code</code>: The new zip code of the location.</li><li><code class="inline">:location</code>: The new coordinates of the location.</li></ul>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_address/5">create_address(user_id, type, name, country_name, opts \\ [])</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Adds an address entry to the user.
+To get more information about the fields, see <a href="Legion.Identity.Information.AddressBook.Address.html"><code class="inline">Legion.Identity.Information.AddressBook.Address</code></a>.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete_address!/1">delete_address!(address_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Deletes an address with given identifier.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list_addresses_of_user/2">list_addresses_of_user(user_id, opts \\ [])</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Lists addresses of the user.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update_address/5">update_address(address_id, type, name, country_name, opts \\ [])</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Updates address with given attributes.</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="create_address/5">
+
+    <span id="create_address/4"></span>
+
+  <div class="detail-header">
+    <a href="#create_address/5" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_address(user_id, type, name, country_name, opts \\ [])</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/information/address_book/address_book.ex#L42" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>create_address(
+  <a href="Legion.Identity.Information.Registration.html#t:id/0">Legion.Identity.Information.Registration.id</a>(),
+  <a href="Legion.Identity.Information.AddressBook.Address.html#t:address_type/0">Legion.Identity.Information.AddressBook.Address.address_type</a>(),
+  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  <a href="https://hexdocs.pm/elixir/Keyword.html#t:t/0">Keyword.t</a>()
+) ::
+  {:ok, Legion.Identity.Information.AddressBook.Address}
+  | {:error, <a href="https://hexdocs.pm/ecto/3.5.6/Ecto.Changeset.html#t:t/0">Ecto.Changeset.t</a>()}</pre>
+
+      </div>
+
+<p>Adds an address entry to the user.
+To get more information about the fields, see <a href="Legion.Identity.Information.AddressBook.Address.html"><code class="inline">Legion.Identity.Information.AddressBook.Address</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="delete_address!/1">
+
+  <div class="detail-header">
+    <a href="#delete_address!/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">delete_address!(address_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/information/address_book/address_book.ex#L158" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>delete_address!(<a href="Legion.Identity.Information.AddressBook.Address.html#t:id/0">Legion.Identity.Information.AddressBook.Address.id</a>()) ::
+  Legion.Identity.Information.AddressBook.Address | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+
+      </div>
+
+<p>Deletes an address with given identifier.</p>
+  </section>
+</section>
+<section class="detail" id="list_addresses_of_user/2">
+
+    <span id="list_addresses_of_user/1"></span>
+
+  <div class="detail-header">
+    <a href="#list_addresses_of_user/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">list_addresses_of_user(user_id, opts \\ [])</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/information/address_book/address_book.ex#L124" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>list_addresses_of_user(
+  <a href="Legion.Identity.Information.Registration.html#t:id/0">Legion.Identity.Information.Registration.id</a>(),
+  <a href="https://hexdocs.pm/elixir/Keyword.html#t:t/0">Keyword.t</a>()
+) :: [Legion.Identity.Information.AddressBook.Address]</pre>
+
+      </div>
+
+<p>Lists addresses of the user.</p><h2 id="list_addresses_of_user/2-options" class="section-heading">
+  <a href="#list_addresses_of_user/2-options" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Options
+</h2>
+<ul><li><code class="inline">:limit</code>: Limits the number of entities in result. Defaults to 5.</li><li><code class="inline">:offset</code>: Skips given number of entities in result.</li></ul>
+  </section>
+</section>
+<section class="detail" id="update_address/5">
+
+    <span id="update_address/4"></span>
+
+  <div class="detail-header">
+    <a href="#update_address/5" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">update_address(address_id, type, name, country_name, opts \\ [])</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/information/address_book/address_book.ex#L82" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>update_address(
+  <a href="Legion.Identity.Information.AddressBook.Address.html#t:id/0">Legion.Identity.Information.AddressBook.Address.id</a>(),
+  <a href="Legion.Identity.Information.AddressBook.Address.html#t:address_type/0">Legion.Identity.Information.AddressBook.Address.address_type</a>(),
+  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  <a href="https://hexdocs.pm/elixir/Keyword.html#t:t/0">Keyword.t</a>()
+) ::
+  {:ok, Legion.Identity.Information.AddressBook.Address}
+  | {:error, <a href="https://hexdocs.pm/ecto/3.5.6/Ecto.Changeset.html#t:t/0">Ecto.Changeset.t</a>()}
+  | {:error, :not_found}</pre>
+
+      </div>
+
+<p>Updates address with given attributes.</p><h2 id="update_address/5-options" class="section-heading">
+  <a href="#update_address/5-options" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Options
+</h2>
+<p>See the &quot;Shared options&quot; section at the module documentation.</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

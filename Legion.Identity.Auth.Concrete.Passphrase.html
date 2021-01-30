@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>Legion.Identity.Auth.Concrete.Passphrase — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+Legion.Identity.Auth.Concrete.Passphrase <small class="app-vsn">(legion vdev)</small>
+
+          <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/auth/concrete/passphrase.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Passphrase (a.k.a. access token) is an artifact of a successful concrete authentication.</p>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:id/0">id()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The type of the identifier to uniquely reference a passphrase.</p></div>
+
+</div>
+
+  </div>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#changeset/2">changeset(struct, params \\ %{})</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#check_passphrase_quota/1">check_passphrase_quota(user_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Checks passphrase quota of the user, returns error if it is
+exceeded.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create/2">create(user_or_id, ip_addr)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Creates a changeset and inserts it into the repository.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_changeset/2">create_changeset(user_id, ip_addr)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Generates a new passphrase changeset and returns it with the passkey itself in a tuple.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#exists?/1">exists?(passphrase_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Returns a boolean value indicating if passphrase exists.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#find_passphrase_matching/2">find_passphrase_matching(user_id, passkey)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Searches for a matching passphrase with given user identifier and a
+passkey hash.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#validate/1">validate(passphrase)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Validates given passphrase and returns <code class="inline">:ok</code>, or an error tuple with a reason.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#validate_id/1">validate_id(passphrase_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Validates a passphrase with given identifier.</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types
+          </h1>
+          <div class="types-list">
+<section class="detail" id="t:id/0">
+
+  <div class="detail-header">
+    <a href="#t:id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">id()</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/auth/concrete/passphrase.ex#L20" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>id() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+
+      </div>
+
+<p>The type of the identifier to uniquely reference a passphrase.</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="changeset/2">
+
+    <span id="changeset/1"></span>
+
+  <div class="detail-header">
+    <a href="#changeset/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">changeset(struct, params \\ %{})</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/auth/concrete/passphrase.ex#L35" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>changeset(Legion.Identity.Auth.Concrete.Passphrase, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/ecto/3.5.6/Ecto.Changeset.html#t:t/0">Ecto.Changeset.t</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="check_passphrase_quota/1">
+
+  <div class="detail-header">
+    <a href="#check_passphrase_quota/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">check_passphrase_quota(user_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/auth/concrete/passphrase.ex#L78" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Checks passphrase quota of the user, returns error if it is
+exceeded.</p>
+  </section>
+</section>
+<section class="detail" id="create/2">
+
+  <div class="detail-header">
+    <a href="#create/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create(user_or_id, ip_addr)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/auth/concrete/passphrase.ex#L66" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>create(
+  <a href="Legion.Identity.Information.Registration.html#t:user_or_id/0">Legion.Identity.Information.Registration.user_or_id</a>(),
+  <a href="Legion.Networking.INET.html#t:t/0">Legion.Networking.INET.t</a>()
+) :: <a href="Legion.Identity.Auth.Concrete.Passkey.html#t:t/0">Legion.Identity.Auth.Concrete.Passkey.t</a>()</pre>
+
+      </div>
+
+<p>Creates a changeset and inserts it into the repository.</p>
+  </section>
+</section>
+<section class="detail" id="create_changeset/2">
+
+  <div class="detail-header">
+    <a href="#create_changeset/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_changeset(user_id, ip_addr)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/auth/concrete/passphrase.ex#L47" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>create_changeset(
+  <a href="Legion.Identity.Information.Registration.html#t:user_or_id/0">Legion.Identity.Information.Registration.user_or_id</a>(),
+  <a href="Legion.Networking.INET.html#t:t/0">Legion.Networking.INET.t</a>()
+) :: {<a href="Legion.Identity.Auth.Concrete.Passkey.html#t:t/0">Legion.Identity.Auth.Concrete.Passkey.t</a>(), <a href="https://hexdocs.pm/ecto/3.5.6/Ecto.Changeset.html#t:t/0">Ecto.Changeset.t</a>()}</pre>
+
+      </div>
+
+<p>Generates a new passphrase changeset and returns it with the passkey itself in a tuple.</p>
+  </section>
+</section>
+<section class="detail" id="exists?/1">
+
+  <div class="detail-header">
+    <a href="#exists?/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">exists?(passphrase_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/auth/concrete/passphrase.ex#L148" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>exists?(<a href="#t:id/0">id</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
+      </div>
+
+<p>Returns a boolean value indicating if passphrase exists.</p>
+  </section>
+</section>
+<section class="detail" id="find_passphrase_matching/2">
+
+  <div class="detail-header">
+    <a href="#find_passphrase_matching/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">find_passphrase_matching(user_id, passkey)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/auth/concrete/passphrase.ex#L121" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>find_passphrase_matching(
+  <a href="Legion.Identity.Information.Registration.html#t:id/0">Legion.Identity.Information.Registration.id</a>(),
+  <a href="Legion.Identity.Auth.Concrete.Passkey.html#t:t/0">Legion.Identity.Auth.Concrete.Passkey.t</a>()
+) ::
+  {:ok, <a href="#t:id/0">id</a>()} | {:error, :not_found} | {:error, :invalid} | {:error, :timed_out}</pre>
+
+      </div>
+
+<p>Searches for a matching passphrase with given user identifier and a
+passkey hash.</p><h2 id="find_passphrase_matching/2-return-types" class="section-heading">
+  <a href="#find_passphrase_matching/2-return-types" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Return types
+</h2>
+<p>This function returns a passphrase identifier if there was no faulty conditions.
+However, it might also return errors in following scenarios.</p><ul><li><code class="inline">:not_found</code>: No matching passphrase found.</li><li><code class="inline">:invalid</code>: The passphrase exists, but it is revoked manually.</li><li><code class="inline">:timed_out</code>: The passphrase exists, however it is not valid anymore.</li></ul><p>The interface of the business logic might choose to not show the reason for the
+failed action due to security concerns. Hence, the developer of this API might
+need to take care of the error values implicitly.</p><h2 id="find_passphrase_matching/2-discussion" class="section-heading">
+  <a href="#find_passphrase_matching/2-discussion" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Discussion
+</h2>
+<p>We are searching for the passphrases, but not using the <a href="Legion.Identity.Auth.Concrete.ActivePassphrase.html"><code class="inline">Elixir.Legion.Identity.Auth.Concrete.ActivePassphrase</code></a>
+view schema. The reason on doing this is, we need to offload the query
+conditionals to the web application instead of the server.</p><p>The passkey itself is a unique index, so it is not overwhelming to query one with this
+attribute on passphrases. The only thing we need to do additionally is looking for
+an invalidation entry, since we are using unique index here, again, we can leverage
+the power of the physical <code class="inline">btree</code> indexing the invalidations.</p>
+  </section>
+</section>
+<section class="detail" id="validate/1">
+
+  <div class="detail-header">
+    <a href="#validate/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">validate(passphrase)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/auth/concrete/passphrase.ex#L193" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>validate(Legion.Identity.Auth.Concrete.Passphrase) ::
+  :ok | {:error, :invalid} | {:error, :timed_out}</pre>
+
+      </div>
+
+<p>Validates given passphrase and returns <code class="inline">:ok</code>, or an error tuple with a reason.</p><p>A passphrase is valid if and only if it is not invalidated manually and it has not timed out.
+This function checks its invalidation is <code class="inline">nil</code> and its insertion time is in a viable lifetime
+interval. It returns <code class="inline">{:error, :invalid}</code> if passphrase is invalidated manually, or
+<code class="inline">{:error, :timed_out}</code> if passphrase is timed out.</p><h2 id="validate/1-caveats" class="section-heading">
+  <a href="#validate/1-caveats" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Caveats
+</h2>
+<p>To use this function properly, one should preload <code class="inline">:invalidation</code> association of the
+passphrase before supplying it as a parameter to this function. Otherwise, nil-check is
+performed against the <code class="inline">:invalidation</code> field of the struct, it would see the association as
+non-nil since <a href="https://hexdocs.pm/ecto/3.5.6/Ecto.Association.NotLoaded.html"><code class="inline">Ecto.Association.NotLoaded</code></a> struct will be there.</p>
+  </section>
+</section>
+<section class="detail" id="validate_id/1">
+
+  <div class="detail-header">
+    <a href="#validate_id/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">validate_id(passphrase_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/auth/concrete/passphrase.ex#L160" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>validate_id(<a href="#t:id/0">id</a>()) ::
+  :ok | {:error, :not_found} | {:error, :invalid} | {:error, :timed_out}</pre>
+
+      </div>
+
+<p>Validates a passphrase with given identifier.</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

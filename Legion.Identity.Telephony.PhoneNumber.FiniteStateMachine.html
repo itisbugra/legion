@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>Legion.Identity.Telephony.PhoneNumber.FiniteStateMachine — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+Legion.Identity.Telephony.PhoneNumber.FiniteStateMachine <small class="app-vsn">(legion vdev)</small>
+
+          <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Manages phone numbers of users, performs redirections of phone calls.</p><p><strong>This module is NOT transaction-safe.</strong></p>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#acknowledge_phone_number/1">acknowledge_phone_number(phone_number_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Acknowledges phone number. Returns the removed neglection trait.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_phone_number/3">create_phone_number(user_id, type, number)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Adds a phone number entry to the user.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#exists?/1">exists?(phone_number_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Returns a boolean value indicating whether the phone number exists.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#ignore_phone_number/2">ignore_phone_number(passphrase_id, phone_number_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Ignores given phone number.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#ignored?/1">ignored?(phone_number_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Returns a boolean value showing whether the phone number is ignored.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#make_primary/2">make_primary(passphrase_id, phone_number_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Makes a phone number primary.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#mark_phone_number_safe/3">mark_phone_number_safe(passphrase_id, phone_number_id, opts \\ [])</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Marks a phone number safe.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#mark_phone_number_unsafe/2">mark_phone_number_unsafe(passphrase_id, phone_number_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Marks a phone number unsafe.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#primary?/1">primary?(phone_number_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Returns a boolean value showing whether the phone number is primary.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#remove_phone_number/1">remove_phone_number(phone_number_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Removes a phone number.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#safe?/1">safe?(phone_number_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Returns a boolean value indicating whether the phone number is marked as safe.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#safe_until/1">safe_until(phone_number_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Returns a struct representing safety status of the phone number.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update_phone_number/3">update_phone_number(phone_number_id, type, number)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Updates the type and number of a phone number entry.</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="acknowledge_phone_number/1">
+
+  <div class="detail-header">
+    <a href="#acknowledge_phone_number/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">acknowledge_phone_number(phone_number_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L316" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>acknowledge_phone_number(<a href="Legion.Identity.Telephony.PhoneNumber.html#t:id/0">Legion.Identity.Telephony.PhoneNumber.id</a>()) ::
+  {:ok, Legion.Identity.Telephony.PhoneNumber.NeglectionTrait}
+  | {:ok, :noop}
+  | {:error, :not_found}</pre>
+
+      </div>
+
+<p>Acknowledges phone number. Returns the removed neglection trait.</p><p>Same as <code class="inline">ignore_phone_number/1</code>, but works opposite.</p>
+  </section>
+</section>
+<section class="detail" id="create_phone_number/3">
+
+  <div class="detail-header">
+    <a href="#create_phone_number/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_phone_number(user_id, type, number)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L121" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>create_phone_number(
+  <a href="Legion.Identity.Information.Registration.html#t:id/0">Legion.Identity.Information.Registration.id</a>(),
+  <a href="Legion.Identity.Telephony.PhoneNumber.html#t:phone_type/0">Legion.Identity.Telephony.PhoneNumber.phone_type</a>(),
+  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()
+) ::
+  {:ok, Legion.Identity.Telephony.PhoneNumber}
+  | {:error, :no_user}
+  | {:error, :invalid}
+  | {:error, :unknown_type}</pre>
+
+      </div>
+
+<p>Adds a phone number entry to the user.</p><p>To get more information about the fields, see <a href="Legion.Identity.Telephony.PhoneNumber.html"><code class="inline">Legion.Identity.Telephony.PhoneNumber</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="exists?/1">
+
+  <div class="detail-header">
+    <a href="#exists?/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">exists?(phone_number_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L63" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>exists?(<a href="Legion.Identity.Telephony.PhoneNumber.html#t:id/0">Legion.Identity.Telephony.PhoneNumber.id</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
+      </div>
+
+<p>Returns a boolean value indicating whether the phone number exists.</p>
+  </section>
+</section>
+<section class="detail" id="ignore_phone_number/2">
+
+  <div class="detail-header">
+    <a href="#ignore_phone_number/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">ignore_phone_number(passphrase_id, phone_number_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L282" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>ignore_phone_number(
+  <a href="Legion.Identity.Auth.Concrete.Passphrase.html#t:id/0">Legion.Identity.Auth.Concrete.Passphrase.id</a>(),
+  <a href="Legion.Identity.Telephony.PhoneNumber.html#t:id/0">Legion.Identity.Telephony.PhoneNumber.id</a>()
+) ::
+  {:ok, Legion.Identity.Telephony.PhoneNumber.NeglectionTrait}
+  | {:ok, :noop}
+  | {:error, :primary}
+  | {:error, :no_passphrase}
+  | {:error, :not_found}</pre>
+
+      </div>
+
+<p>Ignores given phone number.</p><h2 id="ignore_phone_number/2-return-values" class="section-heading">
+  <a href="#ignore_phone_number/2-return-values" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Return values
+</h2>
+<p>On successful operation, this will return <code class="inline">{:ok, neglection_trait}</code>.</p><p>Otherwise,  </p><ul><li><code class="inline">{:ok, :noop}</code>, if the phone number was already ignored,</li><li><code class="inline">{:error, :not_found}</code>, if there was no phone number with given identifier.</li></ul><p>To provide an idempotent interface, you can match this function to
+<code class="inline">{:ok, _}</code>, which will cover all successful flows.</p>
+  </section>
+</section>
+<section class="detail" id="ignored?/1">
+
+  <div class="detail-header">
+    <a href="#ignored?/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">ignored?(phone_number_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L82" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Returns a boolean value showing whether the phone number is ignored.</p><p>Raises <a href="https://hexdocs.pm/ecto/3.5.6/Ecto.NoResultsError.html"><code class="inline">Ecto.NoResultsError</code></a> if no phone number was found with given identifier.</p>
+  </section>
+</section>
+<section class="detail" id="make_primary/2">
+
+  <div class="detail-header">
+    <a href="#make_primary/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">make_primary(passphrase_id, phone_number_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L236" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>make_primary(
+  <a href="Legion.Identity.Auth.Concrete.Passphrase.html#t:id/0">Legion.Identity.Auth.Concrete.Passphrase.id</a>(),
+  <a href="Legion.Identity.Telephony.PhoneNumber.html#t:id/0">Legion.Identity.Telephony.PhoneNumber.id</a>()
+) ::
+  {:ok, Legion.Identity.Telephony.PhoneNumber.PrioritizationTrait}
+  | {:ok, :noop}
+  | {:error, :phone_number, :ignored}
+  | {:error, :phone_number, :unsafe}
+  | {:error, :phone_number, :not_found}
+  | {:error, :passphrase, :not_found}
+  | {:error, :passphrase, :invalid}
+  | {:error, :passphrase, :timed_out}</pre>
+
+      </div>
+
+<p>Makes a phone number primary.</p><h2 id="make_primary/2-return-values" class="section-heading">
+  <a href="#make_primary/2-return-values" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Return values
+</h2>
+<p>On successful operation, the function will return <code class="inline">{:ok, phone_number}</code>.</p><p>Otherwise, it returns</p><ul><li><code class="inline">{:ok, :noop}</code>, if phone number was already safe,</li><li><code class="inline">{:error, :ignored}</code>, if the phone number was marked as ignored,</li><li><code class="inline">{:error, :unsafe}</code>, if the phone number was not marked as safe,</li><li><code class="inline">{:error, :not_found}</code>, if there was no phone number with given identifier,</li><li><code class="inline">{:error, :no_passphrase}</code>, if there was no passphrase with given identifier.</li></ul><p>To provide an idempotent interface, you can match this function to
+<code class="inline">{:ok, _}</code>, which will cover all successful flows.</p>
+  </section>
+</section>
+<section class="detail" id="mark_phone_number_safe/3">
+
+    <span id="mark_phone_number_safe/2"></span>
+
+  <div class="detail-header">
+    <a href="#mark_phone_number_safe/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">mark_phone_number_safe(passphrase_id, phone_number_id, opts \\ [])</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L357" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>mark_phone_number_safe(
+  <a href="Legion.Identity.Auth.Concrete.Passphrase.html#t:id/0">Legion.Identity.Auth.Concrete.Passphrase.id</a>(),
+  <a href="Legion.Identity.Telephony.PhoneNumber.html#t:id/0">Legion.Identity.Telephony.PhoneNumber.id</a>(),
+  <a href="https://hexdocs.pm/elixir/Keyword.html#t:t/0">Keyword.t</a>()
+) ::
+  {:ok, Legion.Identity.Telephony.PhoneNumber.SafetyTrait}
+  | {:ok, :noop}
+  | {:error, :no_passphrase}
+  | {:error, :not_found}
+  | {:error, :not_found}
+  | {:error, :invalid}
+  | {:error, :timed_out}</pre>
+
+      </div>
+
+<p>Marks a phone number safe.</p><h2 id="mark_phone_number_safe/3-options" class="section-heading">
+  <a href="#mark_phone_number_safe/3-options" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Options
+</h2>
+<p><code class="inline">:valid_for</code>: The duration of the new safety trait.</p><h2 id="mark_phone_number_safe/3-return-values" class="section-heading">
+  <a href="#mark_phone_number_safe/3-return-values" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Return values
+</h2>
+<p>On successful operation, this will return <code class="inline">{:ok, phone_number}</code>.</p><p>Otherwise,</p><ul><li><code class="inline">{:ok, :noop}</code>, if the phone number was already marked as safe,</li><li><code class="inline">{:error, :not_found}</code>, if there was no phone number with given identifier.</li></ul><p>To provide an idempotent interface, you can match this function to
+<code class="inline">{:ok, _}</code>, which will cover all successful flows.</p>
+  </section>
+</section>
+<section class="detail" id="mark_phone_number_unsafe/2">
+
+  <div class="detail-header">
+    <a href="#mark_phone_number_unsafe/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">mark_phone_number_unsafe(passphrase_id, phone_number_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L394" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>mark_phone_number_unsafe(
+  <a href="Legion.Identity.Auth.Concrete.Passphrase.html#t:id/0">Legion.Identity.Auth.Concrete.Passphrase.id</a>(),
+  <a href="Legion.Identity.Telephony.PhoneNumber.html#t:id/0">Legion.Identity.Telephony.PhoneNumber.id</a>()
+) ::
+  {:ok, [Invalidation]}
+  | {:ok, :noop}
+  | {:error, :not_found}
+  | {:error, :passphrase_not_found}
+  | {:error, :passphrase_invalid}
+  | {:error, :passphrase_timed_out}</pre>
+
+      </div>
+
+<p>Marks a phone number unsafe.</p><p>Same as <code class="inline">mark_phone_number_safe/1</code>, but works opposite.</p>
+  </section>
+</section>
+<section class="detail" id="primary?/1">
+
+  <div class="detail-header">
+    <a href="#primary?/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">primary?(phone_number_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L98" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Returns a boolean value showing whether the phone number is primary.</p>
+  </section>
+</section>
+<section class="detail" id="remove_phone_number/1">
+
+  <div class="detail-header">
+    <a href="#remove_phone_number/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">remove_phone_number(phone_number_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L171" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>remove_phone_number(<a href="Legion.Identity.Telephony.PhoneNumber.html#t:id/0">Legion.Identity.Telephony.PhoneNumber.id</a>()) ::
+  :ok | {:error, :not_found}</pre>
+
+      </div>
+
+<p>Removes a phone number.</p>
+  </section>
+</section>
+<section class="detail" id="safe?/1">
+
+  <div class="detail-header">
+    <a href="#safe?/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">safe?(phone_number_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L73" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>safe?(<a href="Legion.Identity.Telephony.PhoneNumber.html#t:id/0">Legion.Identity.Telephony.PhoneNumber.id</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
+      </div>
+
+<p>Returns a boolean value indicating whether the phone number is marked as safe.</p><p>Raises <a href="https://hexdocs.pm/ecto/3.5.6/Ecto.NoResultsError.html"><code class="inline">Ecto.NoResultsError</code></a> if no phone number was found with given identifier.</p>
+  </section>
+</section>
+<section class="detail" id="safe_until/1">
+
+  <div class="detail-header">
+    <a href="#safe_until/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">safe_until(phone_number_id)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L25" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>safe_until(<a href="Legion.Identity.Telephony.PhoneNumber.html#t:id/0">Legion.Identity.Telephony.PhoneNumber.id</a>()) :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>() | :unsafe</pre>
+
+      </div>
+
+<p>Returns a struct representing safety status of the phone number.</p><p>Raises <a href="https://hexdocs.pm/ecto/3.5.6/Ecto.NoResultsError.html"><code class="inline">Ecto.NoResultsError</code></a> if no phone number was found with given identifier.</p>
+  </section>
+</section>
+<section class="detail" id="update_phone_number/3">
+
+  <div class="detail-header">
+    <a href="#update_phone_number/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">update_phone_number(phone_number_id, type, number)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/identity/telephony/phone_number/finite_state_machine.ex#L145" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>update_phone_number(
+  <a href="Legion.Identity.Telephony.PhoneNumber.html#t:id/0">Legion.Identity.Telephony.PhoneNumber.id</a>(),
+  <a href="Legion.Identity.Telephony.PhoneNumber.html#t:phone_type/0">Legion.Identity.Telephony.PhoneNumber.phone_type</a>(),
+  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()
+) ::
+  {:ok, Legion.Identity.Telephony.PhoneNumber}
+  | {:error, :not_found}
+  | {:error, :invalid}
+  | {:error, :unknown_type}</pre>
+
+      </div>
+
+<p>Updates the type and number of a phone number entry.</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

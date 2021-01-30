@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>Legion.Telephony.PhoneNumber — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+Legion.Telephony.PhoneNumber <small class="app-vsn">(legion vdev)</small>
+
+          <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/telephony/phone_number.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Declares types and utility functions for working with phone numbers.</p>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:host_type/0">host_type()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Describes the type of the phone number.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Type for the phone number.</p></div>
+
+</div>
+
+  </div>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_number_type/1">get_number_type(number)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Returns the type of the phone number.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#humanize/1">humanize(number)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Same as <a href="#humanize/2"><code class="inline">humanize/2</code></a>, but uses <code class="inline">:international</code> formatting as default.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#humanize/2">humanize(number, format)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Humanizes the phone number in given format. <code class="inline">format</code> parameter can be either
+<code class="inline">:international</code> or <code class="inline">:national</code>, determining the existence of country code in
+resulting phone number.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#is_possible_number?/1">is_possible_number?(number)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Returns a boolean value indicating the possibility of validity of the given phone number.
+Unlike <code class="inline">is_valid_number/2</code>, this function validates the phone number by bare lookup of
+its length.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#is_valid_number?/1">is_valid_number?(number)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Determines validity of the given phone number.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_e164/1">to_e164(number)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Converts given number to E164-formatted string.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_rfc3966/1">to_rfc3966(number)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Converts given number to RFC 3966-formatted string.</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types
+          </h1>
+          <div class="types-list">
+<section class="detail" id="t:host_type/0">
+
+  <div class="detail-header">
+    <a href="#t:host_type/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">host_type()</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/telephony/phone_number.ex#L9" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>host_type() ::
+  :fixed_line
+  | :mobile
+  | :fixed_line_or_mobile
+  | :toll_free
+  | :premium_rate
+  | :shared_cost
+  | :voip
+  | :personal_number
+  | :pager
+  | :uan
+  | :voicemail
+  | :unknown</pre>
+
+      </div>
+
+<p>Describes the type of the phone number.</p>
+  </section>
+</section>
+<section class="detail" id="t:t/0">
+
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">t()</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/telephony/phone_number.ex#L26" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>t() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+
+      </div>
+
+<p>Type for the phone number.</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="get_number_type/1">
+
+  <div class="detail-header">
+    <a href="#get_number_type/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get_number_type(number)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/telephony/phone_number.ex#L45" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>get_number_type(<a href="#t:t/0">t</a>()) :: {:ok, <a href="#t:host_type/0">host_type</a>()} | {:error, :invalid}</pre>
+
+      </div>
+
+<p>Returns the type of the phone number.</p><h2 id="get_number_type/1-examples" class="section-heading">
+  <a href="#get_number_type/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">get_number_type</span><span class="p" data-group-id="4843064274-1">(</span><span class="s">&quot;+90 532 111 1111&quot;</span><span class="p" data-group-id="4843064274-1">)</span><span class="w">
+</span><span class="p" data-group-id="4843064274-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="ss">:mobile</span><span class="p" data-group-id="4843064274-2">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">get_number_type</span><span class="p" data-group-id="4843064274-3">(</span><span class="s">&quot;+90 216 111 1111&quot;</span><span class="p" data-group-id="4843064274-3">)</span><span class="w">
+</span><span class="p" data-group-id="4843064274-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="ss">:fixed_line</span><span class="p" data-group-id="4843064274-4">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">get_number_type</span><span class="p" data-group-id="4843064274-5">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="4843064274-5">)</span><span class="w">
+</span><span class="p" data-group-id="4843064274-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="4843064274-6">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="humanize/1">
+
+  <div class="detail-header">
+    <a href="#humanize/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">humanize(number)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/telephony/phone_number.ex#L178" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Same as <a href="#humanize/2"><code class="inline">humanize/2</code></a>, but uses <code class="inline">:international</code> formatting as default.</p><h2 id="humanize/1-examples" class="section-heading">
+  <a href="#humanize/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="3499223762-1">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p" data-group-id="3499223762-1">)</span><span class="w">
+</span><span class="p" data-group-id="3499223762-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;+90 532 111 11 11&quot;</span><span class="p" data-group-id="3499223762-2">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="3499223762-3">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="3499223762-3">)</span><span class="w">
+</span><span class="p" data-group-id="3499223762-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="3499223762-4">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="humanize/2">
+
+  <div class="detail-header">
+    <a href="#humanize/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">humanize(number, format)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/telephony/phone_number.ex#L155" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Humanizes the phone number in given format. <code class="inline">format</code> parameter can be either
+<code class="inline">:international</code> or <code class="inline">:national</code>, determining the existence of country code in
+resulting phone number.</p><h2 id="humanize/2-examples" class="section-heading">
+  <a href="#humanize/2-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="5486208926-1">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:international</span><span class="p" data-group-id="5486208926-1">)</span><span class="w">
+</span><span class="p" data-group-id="5486208926-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;+90 532 111 11 11&quot;</span><span class="p" data-group-id="5486208926-2">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="5486208926-3">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:national</span><span class="p" data-group-id="5486208926-3">)</span><span class="w">
+</span><span class="p" data-group-id="5486208926-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;0532 111 11 11&quot;</span><span class="p" data-group-id="5486208926-4">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="5486208926-5">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:national</span><span class="p" data-group-id="5486208926-5">)</span><span class="w">
+</span><span class="p" data-group-id="5486208926-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="5486208926-6">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="is_possible_number?/1">
+
+  <div class="detail-header">
+    <a href="#is_possible_number?/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">is_possible_number?(number)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/telephony/phone_number.ex#L89" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>is_possible_number?(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
+      </div>
+
+<p>Returns a boolean value indicating the possibility of validity of the given phone number.
+Unlike <code class="inline">is_valid_number/2</code>, this function validates the phone number by bare lookup of
+its length.</p><pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">is_possible_number?</span><span class="p" data-group-id="2626912504-1">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p" data-group-id="2626912504-1">)</span><span class="w">
+</span><span class="no">true</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">is_possible_number?</span><span class="p" data-group-id="2626912504-2">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="2626912504-2">)</span><span class="w">
+</span><span class="no">false</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="is_valid_number?/1">
+
+  <div class="detail-header">
+    <a href="#is_valid_number?/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">is_valid_number?(number)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/telephony/phone_number.ex#L67" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>is_valid_number?(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
+      </div>
+
+<p>Determines validity of the given phone number.</p><pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">is_valid_number?</span><span class="p" data-group-id="6561150473-1">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p" data-group-id="6561150473-1">)</span><span class="w">
+</span><span class="no">true</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">is_valid_number?</span><span class="p" data-group-id="6561150473-2">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="6561150473-2">)</span><span class="w">
+</span><span class="no">false</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="to_e164/1">
+
+  <div class="detail-header">
+    <a href="#to_e164/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">to_e164(number)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/telephony/phone_number.ex#L127" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Converts given number to E164-formatted string.</p><h2 id="to_e164/1-examples" class="section-heading">
+  <a href="#to_e164/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">to_e164</span><span class="p" data-group-id="8846143841-1">(</span><span class="s">&quot;+90 532 111 1111&quot;</span><span class="p" data-group-id="8846143841-1">)</span><span class="w">
+</span><span class="p" data-group-id="8846143841-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;+905321111111&quot;</span><span class="p" data-group-id="8846143841-2">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">to_e164</span><span class="p" data-group-id="8846143841-3">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="8846143841-3">)</span><span class="w">
+</span><span class="p" data-group-id="8846143841-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="8846143841-4">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="to_rfc3966/1">
+
+  <div class="detail-header">
+    <a href="#to_rfc3966/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">to_rfc3966(number)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/telephony/phone_number.ex#L104" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>to_rfc3966(<a href="#t:t/0">t</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | {:error, :invalid}</pre>
+
+      </div>
+
+<p>Converts given number to RFC 3966-formatted string.</p><pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">to_rfc3966</span><span class="p" data-group-id="5525293140-1">(</span><span class="s">&quot;+90 532 111 1111&quot;</span><span class="p" data-group-id="5525293140-1">)</span><span class="w">
+</span><span class="p" data-group-id="5525293140-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;tel:+90-532-111-11-11&quot;</span><span class="p" data-group-id="5525293140-2">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">to_rfc3966</span><span class="p" data-group-id="5525293140-3">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="5525293140-3">)</span><span class="w">
+</span><span class="p" data-group-id="5525293140-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="5525293140-4">}</span></code></pre>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

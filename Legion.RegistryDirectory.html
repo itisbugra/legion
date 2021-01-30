@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>Legion.RegistryDirectory — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+Legion.RegistryDirectory <small class="app-vsn">(legion vdev)</small>
+
+          <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/registry_directory/registry_directory.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Provides metaprogramming tools to register singleton directories.</p><h3 id="module-motivation" class="section-heading">
+  <a href="#module-motivation" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Motivation
+</h3>
+<p>Global settings directories can be used to gather runtime
+configuration.
+One can create a configuration to change the behavior of
+some modules, or enable/disable it through utility functions.</p><p>Suppose you have a function, <code class="inline">enable_some_feature/0</code>, to enable
+a feature at the runtime of the application. To define a backend
+for this feature in persistence layer, you can leverage registry
+directories.</p><h2 id="module-registries" class="section-heading">
+  <a href="#module-registries" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Registries
+</h2>
+<p>To create a registry directory with a module named <code class="inline">SomeSettings</code>,
+one may use the <a href="#defregdir/2"><code class="inline">defregdir/2</code></a> provided by this module.</p><pre><code class="nohighlight makeup elixir"><span class="kn">import</span><span class="w"> </span><span class="nc">Legion.RegistryDirectory</span><span class="w">
+
+</span><span class="n">defregdir</span><span class="w"> </span><span class="nc">SomeSettings</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;messaging_settings&quot;</span></code></pre><p>Upon that call, the macro resolves for defining three modules, namely</p><ol><li><code class="inline">SomeSettings.Register</code>,</li><li><code class="inline">SomeSettings.RegistryEntry</code> and</li><li><code class="inline">SomeSettings</code>.</li></ol><p>The first two modules are valid Ecto schemas, you can query them directly.</p><pre><code class="nohighlight makeup elixir"><span class="nc">Repo</span><span class="o">.</span><span class="n">all</span><span class="p" data-group-id="7041792352-1">(</span><span class="nc">SomeSettings.Register</span><span class="p" data-group-id="7041792352-1">)</span><span class="w"> </span><span class="c1"># returns all of the register keys</span></code></pre><p>Although it is strictly discouraged, you are also able to query the
+<code class="inline">SomeSettings.RegistryEntry</code> schema.</p><h3 id="module-retrieving-manipulating-settings" class="section-heading">
+  <a href="#module-retrieving-manipulating-settings" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Retrieving/manipulating settings
+</h3>
+<p>The main module, <code class="inline">SomeSettings</code> (which was provided to the macro),
+exports functions for retrieving and manipulating the settings.
+The functionality expects an authenticated user, or its identifier
+to perform a manipulation settings (i.e. creating a new entry).
+The settings do not override each other, but bucketed as an event
+source, hence you may provide additional features (i.e. deferral,
+duration), which might likely need more than the last entry
+created.</p><h2 id="module-adding-registers" class="section-heading">
+  <a href="#module-adding-registers" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Adding registers
+</h2>
+<p>Registers can be added at build time, and can be constantly
+referenced by the other tables. The macro does not perform
+a migration for the database, indeed, but you can prepare
+migrations for both key registration and table creation.</p><p>For synchronization of the keys, see <a href="Legion.RegistryDirectory.Synchronization.html"><code class="inline">Legion.RegistryDirectory.Synchronization</code></a>.</p>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#defregdir/2">defregdir(namespace, dirname)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Defines a registration directory, resolving to several modules.</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="defregdir/2">
+
+  <div class="detail-header">
+    <a href="#defregdir/2" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">defregdir(namespace, dirname)</h1>
+
+      <a href="https://github.com/Chatatata/Legion/blob/master/apps/legion/lib/registry_directory/registry_directory.ex#L79" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(macro)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Defines a registration directory, resolving to several modules.</p><ul><li><code class="inline">{namespace}.Register</code>: An Ecto schema using string keys to
+refer to the registers.</li><li><code class="inline">{namespace}.RegistryEntry</code>: An Ecto schema holds JSON data
+for a specific key.</li><li><code class="inline">{namespace}</code>: Module providing utility functions for manipulating
+the registry.</li></ul><p>The macro also makes use of a base table name, provided by the
+second parameter, which will resolve to two table names in
+database, <code class="inline">&quot;{namespace}_registers&quot;</code> and
+<code class="inline">&quot;{namespace}_registry_entries&quot;</code>, for the two Ecto schemas,
+respectively.</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

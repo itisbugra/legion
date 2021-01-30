@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>Configuring the application — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="extras">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>Configuring the application</h1><p>Author: <a href="mailto:bekuklu@stcpay.com.sa">Buğra Ekuklu</a></p><h3 id="revision-history" class="section-heading">
+  <a href="#revision-history" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Revision history
+</h3>
+<ol><li>Initial draft, 18-06-11, <a href="mailto:bekuklu@stcpay.com.sa">Buğra Ekuklu</a>.</li></ol><hr class="thin"></hr><p>Legion presents a completely opinionated authentication/authorization mechanism,
+using best-practices as much as possible, however it also supports configuring
+by supplying various configuration parameters in configuration files.</p><h2 id="using-configuration-scripts" class="section-heading">
+  <a href="#using-configuration-scripts" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Using configuration scripts
+</h2>
+<p>One may use a configuration script by simply creating a new <code class="inline">.exs</code> file. The
+configuration script file should contain all configuration parameters of the
+application.</p><pre><code class="nohighlight makeup elixir"><span class="c1"># legion.exs</span><span class="w">
+</span><span class="kn">use</span><span class="w"> </span><span class="nc">Mix.Config</span><span class="w">
+
+</span><span class="n">six_months</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15_552_000</span><span class="w">
+
+</span><span class="n">config</span><span class="w"> </span><span class="ss">:legion</span><span class="p">,</span><span class="w"> </span><span class="nc">Legion.Identity.Auth.AccessControl</span><span class="p">,</span><span class="w">
+  </span><span class="ss">permission_set_name_length</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="o">.</span><span class="o">.</span><span class="mi">28</span><span class="p">,</span><span class="w">
+  </span><span class="ss">permission_set_description_length</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="o">.</span><span class="o">.</span><span class="mi">80</span><span class="p">,</span><span class="w">
+  </span><span class="ss">maximum_granting_deferral</span><span class="p">:</span><span class="w"> </span><span class="n">six_months</span><span class="p">,</span><span class="w">
+  </span><span class="ss">maximum_granting_lifetime</span><span class="p">:</span><span class="w"> </span><span class="n">six_months</span><span class="p">,</span><span class="w">
+  </span><span class="ss">allow_infinite_lifetime</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="w">
+
+</span><span class="c1"># other configuration calls...</span></code></pre><p>Assuming we created a configuration script named <code class="inline">legion.exs</code>, we could then use the file
+by using import macro of Mix in our main configuration file.</p><pre><code class="nohighlight makeup elixir"><span class="c1"># config.exs</span><span class="w">
+</span><span class="kn">use</span><span class="w"> </span><span class="nc">Mix.Config</span><span class="w">
+
+</span><span class="n">import_config</span><span class="w"> </span><span class="s">&quot;legion.exs&quot;</span></code></pre><h2 id="retrieving-configuration-values" class="section-heading">
+  <a href="#retrieving-configuration-values" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Retrieving configuration values
+</h2>
+<p>Most of the time, implementations requiring configurable values retrieve these values from
+configuration function provided by the Mix.</p><p>Legion makes use of a convention of retrieving configuration values at the compile-time by using module attributes.
+For example, you can retrieve passkey scaling factor at the compile-time by following module attribute definition.</p><pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">App.SomeModule</span><span class="w"> </span><span class="k" data-group-id="8588455826-1">do</span><span class="w">
+  </span><span class="na">@moduledoc</span><span class="w"> </span><span class="no">false</span><span class="w">
+  </span><span class="na">@env</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">get_env</span><span class="p" data-group-id="8588455826-2">(</span><span class="ss">:legion</span><span class="p">,</span><span class="w"> </span><span class="nc">Legion.Identity.Auth.Concrete</span><span class="p" data-group-id="8588455826-2">)</span><span class="w">
+  </span><span class="na">@scale</span><span class="w"> </span><span class="nc">Keyword</span><span class="o">.</span><span class="n">fetch!</span><span class="p" data-group-id="8588455826-3">(</span><span class="na">@env</span><span class="p">,</span><span class="w"> </span><span class="ss">:passkey_scaling</span><span class="p" data-group-id="8588455826-3">)</span><span class="w">
+
+  </span><span class="c1"># Use @scale module attribute</span><span class="w">
+</span><span class="k" data-group-id="8588455826-1">end</span></code></pre><p>However, since this is a compile-time attribute, it is significant to clarify that the changes happened at the runtime are not reflected to the module attributes.</p><p>If you are not able to use module attributes directly, i.e. macro context, you may also use the <a href="https://hexdocs.pm/elixir/Module.html#get_attribute/2"><code class="inline">Module.get_attribute/2</code></a> function.</p><pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">App.AnotherModule</span><span class="w"> </span><span class="k" data-group-id="1598174350-1">do</span><span class="w">
+  </span><span class="na">@moduledoc</span><span class="w"> </span><span class="no">false</span><span class="w">
+  </span><span class="na">@apm_env</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">get_env</span><span class="p" data-group-id="1598174350-2">(</span><span class="ss">:legion</span><span class="p">,</span><span class="w"> </span><span class="nc">Legion.Messaging.Medium.APM</span><span class="p" data-group-id="1598174350-2">)</span><span class="w">
+  </span><span class="na">@apm_subject_len</span><span class="w"> </span><span class="nc">Keyword</span><span class="o">.</span><span class="n">fetch!</span><span class="p" data-group-id="1598174350-3">(</span><span class="na">@apm_env</span><span class="p">,</span><span class="w"> </span><span class="ss">:subject_length</span><span class="p" data-group-id="1598174350-3">)</span><span class="w">
+
+  </span><span class="na">@push_env</span><span class="w"> </span><span class="nc">Application</span><span class="o">.</span><span class="n">get_env</span><span class="p" data-group-id="1598174350-4">(</span><span class="ss">:legion</span><span class="p">,</span><span class="w"> </span><span class="nc">Legion.Messaging.Medium.Push</span><span class="p" data-group-id="1598174350-4">)</span><span class="w">
+  </span><span class="na">@push_subject_len</span><span class="w"> </span><span class="nc">Keyword</span><span class="o">.</span><span class="n">fetch!</span><span class="p" data-group-id="1598174350-5">(</span><span class="na">@push_env</span><span class="p">,</span><span class="w"> </span><span class="ss">:subject_length</span><span class="p" data-group-id="1598174350-5">)</span><span class="w">
+
+  </span><span class="na">@mediums</span><span class="w"> </span><span class="p" data-group-id="1598174350-6">[</span><span class="ss">:apm</span><span class="p">,</span><span class="w"> </span><span class="ss">:push</span><span class="p" data-group-id="1598174350-6">]</span><span class="w">
+
+  </span><span class="k">for</span><span class="w"> </span><span class="n">medium</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="na">@mediums</span><span class="w"> </span><span class="k" data-group-id="1598174350-7">do</span><span class="w">
+    </span><span class="kd">defp</span><span class="w"> </span><span class="nf">check_length</span><span class="p" data-group-id="1598174350-8">(</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="k">unquote</span><span class="p" data-group-id="1598174350-9">(</span><span class="n">type</span><span class="p" data-group-id="1598174350-9">)</span><span class="p" data-group-id="1598174350-8">)</span><span class="w"> </span><span class="k" data-group-id="1598174350-10">do</span><span class="w">
+      </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">unquote</span><span class="p" data-group-id="1598174350-11">(</span><span class="nc">Module</span><span class="o">.</span><span class="n">get_attribute</span><span class="p" data-group-id="1598174350-12">(</span><span class="bp">__MODULE__</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;</span><span class="si" data-group-id="1598174350-13">#{</span><span class="nc">Atom</span><span class="o">.</span><span class="n">to_string</span><span class="p" data-group-id="1598174350-14">(</span><span class="n">medium</span><span class="p" data-group-id="1598174350-14">)</span><span class="si" data-group-id="1598174350-13">}</span><span class="ss">_subject_len&quot;</span><span class="p" data-group-id="1598174350-12">)</span><span class="p" data-group-id="1598174350-11">)</span><span class="w">
+
+      </span><span class="k">if</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">length</span><span class="p" data-group-id="1598174350-15">(</span><span class="k">unquote</span><span class="p" data-group-id="1598174350-16">(</span><span class="n">string</span><span class="p" data-group-id="1598174350-16">)</span><span class="p" data-group-id="1598174350-15">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">min</span><span class="p">,</span><span class="w">
+        </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+      </span><span class="ss">else</span><span class="p">:</span><span class="w"> </span><span class="ss">:error</span><span class="w">
+    </span><span class="k" data-group-id="1598174350-10">end</span><span class="w">
+  </span><span class="k" data-group-id="1598174350-7">end</span><span class="w">
+</span><span class="k" data-group-id="1598174350-1">end</span></code></pre><h2 id="altering-configuration-values-at-runtime" class="section-heading">
+  <a href="#altering-configuration-values-at-runtime" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Altering configuration values at runtime
+</h2>
+<p>Legion retrieves most of the configuration values at the runtime. Unless it is explicitly
+specified by an external API, developers are not allowed to change the configuration values
+belong to Legion itself, and the result might be undefined behavior.</p><pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">App.ImproperSwitcher</span><span class="w"> </span><span class="k" data-group-id="3139428780-1">do</span><span class="w">
+  </span><span class="kn">use</span><span class="w"> </span><span class="nc">Mix.Config</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">close</span><span class="w"> </span><span class="k" data-group-id="3139428780-2">do</span><span class="w">
+    </span><span class="c1"># This is invalid</span><span class="w">
+    </span><span class="n">config</span><span class="w"> </span><span class="ss">:legion</span><span class="p">,</span><span class="w"> </span><span class="nc">Legion.Messaging.Medium.APM</span><span class="p">,</span><span class="w">
+      </span><span class="ss">is_enabled?</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="w">
+  </span><span class="k" data-group-id="3139428780-2">end</span><span class="w">
+</span><span class="k" data-group-id="3139428780-1">end</span></code></pre><pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">App.ProperSwitcher</span><span class="w"> </span><span class="k" data-group-id="9555131461-1">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">close</span><span class="w"> </span><span class="k" data-group-id="9555131461-2">do</span><span class="w">
+    </span><span class="c1"># Using the explicit configuration API</span><span class="w">
+    </span><span class="n">disable_medium</span><span class="p" data-group-id="9555131461-3">(</span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="ss">:apm</span><span class="p" data-group-id="9555131461-3">)</span><span class="w">
+  </span><span class="k" data-group-id="9555131461-2">end</span><span class="w">
+</span><span class="k" data-group-id="9555131461-1">end</span></code></pre>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

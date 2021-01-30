@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="legion vdev">
+
+    <title>Configuration — legion vdev</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-06e6094e09.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+
+  </head>
+  <body data-type="extras">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="up-and-running.html" class="sidebar-projectName">
+legion
+      </a>
+      <strong class="sidebar-projectVersion">
+        vdev
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">GUIDES</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>Configuration</h1><p>Author: <a href="mailto:bekuklu@stcpay.com.sa">Buğra Ekuklu</a></p><h3 id="revision-history" class="section-heading">
+  <a href="#revision-history" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Revision history
+</h3>
+<ol><li>Initial draft, 18-06-14, <a href="mailto:bekuklu@stcpay.com.sa">Buğra Ekuklu</a>.</li></ol><hr class="thin"></hr><h2 id="global-switches" class="section-heading">
+  <a href="#global-switches" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Global switches
+</h2>
+<p>The module is configured using namespace <a href="Legion.Messaging.Switching.Globals.html"><code class="inline">Legion.Messaging.Switching.Globals</code></a>, with the following attributes.</p><table><thead><tr><th style="text-align: left;">Parameter name</th><th style="text-align: left;">Data Type</th><th style="text-align: left;">Units</th><th style="text-align: left;">Description</th><th style="text-align: left;">Default</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">:history_buffer_length</code></td><td style="text-align: left;">[<code class="inline">Range.t()</code>]</td><td style="text-align: left;">-</td><td style="text-align: left;">Number of entries in history buffer rollback.</td><td style="text-align: left;"><code class="inline">5</code></td></tr></tbody></table><h2 id="apm-medium" class="section-heading">
+  <a href="#apm-medium" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  APM medium
+</h2>
+<p>The module is configured using namespace <code class="inline">Legion.Messaging.Medium.APM</code>, with the following attributes.</p><table><thead><tr><th style="text-align: left;">Parameter name</th><th style="text-align: left;">Data Type</th><th style="text-align: left;">Units</th><th style="text-align: left;">Description</th><th style="text-align: left;">Default</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">:subject_length</code></td><td style="text-align: left;">[<code class="inline">Range.t()</code>]</td><td style="text-align: left;">-</td><td style="text-align: left;">Length of the subject of the message.</td><td style="text-align: left;"><code class="inline">2..40</code></td></tr><tr><td style="text-align: left;"><code class="inline">:body_length</code></td><td style="text-align: left;">[<code class="inline">Range.t()</code>]</td><td style="text-align: left;">-</td><td style="text-align: left;">Length of the body of the message.</td><td style="text-align: left;"><code class="inline">5..255</code></td></tr><tr><td style="text-align: left;"><code class="inline">:is_enabled</code></td><td style="text-align: left;"><code class="inline">boolean()</code></td><td style="text-align: left;">-</td><td style="text-align: left;">Compile-time switch to enable the medium.</td><td style="text-align: left;"><code class="inline">true</code></td></tr></tbody></table><h2 id="push-medium" class="section-heading">
+  <a href="#push-medium" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Push medium
+</h2>
+<p>The module is configured using namespace <code class="inline">Legion.Messaging.Medium.Push</code>, with the following attributes.</p><table><thead><tr><th style="text-align: left;">Parameter name</th><th style="text-align: left;">Data Type</th><th style="text-align: left;">Units</th><th style="text-align: left;">Description</th><th style="text-align: left;">Default</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">:subject_length</code></td><td style="text-align: left;">[<code class="inline">Range.t()</code>]</td><td style="text-align: left;">-</td><td style="text-align: left;">Length of the subject of the message.</td><td style="text-align: left;"><code class="inline">2..40</code></td></tr><tr><td style="text-align: left;"><code class="inline">:body_length</code></td><td style="text-align: left;">[<code class="inline">Range.t()</code>]</td><td style="text-align: left;">-</td><td style="text-align: left;">Length of the body of the message.</td><td style="text-align: left;"><code class="inline">5..255</code></td></tr><tr><td style="text-align: left;"><code class="inline">:is_enabled</code></td><td style="text-align: left;"><code class="inline">boolean()</code></td><td style="text-align: left;">-</td><td style="text-align: left;">Compile-time switch to enable the medium.</td><td style="text-align: left;"><code class="inline">true</code></td></tr></tbody></table><h2 id="mailing-medium" class="section-heading">
+  <a href="#mailing-medium" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Mailing medium
+</h2>
+<p>The module is configured using namespace <code class="inline">Legion.Messaging.Medium.Mailing</code>, with the following attributes.</p><table><thead><tr><th style="text-align: left;">Parameter name</th><th style="text-align: left;">Data Type</th><th style="text-align: left;">Units</th><th style="text-align: left;">Description</th><th style="text-align: left;">Default</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">:subject_length</code></td><td style="text-align: left;">[<code class="inline">Range.t()</code>]</td><td style="text-align: left;">-</td><td style="text-align: left;">Length of the subject of the message.</td><td style="text-align: left;"><code class="inline">2..40</code></td></tr><tr><td style="text-align: left;"><code class="inline">:body_length</code></td><td style="text-align: left;">[<code class="inline">Range.t()</code>]</td><td style="text-align: left;">-</td><td style="text-align: left;">Length of the body of the message.</td><td style="text-align: left;"><code class="inline">5..255</code></td></tr><tr><td style="text-align: left;"><code class="inline">:is_enabled</code></td><td style="text-align: left;"><code class="inline">boolean()</code></td><td style="text-align: left;">-</td><td style="text-align: left;">Compile-time switch to enable the medium.</td><td style="text-align: left;"><code class="inline">true</code></td></tr></tbody></table><h2 id="sms-medium" class="section-heading">
+  <a href="#sms-medium" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  SMS medium
+</h2>
+<p>The module is configured using namespace <code class="inline">Legion.Messaging.Medium.SMS</code>, with the following attributes.</p><table><thead><tr><th style="text-align: left;">Parameter name</th><th style="text-align: left;">Data Type</th><th style="text-align: left;">Units</th><th style="text-align: left;">Description</th><th style="text-align: left;">Default</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">:body_length</code></td><td style="text-align: left;">[<code class="inline">Range.t()</code>]</td><td style="text-align: left;">-</td><td style="text-align: left;">Length of the body of the message.</td><td style="text-align: left;"><code class="inline">5..255</code></td></tr><tr><td style="text-align: left;"><code class="inline">:is_enabled</code></td><td style="text-align: left;"><code class="inline">boolean()</code></td><td style="text-align: left;">-</td><td style="text-align: left;">Compile-time switch to enable the medium.</td><td style="text-align: left;"><code class="inline">true</code></td></tr></tbody></table><h2 id="platform-medium" class="section-heading">
+  <a href="#platform-medium" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Platform medium
+</h2>
+<p>The module is configured using namespace <code class="inline">Legion.Messaging.Medium.Platform</code>, with the following attributes.</p><table><thead><tr><th style="text-align: left;">Parameter name</th><th style="text-align: left;">Data Type</th><th style="text-align: left;">Units</th><th style="text-align: left;">Description</th><th style="text-align: left;">Default</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">:subject_length</code></td><td style="text-align: left;">[<code class="inline">Range.t()</code>]</td><td style="text-align: left;">-</td><td style="text-align: left;">Length of the subject of the message.</td><td style="text-align: left;"><code class="inline">2..40</code></td></tr><tr><td style="text-align: left;"><code class="inline">:body_length</code></td><td style="text-align: left;">[<code class="inline">Range.t()</code>]</td><td style="text-align: left;">-</td><td style="text-align: left;">Length of the body of the message.</td><td style="text-align: left;"><code class="inline">5..255</code></td></tr><tr><td style="text-align: left;"><code class="inline">:is_enabled</code></td><td style="text-align: left;"><code class="inline">boolean()</code></td><td style="text-align: left;">-</td><td style="text-align: left;">Compile-time switch to enable the medium.</td><td style="text-align: left;"><code class="inline">true</code></td></tr></tbody></table><h2 id="templatization" class="section-heading">
+  <a href="#templatization" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Templatization
+</h2>
+<p>The modules is configured using namespace <a href="Legion.Messaging.Templatization.html"><code class="inline">Legion.Messaging.Templatization</code></a>, with the following attributes.</p><table><thead><tr><th style="text-align: left;">Parameter name</th><th style="text-align: left;">Data Type</th><th style="text-align: left;">Units</th><th style="text-align: left;">Description</th><th style="text-align: left;">Default</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">:template_name_length</code></td><td style="text-align: left;">[<code class="inline">Range.t()</code>]</td><td style="text-align: left;">-</td><td style="text-align: left;">Length of the name of the template.</td><td style="text-align: left;"><code class="inline">5..50</code></td></tr></tbody></table>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>
