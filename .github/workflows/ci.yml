@@ -118,7 +118,7 @@ jobs:
         with:
           ACCESS_TOKEN: ${{ secrets.GH_PAGES_ACCESS_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: docs
+          FOLDER: doc
           CLEAN: false
   dockerize:
     name: Create a Docker image
