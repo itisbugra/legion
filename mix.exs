@@ -3,6 +3,7 @@ defmodule Legion.Umbrella.Mixfile do
 
   def project do
     [
+      app: :legion,
       apps_path: "apps",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
