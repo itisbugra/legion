@@ -92,6 +92,34 @@ jobs:
         run: bash <(curl -s https://codecov.io/bash)
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  generate-docs:
+    name: Generate documentation
+    runs-on: ubuntu-latest
+    needs: coverage
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-elixir@v1
+        name: Set up Elixir
+        with:
+          elixir-version: "1.11.3"
+          otp-version: "23"
+      - uses: actions/cache@v2
+        name: Restore dependencies cache
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+      - name: Install dependencies
+        run: mix deps.get
+      - name: Run ExDoc
+        run: mix docs
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          ACCESS_TOKEN: ${{ secrets.GH_PAGES_ACCESS_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: docs
+          CLEAN: false
   dockerize:
     name: Create a Docker image
     runs-on: ubuntu-latest
