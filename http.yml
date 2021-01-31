@@ -1,0 +1,3432 @@
+openapi: 3.0.0
+info:
+  title: Quessly HTTP API
+  description: >
+    ## API stability
+
+    We stage our APIs from numbers ranging from 0 to 6.
+
+    #### 0 - Unavailable
+
+    This feature was introduced very recently, and it is not implemented in
+    current versions, but may be available in future.
+
+    #### 1 - Experimental
+
+    This feature was introduced recently, and may change or be removed in future
+    versions. Please try it out and provide feedback. If it addresses a use-case
+    that is important to you, tell the core team.
+
+    #### 2 - Unstable
+
+    The API is in the process of settling, but has not yet had sufficient
+    real-world testing to be considered stable. Backwards-compatibility will be
+    maintained if reasonable.
+
+    #### 3 - Stable
+
+    The API has proven satisfactory, but cleanup in the underlying code may
+    cause minor changes. Backwards-compatibility is guaranteed.
+
+    #### 4 - Frozen
+
+    This API has been tested extensively in production and is unlikely to ever
+    have to change.
+
+    #### 5 - Locked
+
+    Unless serious bugs are found, this code will not ever change. Please do not
+    suggest changes in this area, they will be refused.
+
+    #### 6 - Deprecated
+
+    This feature is known to be problematic, and changes are planned. Do not
+    rely on it. Use of the feature may cause warnings. Backwards compatibility
+    should not be expected.
+  termsOfService: 'https://quessly.com/terms-of-service'
+  contact:
+    name: Buğra Ekuklu
+    url: 'https://github.com/Chatatata'
+    email: ekuklu@icloud.com
+  license:
+    name: Proprietary
+    url: 'https://github.com/Quessly'
+  version: 0.0.1-beta
+servers:
+  - url: 'https://api.quessly.com/v1'
+    description: Main (production) server
+  - url: 'https://staging.api.quessly.com'
+    description: Staging server
+tags:
+  - name: 'Stability: 0 - Unavailable'
+    description: |
+      APIs introduced very recently, and not implemented in current versions
+  - name: 'Service: Core services'
+    description: |
+      Provides services for availability and reachability.
+  - name: 'Service: Identity & Access Management'
+    description: |
+      Manages authentication and authorization of the users, and data retrieval
+  - name: 'Service: Questionbase'
+    description: |
+      Manages the domain context for the central business logic
+  - name: 'Resource: Users'
+    description: |
+      Represents the users of the platform
+  - name: 'Resource: Questions'
+    description: |
+      Represents questions found in the pool
+  - name: 'Resource: Question contexts'
+    description: |
+      Represents context of questions, mostly matched with an exam
+  - name: 'Resource: Question categories'
+    description: |
+      Represents categories of the questions
+paths:
+  /:
+    head:
+      summary: Check availability for the service
+      description: >
+        Useful for checking network reachability to the remote platform
+        services.
+
+        Client devices may also use the `Date` response header to perform time
+
+        synchronization between platform and device.
+      tags:
+        - 'Service: Core services'
+        - 'Stability: 0 - Unavailable'
+      operationId: checkAvailability
+      responses:
+        '204':
+          description: Empty response.
+  /identity-access-management/users:
+    get:
+      summary: List users
+      description: |
+        Operates as a query tool for platform users.
+      operationId: listUsers
+      tags:
+        - 'Service: Identity & Access Management'
+        - 'Resource: Users'
+        - 'Stability: 0 - Unavailable'
+      security:
+        - OAuth2:
+            - readUsers
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: >-
+            The number of items to skip before starting to collect the result
+            set.
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+            default: 10
+          description: The numbers of items to return.
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+      responses:
+        '200':
+          description: An array of users.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  '/identity-access-management/users/{userId}':
+    get:
+      summary: Get a user with identifier
+      description: |
+        TODO...
+      tags:
+        - 'Service: Identity & Access Management'
+        - 'Resource: Users'
+        - 'Stability: 0 - Unavailable'
+      operationId: getUser
+      security:
+        - OAuth2:
+            - readUsers
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: The identifier of the user.
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+      responses:
+        '200':
+          description: 'The user, which has the given identifier.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                  username:
+                    type: string
+                  emails:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                          description: Email address found in entry.
+                        is_primary:
+                          type: boolean
+                          description: >-
+                            If true, this email address is primary, which can be
+                            used in user authentication.
+                        inserted_at:
+                          type: string
+                          format: date-time
+                          description: >-
+                            An ISO 8601-compatible timestamp format without time
+                            zone.
+                  personal_information:
+                    type: object
+                    properties:
+                      given_name:
+                        type: string
+                        description: >-
+                          A name given to a individual to differentiate them
+                          from members of such group or family. May be referred
+                          as "family name" or "forename".
+                      middle_name:
+                        type: string
+                        description: >-
+                          A name given to a individual to differentiate them
+                          from members of such group or family with members
+                          having same given name.
+                      family_name:
+                        type: string
+                        description: >-
+                          A name given to a individual to represent its family
+                          or group.
+                      name_prefix:
+                        type: string
+                        description: >-
+                          Prefix of the name to vocal the individual, such as
+                          "Mr.".
+                      name_postfix:
+                        type: string
+                        description: >-
+                          Postfix of the name to vocal the individual, such as
+                          "-san", which may expand to something like
+                          "Suguro-san".
+                      nickname:
+                        type: string
+                        description: >-
+                          A nick given to an individual, generally pronounced
+                          informally.
+                      phonetic_representation:
+                        type: string
+                        description: Phonetic representation of the name of the user.
+                      nationality:
+                        type: string
+                        description: Nationality of a user.
+                        enum:
+                          - en
+                          - au
+                          - us
+                          - tr
+                          - de
+                          - it
+                          - ar
+                      gender:
+                        type: string
+                        description: Gender of a user.
+                        enum:
+                          - male
+                          - female
+                          - other
+                      url:
+                        type: string
+                        description: Web site of a user.
+                      image:
+                        type: string
+                        description: Image URL of a user.
+                      phone_numbers:
+                        type: array
+                        items:
+                          type: string
+                          format: date-time
+                          description: >-
+                            An ISO 8601-compatible timestamp format without time
+                            zone.
+                      addresses:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              format: int64
+                              description: Remote identifier of the address.
+                            type:
+                              type: string
+                              enum:
+                                - home
+                                - work
+                                - other
+                              description: Type of the address.
+                            name:
+                              type: string
+                              description: The given name for the address of the user.
+                            country:
+                              type: string
+                              description: The country of the residence.
+                            state:
+                              type: string
+                              description: The state of the residence.
+                            city:
+                              type: string
+                              description: The city of the residence.
+                            neighborhood:
+                              type: string
+                              description: The neighborhood of the residence.
+                            address:
+                              type: string
+                              description: Optional details for the address.
+                            description:
+                              type: string
+                              description: >-
+                                Description for the address to enhance ease of
+                                search.
+                            zip_code:
+                              type: string
+                              description: The zip code of the residence.
+                  last_activity_at:
+                    type: string
+                    description: Date of last activity of the user in ISO 8601 format.
+                  inserted_at:
+                    type: string
+                    description: Registration date of the user in ISO 8601 format.
+        '404':
+          description: User could not be found with specified identifier.
+          content:
+            application/vnd.error+json:
+              schema:
+                anyOf:
+                  - type: object
+                    required:
+                      - message
+                      - path
+                      - _links
+                    properties:
+                      message:
+                        type: string
+                        description: The localized error message.
+                        example: Validation failed.
+                      path:
+                        type: string
+                        description: The path of the endpoint that released the error.
+                        example: /some-endpoint
+                      logref:
+                        type: string
+                        description: The UUID-based log reference for the error.
+                        example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                      _links:
+                        type: object
+                        description: An object containing hyper-reference to the resources.
+                        example:
+                          about:
+                            href: 'http://path.to/user/resource/1'
+                          describes:
+                            href": 'http://path.to/describes'
+                          help:
+                            href: 'http://path.to/help'
+                  - type: object
+                    required:
+                      - total
+                      - _embedded
+                    properties:
+                      total:
+                        type: integer
+                        description: Number of errors.
+                        example: 1
+                      _embedded:
+                        type: object
+                        description: Contains the objects related to the embedded errors.
+                        required:
+                          - errors
+                        properties:
+                          errors:
+                            type: array
+                            description: Object containing embedded errors.
+                            example: []
+                            items:
+                              type: object
+                              required:
+                                - message
+                                - path
+                                - _links
+                              properties:
+                                message:
+                                  type: string
+                                  description: The localized error message.
+                                  example: Validation failed.
+                                path:
+                                  type: string
+                                  description: >-
+                                    The path of the endpoint that released the
+                                    error.
+                                  example: /some-endpoint
+                                logref:
+                                  type: string
+                                  description: The UUID-based log reference for the error.
+                                  example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                                _links:
+                                  type: object
+                                  description: >-
+                                    An object containing hyper-reference to the
+                                    resources.
+                                  example:
+                                    about:
+                                      href: 'http://path.to/user/resource/1'
+                                    describes:
+                                      href": 'http://path.to/describes'
+                                    help:
+                                      href: 'http://path.to/help'
+  '/identity-access-management/users/{user_id}/permissions':
+    get:
+      summary: List access control information of the user
+      description: >
+        Retrieves current permission set, active permission set grant and
+        permissions
+
+        of the user.
+      operationId: listUserPermissions
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Identifier of the platform user.
+          schema:
+            type: integer
+            format: int64
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+      tags:
+        - 'Service: Identity & Access Management'
+        - 'Resource: Users'
+        - 'Registry: Permissions'
+        - 'Stability: 0 - Unavailable'
+      responses:
+        '200':
+          description: >
+            Response body containing permission set, grant and permissions
+            information.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  grant:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        format: int64
+                        description: Identifier of the permission set grant.
+                      permission_set:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            format: int64
+                            description: Identifier of the permission set.
+                          name:
+                            type: string
+                            description: Name of the permission set.
+                          description:
+                            type: string
+                            description: Description of the permission set.
+                          owner:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                format: int64
+                                description: Identifier of the platform user.
+                              username:
+                                type: string
+                                description: Username of the user.
+                              inserted_at:
+                                type: string
+                                description: >-
+                                  Registration date of the user in ISO 8601
+                                  format.
+                            description: Owner of the permission set.
+                          permissions:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  format: int64
+                                  description: Identifier of the permission.
+                                controller_name:
+                                  type: string
+                                  description: Name of the permission controller.
+                                controller_action:
+                                  type: string
+                                  description: >-
+                                    Affected action of the permission
+                                    controller.,
+                                  enum:
+                                    - index
+                                    - show
+                                    - create
+                                    - update
+                                    - delete
+                                severity:
+                                  type: string
+                                  description: Severity of the action.
+                                  enum:
+                                    - secure
+                                    - mediocre
+                                    - severe
+                          inserted_at:
+                            type: string
+                            format: date-time
+                            description: >-
+                              An ISO 8601-compatible timestamp format without
+                              time zone.
+                        description: Granted permission set.
+                      authority:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            format: int64
+                            description: Identifier of the platform user.
+                          username:
+                            type: string
+                            description: Username of the user.
+                          inserted_at:
+                            type: string
+                            description: Registration date of the user in ISO 8601 format.
+                        description: The authority made the grant.
+                      valid_after:
+                        type: string
+                        format: date-time
+                        description: >-
+                          An ISO 8601-compatible timestamp format without time
+                          zone.
+                      valid_until:
+                        type: string
+                        format: date-time
+                        description: >-
+                          An ISO 8601-compatible timestamp format without time
+                          zone.
+                      inserted_at:
+                        type: string
+                        format: date-time
+                        description: >-
+                          An ISO 8601-compatible timestamp format without time
+                          zone.
+        '404':
+          description: |
+            No user with given identifier is existent.
+          content:
+            application/vnd.error+json:
+              schema:
+                anyOf:
+                  - type: object
+                    required:
+                      - message
+                      - path
+                      - _links
+                    properties:
+                      message:
+                        type: string
+                        description: The localized error message.
+                        example: Validation failed.
+                      path:
+                        type: string
+                        description: The path of the endpoint that released the error.
+                        example: /some-endpoint
+                      logref:
+                        type: string
+                        description: The UUID-based log reference for the error.
+                        example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                      _links:
+                        type: object
+                        description: An object containing hyper-reference to the resources.
+                        example:
+                          about:
+                            href: 'http://path.to/user/resource/1'
+                          describes:
+                            href": 'http://path.to/describes'
+                          help:
+                            href: 'http://path.to/help'
+                  - type: object
+                    required:
+                      - total
+                      - _embedded
+                    properties:
+                      total:
+                        type: integer
+                        description: Number of errors.
+                        example: 1
+                      _embedded:
+                        type: object
+                        description: Contains the objects related to the embedded errors.
+                        required:
+                          - errors
+                        properties:
+                          errors:
+                            type: array
+                            description: Object containing embedded errors.
+                            example: []
+                            items:
+                              type: object
+                              required:
+                                - message
+                                - path
+                                - _links
+                              properties:
+                                message:
+                                  type: string
+                                  description: The localized error message.
+                                  example: Validation failed.
+                                path:
+                                  type: string
+                                  description: >-
+                                    The path of the endpoint that released the
+                                    error.
+                                  example: /some-endpoint
+                                logref:
+                                  type: string
+                                  description: The UUID-based log reference for the error.
+                                  example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                                _links:
+                                  type: object
+                                  description: >-
+                                    An object containing hyper-reference to the
+                                    resources.
+                                  example:
+                                    about:
+                                      href: 'http://path.to/user/resource/1'
+                                    describes:
+                                      href": 'http://path.to/describes'
+                                    help:
+                                      href: 'http://path.to/help'
+  '/identity-access-management/users/{user_id}/activities':
+    get:
+      summary: List activities of a user
+      description: Retrieves a list of activities of user with given identifier.
+      operationId: listUserActivities
+      tags:
+        - 'Service: Identity & Access Management'
+        - 'Registry: Activities'
+        - 'Stability: 0 - Unavailable'
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Identifier of the platform user.
+          schema:
+            type: integer
+            format: int64
+        - name: passphrase_id
+          in: query
+          required: false
+          description: Identifier of the passphrase.
+          schema:
+            type: integer
+            format: int64
+        - name: from_timestamp
+          in: query
+          required: false
+          description: >-
+            Filters the activities, starting from given ISO-8601 formatted
+            timestamp. are shown.
+          schema:
+            type: string
+        - name: to_timestamp
+          in: query
+          required: false
+          description: >-
+            Filters the activities, created up to given ISO-8601 formatted
+            timestamp. are shown
+          schema:
+            type: string
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: >-
+            The number of items to skip before starting to collect the result
+            set.
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+            default: 10
+          description: The numbers of items to return.
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+      responses:
+        '200':
+          description: Response contains activities of user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  activities:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        device_blueprint:
+                          type: object
+                          properties:
+                            engine:
+                              type: string
+                              description: Name of the engine of the client.
+                            engine_version:
+                              type: string
+                              description: Version of the engine of the client.
+                            client_name:
+                              type: string
+                              description: Name of the client.
+                            client_type:
+                              type: string
+                              description: Type of the client.
+                            client_version:
+                              type: string
+                              description: Version of the client.
+                            device_brand:
+                              type: string
+                              description: Brand of the device.
+                            device_model:
+                              type: string
+                              description: Model of the device.
+                            device_type:
+                              type: string
+                              description: Type of the device.
+                            os_name:
+                              type: string
+                              description: Name of the operating system of device.
+                            os_platform:
+                              type: string
+                              description: Platform of the operating system of device.
+                            os_version:
+                              type: string
+                              description: Version of the operating system of device.
+                          description: Blueprint information of the device.
+                        latest_snapshot:
+                          type: object
+                          properties:
+                            ip_addr:
+                              type: string
+                              description: IP address of the last activity.
+                            country_name:
+                              type: string
+                              description: Name of the country user connected from.
+                            country_code:
+                              type: string
+                              description: Code of the country user connected from.
+                            ip_location:
+                              type: object
+                              properties:
+                                latitude:
+                                  type: number
+                                  format: float
+                                  description: Latitude of the coordinate.
+                                longitude:
+                                  type: number
+                                  format: float
+                                  description: Longitude of the coordinate.
+                            metro_code:
+                              type: string
+                              description: >-
+                                Metro code of the coordinate user connected
+                                from.
+                            region_code:
+                              type: string
+                              description: >-
+                                Code of the region of the area user connected
+                                from.
+                            region_name:
+                              type: string
+                              description: >-
+                                Name of the region of the area user connected
+                                from.
+                            time_zone:
+                              type: string
+                              description: Time zone of the user.
+                            zip_code:
+                              type: string
+                              description: Zip code of the coordinate.
+                            geo_location:
+                              type: object
+                              properties:
+                                latitude:
+                                  type: number
+                                  format: float
+                                  description: Latitude of the coordinate.
+                                longitude:
+                                  type: number
+                                  format: float
+                                  description: Longitude of the coordinate.
+                            inserted_at:
+                              type: string
+                              description: The timestamp of the activity.
+                          description: Last visible activity of the user.
+                        passphrase_id:
+                          type: integer
+                          format: int64
+                          description: Identifier of the passphrase.
+  /identity-access-management/authentication/register:
+    post:
+      summary: Register a new user
+      description: |
+        Registers a new user to the platform with given credentials.
+      operationId: signUp
+      tags:
+        - 'Service: Identity & Access Management'
+        - 'Resource: Users'
+        - 'Stability: 0 - Unavailable'
+      parameters:
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+            default: en-US
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+            default: utf-8
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+      requestBody:
+        description: |
+          The credential information for the new user.
+        required: true
+        content:
+          application/json; charset=utf-8:
+            schema:
+              type: object
+              required:
+                - email
+                - password_hash
+                - hash_algorithm
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: E-mail address of the new user.
+                  example: example@mail.com
+                  minLength: 3
+                password_hash:
+                  type: string
+                  description: Password hash of the new user.
+                  example: >-
+                    5043c660adbc89189e1903580a3fc3d9a16801587ebc8fe9637748ea2acdf4f8e3a5f500b1329ac9dd6c13bcbfa7656b4713acf5517177b8076d2df9fa1eeb0d
+                hash_algorithm:
+                  type: string
+                  description: Hashing algorithm being used in hash generation.
+                  example: sha3_512
+                  enum:
+                    - sha3_224
+                    - sha3_256
+                    - sha3_384
+                    - sha3_512
+      responses:
+        '201':
+          description: The user has been created.
+          headers:
+            Location:
+              schema:
+                type: string
+              description: The location for the registered user.
+              example: /users/1
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifier of the new user.
+                    example: 1
+                    minimum: 0
+        '409':
+          description: >
+            The user could not be registered due to a conflict.
+
+
+            Developers can assert that there is a user associated with the same
+            e-mail
+
+            address, which denies any other registration further to the given
+            e-mail
+
+            address.
+          content:
+            application/vnd.error+json:
+              schema:
+                anyOf:
+                  - type: object
+                    required:
+                      - message
+                      - path
+                      - _links
+                    properties:
+                      message:
+                        type: string
+                        description: The localized error message.
+                        example: Validation failed.
+                      path:
+                        type: string
+                        description: The path of the endpoint that released the error.
+                        example: /some-endpoint
+                      logref:
+                        type: string
+                        description: The UUID-based log reference for the error.
+                        example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                      _links:
+                        type: object
+                        description: An object containing hyper-reference to the resources.
+                        example:
+                          about:
+                            href: 'http://path.to/user/resource/1'
+                          describes:
+                            href": 'http://path.to/describes'
+                          help:
+                            href: 'http://path.to/help'
+                  - type: object
+                    required:
+                      - total
+                      - _embedded
+                    properties:
+                      total:
+                        type: integer
+                        description: Number of errors.
+                        example: 1
+                      _embedded:
+                        type: object
+                        description: Contains the objects related to the embedded errors.
+                        required:
+                          - errors
+                        properties:
+                          errors:
+                            type: array
+                            description: Object containing embedded errors.
+                            example: []
+                            items:
+                              type: object
+                              required:
+                                - message
+                                - path
+                                - _links
+                              properties:
+                                message:
+                                  type: string
+                                  description: The localized error message.
+                                  example: Validation failed.
+                                path:
+                                  type: string
+                                  description: >-
+                                    The path of the endpoint that released the
+                                    error.
+                                  example: /some-endpoint
+                                logref:
+                                  type: string
+                                  description: The UUID-based log reference for the error.
+                                  example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                                _links:
+                                  type: object
+                                  description: >-
+                                    An object containing hyper-reference to the
+                                    resources.
+                                  example:
+                                    about:
+                                      href: 'http://path.to/user/resource/1'
+                                    describes:
+                                      href": 'http://path.to/describes'
+                                    help:
+                                      href: 'http://path.to/help'
+        '422':
+          description: >
+            The user could not be registered due to an invalid parameter.
+
+
+            This could be either due to e-mail address validation or incorrect
+            hash
+
+            length given as a request body parameter.
+          content:
+            application/vnd.error+json:
+              schema:
+                anyOf:
+                  - type: object
+                    required:
+                      - message
+                      - path
+                      - _links
+                    properties:
+                      message:
+                        type: string
+                        description: The localized error message.
+                        example: Validation failed.
+                      path:
+                        type: string
+                        description: The path of the endpoint that released the error.
+                        example: /some-endpoint
+                      logref:
+                        type: string
+                        description: The UUID-based log reference for the error.
+                        example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                      _links:
+                        type: object
+                        description: An object containing hyper-reference to the resources.
+                        example:
+                          about:
+                            href: 'http://path.to/user/resource/1'
+                          describes:
+                            href": 'http://path.to/describes'
+                          help:
+                            href: 'http://path.to/help'
+                  - type: object
+                    required:
+                      - total
+                      - _embedded
+                    properties:
+                      total:
+                        type: integer
+                        description: Number of errors.
+                        example: 1
+                      _embedded:
+                        type: object
+                        description: Contains the objects related to the embedded errors.
+                        required:
+                          - errors
+                        properties:
+                          errors:
+                            type: array
+                            description: Object containing embedded errors.
+                            example: []
+                            items:
+                              type: object
+                              required:
+                                - message
+                                - path
+                                - _links
+                              properties:
+                                message:
+                                  type: string
+                                  description: The localized error message.
+                                  example: Validation failed.
+                                path:
+                                  type: string
+                                  description: >-
+                                    The path of the endpoint that released the
+                                    error.
+                                  example: /some-endpoint
+                                logref:
+                                  type: string
+                                  description: The UUID-based log reference for the error.
+                                  example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                                _links:
+                                  type: object
+                                  description: >-
+                                    An object containing hyper-reference to the
+                                    resources.
+                                  example:
+                                    about:
+                                      href: 'http://path.to/user/resource/1'
+                                    describes:
+                                      href": 'http://path.to/describes'
+                                    help:
+                                      href: 'http://path.to/help'
+  /identity-access-management/authentication/insecure-authentication/change-password:
+    post:
+      summary: Change password of the user
+      description: Replaces the password of the user with given one.
+      operationId: changePassword
+      tags:
+        - 'Service: Identity & Access Management'
+        - 'Resource: Users'
+        - 'Stability: 0 - Unavailable'
+        - 'Authentication scheme: Insecure authentication'
+      parameters:
+        - name: id
+          in: path
+          description: Identifier of the user.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Properties of the password changing operation.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                old_password_hash:
+                  type: string
+                  description: Old password hash of the user.
+                new_password_hash:
+                  type: string
+                  description: New password hash of the user.
+      responses:
+        '201':
+          description: Response indicating password changing operation has been completed.
+        '422':
+          description: The given parameters were invalid for the changing password.
+  /identity-access-management/authentication/two-factor-authentication/finalize:
+    post:
+      summary: Complete two-factor concrete authentication
+      description: >-
+        If two-factor authentication was enabled in user, upon one-time code
+        generation, the sign in process can be completed by submitting
+        two-factor authentication artifact to this route.
+      operationId: completeSignIn
+      tags:
+        - 'Service: Identity & Access Management'
+        - 'Resource: Users'
+        - 'Stability: 0 - Unavailable'
+        - 'Authentication scheme: Two-factor authentication'
+      requestBody:
+        description: >-
+          Supplies two-factor authentication artifact, which might be one-time
+          code.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  format: int64
+                  description: Identifier of the user.
+                one_time_code:
+                  type: string
+                  description: >-
+                    One-time code supplied in twofactor authentication
+                    middleware.
+      responses:
+        '201':
+          description: 'Authentication is succeed, passphrase is included in the response.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                    format: int64
+                    description: Identifier of the user.
+                  scheme:
+                    type: string
+                    enum:
+                      - insecure
+                      - pre_otc_over_sms
+                      - pre_otc_over_email
+                      - pre_otc_over_guard
+                    description: >-
+                      Planned authentication scheme for the user. See
+                      documentation for value descriptions.
+                  passphrase:
+                    type: string
+                    description: >-
+                      Passphrase string to proceed to stealth authentication.
+                      Must be stored safely by client.
+                    minLength: 192
+                    maxLength: 192
+        '404':
+          description: >-
+            Authentication is failed since user has no awaiting two-factor
+            authentication handle, or user does not exist, or one-time code
+            given does not match.
+  /identity-access-management/access-control/permissions:
+    get:
+      summary: List permissions
+      description: Lists permissions found in the platform.
+      operationId: listPermissions
+      tags:
+        - 'Service: Identity & Access Management'
+        - 'Registry: Permissions'
+        - 'Stability: 0 - Unavailable'
+      parameters:
+        - name: controller_name
+          in: query
+          description: Name of the permission controller.
+          required: false
+          schema:
+            type: string
+        - name: controller_action
+          in: query
+          description: Affected action of the permission controller.
+          required: false
+          schema:
+            type: string
+            enum:
+              - index
+              - show
+              - create
+              - update
+              - delete
+        - name: type
+          in: query
+          description: Type of the permission.
+          required: false
+          schema:
+            type: string
+        - name: severity
+          in: query
+          description: Severity of the action.
+          required: false
+          schema:
+            type: string
+            enum:
+              - secure
+              - mediocre
+              - severe
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: >-
+            The number of items to skip before starting to collect the result
+            set.
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+            default: 10
+          description: The numbers of items to return.
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+      responses:
+        '200':
+          description: Response containing a list of permissions.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                      description: Identifier of the permission.
+                    controller_name:
+                      type: string
+                      description: Name of the permission controller.
+                      enum:
+                        - index
+                        - show
+                        - create
+                        - update
+                        - delete
+                    controller_action:
+                      type: string
+                      description: Affected action of the permission controller.
+                    severity:
+                      type: string
+                      description: Severity of the action.
+                      enum:
+                        - secure
+                        - mediocre
+                        - severe
+  /identity-access-management/access-control/permission-sets:
+    get:
+      summary: List permission sets
+      description: Lists permission sets found in platform
+      operationId: listPermissionSets
+      tags:
+        - 'Service: Identity & Access Management'
+        - 'Resource: Permission sets'
+        - 'Stability: 0 - Unavailable'
+      parameters:
+        - name: owner_id
+          in: query
+          description: User identifier of the owner
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: >-
+            The number of items to skip before starting to collect the result
+            set.
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+            default: 10
+          description: The numbers of items to return.
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+      responses:
+        '200':
+          description: Response contains permission sets.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                      description: Identifier of the permission set.
+                    name:
+                      type: string
+                      description: Name of the permission set.
+                    description:
+                      type: string
+                      description: Description of the permission set.
+                    owner:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          format: int64
+                          description: Identifier of the platform user.
+                        username:
+                          type: string
+                          description: Username of the user.
+                        inserted_at:
+                          type: string
+                          description: Registration date of the user in ISO 8601 format.
+                      description: Owner of the permission set.
+                    permissions:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            format: int64
+                            description: Identifier of the permission.
+                          controller_name:
+                            type: string
+                            description: Name of the permission controller.
+                            enum:
+                              - index
+                              - show
+                              - create
+                              - update
+                              - delete
+                          controller_action:
+                            type: string
+                            description: Affected action of the permission controller.
+                            enum:
+                              - index
+                              - show
+                              - create
+                              - update
+                              - delete
+                          severity:
+                            type: string
+                            description: Severity of the action.
+                            enum:
+                              - secure
+                              - mediocre
+                              - severe
+                    inserted_at:
+                      type: string
+                      format: date-time
+                      description: >-
+                        An ISO 8601-compatible timestamp format without time
+                        zone.
+    post:
+      summary: Create a new permission set
+      description: |
+        Inserts a new permission set entry (e.g. store employee) for with
+        given data.
+      operationId: createPermissionSet
+      tags:
+        - 'Service: Identity & Access Management'
+        - 'Resource: Permission sets'
+        - 'Stability: 0 - Unavailable'
+      requestBody:
+        description: Properties of the new permission set.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the new permission set.
+                description:
+                  type: string
+                  description: Description of the new permission set.
+                permission_ids:
+                  type: array
+                  description: Permission identifier list of the new permission set.
+                  items:
+                    type: integer
+                    format: int64
+      responses:
+        '201':
+          description: Permission set is saved succesfully.
+        '422':
+          description: |
+            The supplied permission set parameters is invalid, the action is
+            rolled back. *Refer to the body of the response.*
+  '/identity-access-management/access-control/permission-sets/{permission_set_id}':
+    put:
+      summary: Update a permission set
+      description: |
+        Upserts given permissions and name to the existing permission set entry
+        of the permission set's given identifier.
+      operationId: updatePermissionSet
+      tags:
+        - 'Service: Identity & Access Management'
+        - 'Resource: Permission sets'
+        - 'Stability: 0 - Unavailable'
+      parameters:
+        - name: permission_set_id
+          in: path
+          required: true
+          description: Identifier of the permission set.
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Properties of the permission set.
+        required: true
+        content:
+          application/json; charset=utf-8:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the updating permission set.
+                description:
+                  type: string
+                  description: Description of the updating permission set.
+                permission_ids:
+                  type: array
+                  description: >-
+                    Permission identifier list of the permission set being
+                    updated.
+                  items:
+                    type: integer
+                    format: int64
+      responses:
+        '200':
+          description: Permission set is updated.
+        '400':
+          description: |
+            The supplied permission set is invalid, the action is rolled back.
+            *Refer to the body of the response.*
+        '404':
+          description: |
+            The permission set with given identifier could not be found. *Refer
+            to the body of the response.*
+    delete:
+      summary: Remove a permission set
+      description: >-
+        Deletes given whole permission set (permissions and permission set rows)
+        of the permission set's identifier.
+      operationId: deletePermissionSet
+      tags:
+        - 'Service: Identity & Access Management'
+        - 'Resource: Permission sets'
+        - 'Stability: 0 - Unavailable'
+      parameters:
+        - name: permission_set_id
+          in: path
+          required: true
+          description: Identifier of the permission set.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Permission set is deleted.
+        '404':
+          description: 'The supplied permission set is invalid, the action is rolled back.'
+  /questionbase/contexts:
+    get:
+      summary: List contexts
+      description: |
+        Operates as a query tool for question contexts.
+      operationId: listContexts
+      tags:
+        - 'Service: Questionbase'
+        - 'Resource: Question contexts'
+        - 'Stability: 0 - Unavailable'
+      security:
+        - OAuth2:
+            - readQuestionContexts
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: >-
+            The number of items to skip before starting to collect the result
+            set.
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+            default: 10
+          description: The numbers of items to return.
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+      responses:
+        '200':
+          description: An array of contexts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+    post:
+      summary: Create a new question context
+      description: |
+        Adds a new question context.
+      tags:
+        - 'Service: Questionbase'
+        - 'Resource: Question contexts'
+        - 'Stability: 0 - Unavailable'
+      operationId: createContext
+      security:
+        - OAuth2:
+            - manageQuestionContexts
+      parameters:
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+            default: en-US
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+            default: utf-8
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+      requestBody:
+        description: |
+          The metadata information for the new context.
+        required: true
+        content:
+          application/json; charset=utf-8:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: |
+                    Default name of the context. Will be shown if no localizable
+                    entry is available to the client.
+                  example: Scholastic Aptitude Test
+                  minLength: 1
+                description:
+                  type: string
+                  description: >
+                    Default description of the context, supports
+
+                    [CommonMark](https://commonmark.org/) to enable rich text.
+
+                    Will be shown if no localizable entry is available to the
+                    client.
+                  example: >
+                    National Curriculum assessment usually refers to the
+                    statutory
+
+                    assessments carried out in primary schools in England,
+
+                    colloquially known as standard attainment tests (SATs).
+
+                    The assessments are made up of a combination of testing and
+
+                    teacher assessment judgements, and are used in all
+
+                    government-funded primary schools in England to assess the
+
+                    attainment of pupils against the programmes of study of the
+
+                    National Curriculum at the end of Key Stages 1 and 2, when
+                    most
+
+                    pupils are aged 7 and 11 respectively. Until 2008,
+                    assessments
+
+                    were also required at the end of Key Stage 3 (14-year-olds)
+
+                    in secondary schools.
+
+
+                    > Source:
+                    [Wikipedia](https://en.wikipedia.org/wiki/National_Curriculum_assessment)
+                  minLength: 1
+                short_name:
+                  type: string
+                  description: |
+                    Short name for the context in native locale.
+
+                    *Currently, this field does not enforce any casing, however
+                    forward changes in the API may do so.*
+                  example: SAT
+                  minLength: 1
+                visible:
+                  type: boolean
+                  description: Specifies visibility of the context to the platform users.
+                  default: false
+      responses:
+        '201':
+          description: The context has been created.
+          headers:
+            Location:
+              schema:
+                type: string
+              description: The location for the context created.
+              example: /qss/contexts/1
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifier of the new context.
+                    example: 1
+                    minimum: 0
+        '422':
+          description: |
+            TODO...
+          content:
+            application/vnd.error+json:
+              schema:
+                anyOf:
+                  - type: object
+                    required:
+                      - message
+                      - path
+                      - _links
+                    properties:
+                      message:
+                        type: string
+                        description: The localized error message.
+                        example: Validation failed.
+                      path:
+                        type: string
+                        description: The path of the endpoint that released the error.
+                        example: /some-endpoint
+                      logref:
+                        type: string
+                        description: The UUID-based log reference for the error.
+                        example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                      _links:
+                        type: object
+                        description: An object containing hyper-reference to the resources.
+                        example:
+                          about:
+                            href: 'http://path.to/user/resource/1'
+                          describes:
+                            href": 'http://path.to/describes'
+                          help:
+                            href: 'http://path.to/help'
+                  - type: object
+                    required:
+                      - total
+                      - _embedded
+                    properties:
+                      total:
+                        type: integer
+                        description: Number of errors.
+                        example: 1
+                      _embedded:
+                        type: object
+                        description: Contains the objects related to the embedded errors.
+                        required:
+                          - errors
+                        properties:
+                          errors:
+                            type: array
+                            description: Object containing embedded errors.
+                            example: []
+                            items:
+                              type: object
+                              required:
+                                - message
+                                - path
+                                - _links
+                              properties:
+                                message:
+                                  type: string
+                                  description: The localized error message.
+                                  example: Validation failed.
+                                path:
+                                  type: string
+                                  description: >-
+                                    The path of the endpoint that released the
+                                    error.
+                                  example: /some-endpoint
+                                logref:
+                                  type: string
+                                  description: The UUID-based log reference for the error.
+                                  example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                                _links:
+                                  type: object
+                                  description: >-
+                                    An object containing hyper-reference to the
+                                    resources.
+                                  example:
+                                    about:
+                                      href: 'http://path.to/user/resource/1'
+                                    describes:
+                                      href": 'http://path.to/describes'
+                                    help:
+                                      href: 'http://path.to/help'
+  '/questionbase/contexts/{contextId}':
+    get:
+      summary: Show the context with given identifier
+      description: >
+        Retrieves the information about the context with the specified
+        identifier.
+      operationId: showContext
+      tags:
+        - 'Service: Questionbase'
+        - 'Resource: Question contexts'
+        - 'Stability: 0 - Unavailable'
+      security:
+        - OAuth2:
+            - readQuestionContexts
+      parameters:
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+        - in: path
+          name: contextId
+          description: |
+            The identifier of the context.
+          schema:
+            type: integer
+          example: 0
+          required: true
+      responses:
+        '200':
+          description: 'The context object, if it exists.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '404':
+          description: |
+            The context with given identifier could not be found.
+          content:
+            application/vnd.error+json:
+              schema:
+                anyOf:
+                  - type: object
+                    required:
+                      - message
+                      - path
+                      - _links
+                    properties:
+                      message:
+                        type: string
+                        description: The localized error message.
+                        example: Validation failed.
+                      path:
+                        type: string
+                        description: The path of the endpoint that released the error.
+                        example: /some-endpoint
+                      logref:
+                        type: string
+                        description: The UUID-based log reference for the error.
+                        example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                      _links:
+                        type: object
+                        description: An object containing hyper-reference to the resources.
+                        example:
+                          about:
+                            href: 'http://path.to/user/resource/1'
+                          describes:
+                            href": 'http://path.to/describes'
+                          help:
+                            href: 'http://path.to/help'
+                  - type: object
+                    required:
+                      - total
+                      - _embedded
+                    properties:
+                      total:
+                        type: integer
+                        description: Number of errors.
+                        example: 1
+                      _embedded:
+                        type: object
+                        description: Contains the objects related to the embedded errors.
+                        required:
+                          - errors
+                        properties:
+                          errors:
+                            type: array
+                            description: Object containing embedded errors.
+                            example: []
+                            items:
+                              type: object
+                              required:
+                                - message
+                                - path
+                                - _links
+                              properties:
+                                message:
+                                  type: string
+                                  description: The localized error message.
+                                  example: Validation failed.
+                                path:
+                                  type: string
+                                  description: >-
+                                    The path of the endpoint that released the
+                                    error.
+                                  example: /some-endpoint
+                                logref:
+                                  type: string
+                                  description: The UUID-based log reference for the error.
+                                  example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                                _links:
+                                  type: object
+                                  description: >-
+                                    An object containing hyper-reference to the
+                                    resources.
+                                  example:
+                                    about:
+                                      href: 'http://path.to/user/resource/1'
+                                    describes:
+                                      href": 'http://path.to/describes'
+                                    help:
+                                      href: 'http://path.to/help'
+    patch:
+      summary: Patch an existing question context with identifier
+      description: |
+        Patches the question context with given identifier by provided values.
+      tags:
+        - 'Service: Questionbase'
+        - 'Resource: Question contexts'
+        - 'Stability: 0 - Unavailable'
+      operationId: updateContext
+      security:
+        - OAuth2:
+            - manageQuestionContexts
+      parameters:
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+            default: en-US
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+            default: utf-8
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+        - in: path
+          name: contextId
+          description: |
+            The identifier of the context.
+          schema:
+            type: integer
+          example: 0
+          required: true
+      requestBody:
+        description: |
+          The new metadata information for the context.
+        required: true
+        content:
+          application/json; charset=utf-8:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: |
+                    Default name of the context. Will be shown if no localizable
+                    entry is available to the client.
+                  example: Scholastic Aptitude Test
+                  minLength: 1
+                description:
+                  type: string
+                  description: >
+                    Default description of the context, supports
+
+                    [CommonMark](https://commonmark.org/) to enable rich text.
+
+                    Will be shown if no localizable entry is available to the
+                    client.
+                  example: >
+                    National Curriculum assessment usually refers to the
+                    statutory
+
+                    assessments carried out in primary schools in England,
+
+                    colloquially known as standard attainment tests (SATs).
+
+                    The assessments are made up of a combination of testing and
+
+                    teacher assessment judgements, and are used in all
+
+                    government-funded primary schools in England to assess the
+
+                    attainment of pupils against the programmes of study of the
+
+                    National Curriculum at the end of Key Stages 1 and 2, when
+                    most
+
+                    pupils are aged 7 and 11 respectively. Until 2008,
+                    assessments
+
+                    were also required at the end of Key Stage 3 (14-year-olds)
+
+                    in secondary schools.
+
+
+                    > Source:
+                    [Wikipedia](https://en.wikipedia.org/wiki/National_Curriculum_assessment)
+                  minLength: 1
+                short_name:
+                  type: string
+                  description: |
+                    Short name for the context in native locale.
+
+                    *Currently, this field does not enforce any casing, however
+                    forward changes in the API may do so.*
+                  example: SAT
+                  minLength: 1
+                visible:
+                  type: boolean
+                  description: Specifies visibility of the context to the platform users.
+                  default: false
+      responses:
+        '200':
+          description: The context has been updated.
+          headers:
+            Location:
+              schema:
+                type: string
+              description: The location for the context updated.
+              example: /qss/contexts/1
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifier of the context.
+                    example: 1
+                    minimum: 0
+        '422':
+          description: |
+            TODO...
+          content:
+            application/vnd.error+json:
+              schema:
+                anyOf:
+                  - type: object
+                    required:
+                      - message
+                      - path
+                      - _links
+                    properties:
+                      message:
+                        type: string
+                        description: The localized error message.
+                        example: Validation failed.
+                      path:
+                        type: string
+                        description: The path of the endpoint that released the error.
+                        example: /some-endpoint
+                      logref:
+                        type: string
+                        description: The UUID-based log reference for the error.
+                        example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                      _links:
+                        type: object
+                        description: An object containing hyper-reference to the resources.
+                        example:
+                          about:
+                            href: 'http://path.to/user/resource/1'
+                          describes:
+                            href": 'http://path.to/describes'
+                          help:
+                            href: 'http://path.to/help'
+                  - type: object
+                    required:
+                      - total
+                      - _embedded
+                    properties:
+                      total:
+                        type: integer
+                        description: Number of errors.
+                        example: 1
+                      _embedded:
+                        type: object
+                        description: Contains the objects related to the embedded errors.
+                        required:
+                          - errors
+                        properties:
+                          errors:
+                            type: array
+                            description: Object containing embedded errors.
+                            example: []
+                            items:
+                              type: object
+                              required:
+                                - message
+                                - path
+                                - _links
+                              properties:
+                                message:
+                                  type: string
+                                  description: The localized error message.
+                                  example: Validation failed.
+                                path:
+                                  type: string
+                                  description: >-
+                                    The path of the endpoint that released the
+                                    error.
+                                  example: /some-endpoint
+                                logref:
+                                  type: string
+                                  description: The UUID-based log reference for the error.
+                                  example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                                _links:
+                                  type: object
+                                  description: >-
+                                    An object containing hyper-reference to the
+                                    resources.
+                                  example:
+                                    about:
+                                      href: 'http://path.to/user/resource/1'
+                                    describes:
+                                      href": 'http://path.to/describes'
+                                    help:
+                                      href: 'http://path.to/help'
+    delete:
+      summary: Delete an existing question context with identifier
+      description: |
+        Removes the question context with given identifier from the platform.
+      tags:
+        - 'Service: Questionbase'
+        - 'Resource: Question contexts'
+        - 'Stability: 0 - Unavailable'
+      operationId: deleteContext
+      security:
+        - OAuth2:
+            - manageQuestionContexts
+      parameters:
+        - in: path
+          name: contextId
+          description: |
+            The identifier of the context.
+          schema:
+            type: integer
+          example: 0
+          required: true
+      responses:
+        '204':
+          description: Empty response.
+  /questionbase/categories:
+    get:
+      summary: List categories
+      description: |
+        Operates as a query tool for question categories.
+      operationId: listCategories
+      tags:
+        - 'Service: Questionbase'
+        - 'Resource: Question categories'
+        - 'Stability: 0 - Unavailable'
+      security:
+        - OAuth2:
+            - readQuestionCategories
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: >-
+            The number of items to skip before starting to collect the result
+            set.
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+            default: 10
+          description: The numbers of items to return.
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+      responses:
+        '200':
+          description: An array of categories.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+    post:
+      summary: Create a new question category
+      description: |
+        Adds a new question category.
+      tags:
+        - 'Service: Questionbase'
+        - 'Resource: Question categories'
+        - 'Stability: 0 - Unavailable'
+      operationId: createCategory
+      security:
+        - OAuth2:
+            - readQuestionCategories
+      parameters:
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+            default: en-US
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+            default: utf-8
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+      requestBody:
+        description: |
+          The metadata information for the new category.
+        required: true
+        content:
+          application/json; charset=utf-8:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Default name of the category.
+                  example: History of Westlands
+                  minLength: 1
+                parent_category_id:
+                  type: integer
+                  description: 'Identifier of the parent category, if exists.'
+                  example: 3
+                visible:
+                  type: boolean
+                  description: Specifies visibility of the category to the students.
+                  default: false
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  description: Searching tags for the new question category.
+                  example:
+                    - mean value theorem
+      responses:
+        '201':
+          description: The category has been created.
+          headers:
+            Location:
+              schema:
+                type: string
+              description: The location for the category created.
+              example: /qss/categories/1
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifier of the new category.
+                    example: 1
+                    minimum: 0
+        '409':
+          description: >
+            The category could not be registered due to a conflict.
+
+
+            Possibly, there is another category with same parent association and
+            name.
+          content:
+            application/vnd.error+json:
+              schema:
+                anyOf:
+                  - type: object
+                    required:
+                      - message
+                      - path
+                      - _links
+                    properties:
+                      message:
+                        type: string
+                        description: The localized error message.
+                        example: Validation failed.
+                      path:
+                        type: string
+                        description: The path of the endpoint that released the error.
+                        example: /some-endpoint
+                      logref:
+                        type: string
+                        description: The UUID-based log reference for the error.
+                        example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                      _links:
+                        type: object
+                        description: An object containing hyper-reference to the resources.
+                        example:
+                          about:
+                            href: 'http://path.to/user/resource/1'
+                          describes:
+                            href": 'http://path.to/describes'
+                          help:
+                            href: 'http://path.to/help'
+                  - type: object
+                    required:
+                      - total
+                      - _embedded
+                    properties:
+                      total:
+                        type: integer
+                        description: Number of errors.
+                        example: 1
+                      _embedded:
+                        type: object
+                        description: Contains the objects related to the embedded errors.
+                        required:
+                          - errors
+                        properties:
+                          errors:
+                            type: array
+                            description: Object containing embedded errors.
+                            example: []
+                            items:
+                              type: object
+                              required:
+                                - message
+                                - path
+                                - _links
+                              properties:
+                                message:
+                                  type: string
+                                  description: The localized error message.
+                                  example: Validation failed.
+                                path:
+                                  type: string
+                                  description: >-
+                                    The path of the endpoint that released the
+                                    error.
+                                  example: /some-endpoint
+                                logref:
+                                  type: string
+                                  description: The UUID-based log reference for the error.
+                                  example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                                _links:
+                                  type: object
+                                  description: >-
+                                    An object containing hyper-reference to the
+                                    resources.
+                                  example:
+                                    about:
+                                      href: 'http://path.to/user/resource/1'
+                                    describes:
+                                      href": 'http://path.to/describes'
+                                    help:
+                                      href: 'http://path.to/help'
+        '422':
+          description: |
+            TODO...
+          content:
+            application/vnd.error+json:
+              schema:
+                anyOf:
+                  - type: object
+                    required:
+                      - message
+                      - path
+                      - _links
+                    properties:
+                      message:
+                        type: string
+                        description: The localized error message.
+                        example: Validation failed.
+                      path:
+                        type: string
+                        description: The path of the endpoint that released the error.
+                        example: /some-endpoint
+                      logref:
+                        type: string
+                        description: The UUID-based log reference for the error.
+                        example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                      _links:
+                        type: object
+                        description: An object containing hyper-reference to the resources.
+                        example:
+                          about:
+                            href: 'http://path.to/user/resource/1'
+                          describes:
+                            href": 'http://path.to/describes'
+                          help:
+                            href: 'http://path.to/help'
+                  - type: object
+                    required:
+                      - total
+                      - _embedded
+                    properties:
+                      total:
+                        type: integer
+                        description: Number of errors.
+                        example: 1
+                      _embedded:
+                        type: object
+                        description: Contains the objects related to the embedded errors.
+                        required:
+                          - errors
+                        properties:
+                          errors:
+                            type: array
+                            description: Object containing embedded errors.
+                            example: []
+                            items:
+                              type: object
+                              required:
+                                - message
+                                - path
+                                - _links
+                              properties:
+                                message:
+                                  type: string
+                                  description: The localized error message.
+                                  example: Validation failed.
+                                path:
+                                  type: string
+                                  description: >-
+                                    The path of the endpoint that released the
+                                    error.
+                                  example: /some-endpoint
+                                logref:
+                                  type: string
+                                  description: The UUID-based log reference for the error.
+                                  example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                                _links:
+                                  type: object
+                                  description: >-
+                                    An object containing hyper-reference to the
+                                    resources.
+                                  example:
+                                    about:
+                                      href: 'http://path.to/user/resource/1'
+                                    describes:
+                                      href": 'http://path.to/describes'
+                                    help:
+                                      href: 'http://path.to/help'
+  '/questionbase/categories/{categoryId}':
+    get:
+      summary: Show the category with given identifier.
+      description: >
+        Retrieves the information about the category with the specified
+        identifier.
+      operationId: showCategory
+      tags:
+        - 'Service: Questionbase'
+        - 'Resource: Question categories'
+        - 'Stability: 0 - Unavailable'
+      security:
+        - OAuth2:
+            - readQuestionCategories
+      parameters:
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+        - in: path
+          name: categoryId
+          description: |
+            The identifier of the category.
+          schema:
+            type: integer
+          example: 0
+          required: true
+      responses:
+        '200':
+          description: 'The category object, if it exists.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '404':
+          description: |
+            The category with given identifier could not be found.
+          content:
+            application/vnd.error+json:
+              schema:
+                anyOf:
+                  - type: object
+                    required:
+                      - message
+                      - path
+                      - _links
+                    properties:
+                      message:
+                        type: string
+                        description: The localized error message.
+                        example: Validation failed.
+                      path:
+                        type: string
+                        description: The path of the endpoint that released the error.
+                        example: /some-endpoint
+                      logref:
+                        type: string
+                        description: The UUID-based log reference for the error.
+                        example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                      _links:
+                        type: object
+                        description: An object containing hyper-reference to the resources.
+                        example:
+                          about:
+                            href: 'http://path.to/user/resource/1'
+                          describes:
+                            href": 'http://path.to/describes'
+                          help:
+                            href: 'http://path.to/help'
+                  - type: object
+                    required:
+                      - total
+                      - _embedded
+                    properties:
+                      total:
+                        type: integer
+                        description: Number of errors.
+                        example: 1
+                      _embedded:
+                        type: object
+                        description: Contains the objects related to the embedded errors.
+                        required:
+                          - errors
+                        properties:
+                          errors:
+                            type: array
+                            description: Object containing embedded errors.
+                            example: []
+                            items:
+                              type: object
+                              required:
+                                - message
+                                - path
+                                - _links
+                              properties:
+                                message:
+                                  type: string
+                                  description: The localized error message.
+                                  example: Validation failed.
+                                path:
+                                  type: string
+                                  description: >-
+                                    The path of the endpoint that released the
+                                    error.
+                                  example: /some-endpoint
+                                logref:
+                                  type: string
+                                  description: The UUID-based log reference for the error.
+                                  example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                                _links:
+                                  type: object
+                                  description: >-
+                                    An object containing hyper-reference to the
+                                    resources.
+                                  example:
+                                    about:
+                                      href: 'http://path.to/user/resource/1'
+                                    describes:
+                                      href": 'http://path.to/describes'
+                                    help:
+                                      href: 'http://path.to/help'
+    delete:
+      summary: Delete an existing question category with identifier
+      description: |
+        Removes the question category with given identifier from the platform.
+      tags:
+        - 'Service: Questionbase'
+        - 'Resource: Question categories'
+        - 'Stability: 0 - Unavailable'
+      operationId: deleteCategory
+      security:
+        - OAuth2:
+            - manageQuestionContexts
+      parameters:
+        - in: path
+          name: categoryId
+          description: |
+            The identifier of the category.
+          schema:
+            type: integer
+          example: 0
+          required: true
+      responses:
+        '204':
+          description: Empty response.
+  '/questionbase/categories/{categoryId}/questions':
+    post:
+      summary: Create a new question
+      description: |
+        Adds a new question to the question pool.
+      tags:
+        - 'Service: Questionbase'
+        - 'Resource: Questions'
+        - 'Stability: 0 - Unavailable'
+      operationId: createQuestion
+      security:
+        - OAuth2:
+            - createQuestion
+      parameters:
+        - in: header
+          name: Accept-Language
+          description: >
+            The locale of the localizable response elements, according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+            default: en-US
+          example: 'en-US, en;q=0.9, *;q=0.5'
+          required: true
+        - in: header
+          name: Accept-Charset
+          description: >
+            The charset of the response body according to the
+
+            [RFC 7231, section 5.3.3:
+            Accept-Charset](https://tools.ietf.org/html/rfc7231#section-5.3.3).
+          schema:
+            type: string
+            default: utf-8
+          example: 'utf-8, iso-8859-1;q=0.5, *;q=0.1'
+          required: true
+        - in: path
+          name: categoryId
+          description: |
+            The identifier of the category that question is pooled into.
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        description: |
+          The information for the new question.
+        required: true
+        content:
+          application/json; charset=utf-8:
+            schema:
+              type: object
+              required:
+                - body
+                - type
+                - mimeType
+              properties:
+                interactivity:
+                  type: string
+                  enum:
+                    - single_selected
+                    - multiple_inclusive
+                    - multiple_exclusive
+                    - freeform
+                    - fill_in_the_blanks
+                  description: >
+                    Determines the type of the question interactivity.
+
+                    ## Options
+
+                    * `single_selected`: Questions that have multiple options,
+                    but a only one answer is true. This type of the questions
+                    are mostly seen in wide-spread exams, such as
+                    [SAT](https://en.wikipedia.org/wiki/SAT). Also known as
+                    'test' questions.
+
+                    * `multiple_inclusive`: Questions that have multiple
+                    options, but everything could be selected. If any correct
+                    option is selected by the user, the question will be counted
+                    as correct. *Consider using `single_selected` option while
+                    preparing question groups instead of this option, since it
+                    limits the number of possible answers a user can provide.*
+
+                    * `multiple_exclusive`: Similar to `multiple_inclusive`,
+                    everything could be selected. However, there is only one
+                    correct combination of options set, otherwise, will be
+                    counted as failed. *Consider using `single_selected` option
+                    while preparing question groups instead of this option,
+                    since it limits the number of possible answers a user can
+                    provide.*
+
+                    * `freeform`: Questions that provide freeform text input,
+                    possibly with constraints. Mostly seen in college
+                    prep-exams.
+
+                    * `fill_in_the_blanks`: Questions that provide partial body,
+                    with a collidable answer input.
+                body:
+                  type: string
+                  description: >
+                    Body of the question.
+
+                    ## Interpretation
+
+                    The body is evaluated in client-side devices with their
+                    given MIME type.
+
+                    #### Plain text Clients can render plain text question
+                    bodies, without any additional styling.
+
+                    This is determined by the `text/plain` MIME type.
+
+                    #### Markdown
+
+                    Clients can use [CommonMark](https://commonmark.org/) flavor
+                    of Markdown to render question bodies.
+
+                    This is determined by the `text/markdown` MIME type.
+
+                    #### HTML
+
+                    Clients can use restricted set of
+                    [HTML](https://tools.ietf.org/html/rfc1866) with
+                    [MathJax](https://www.mathjax.org/) capabilities.
+
+                    This is determined by the `text/html` MIME type.
+
+                    ## Examples
+
+                    #### An HTML-based question
+
+                    ```html Which one of the following is a
+                    <strong>mammal</strong>? ```
+
+                    #### A Markdown-based question
+
+                    ```markdown Which one of the following is a **mammal**? ```
+                  example: Which one of the following is a **mammal**?
+                  minLength: 1
+                mime_type:
+                  type: string
+                  description: >
+                    MIME type for the question body.
+
+                    Must be
+
+                    [RFC
+                    2045-2046](https://tools.ietf.org/html/rfc2045)-compliant.
+                  example: text/markdown; charset=utf-8
+                visible?:
+                  type: boolean
+                  description: |
+                    Determines the visibility for the question.
+                  default: false
+                options:
+                  type: array
+                  description: >
+                    Determines the valid options for the question.
+
+                    *Valid if and only if interactivity is either
+
+                    `single_selected`, `multiple_inclusive` or
+                    `multiple_exclusive`.*
+                  items:
+                    type: object
+                    properties:
+                      body:
+                        type: string
+                        description: >
+                          Body of the option.
+
+
+                          **Same formatting methodology applies with the body of
+                          the
+
+                          question itself.**
+                        example: Whale
+                      mime_type:
+                        type: string
+                        description: >
+                          MIME type for the option.
+
+                          Must be
+
+                          [RFC
+                          2045-2046](https://tools.ietf.org/html/rfc2045)-compliant.
+                        example: text/markdown; charset=utf-8
+                      correct?:
+                        type: boolean
+                        description: >
+                          Determines whether the answer is correct, or not.
+
+
+                          Conditions apply, if question is
+
+
+                          - `single_selected`, then exatcly one option should be
+
+                          marked as correct, or if
+
+
+                          - `multiple_inclusive`, then at least one option
+                          should be
+
+                          marked as not correct.
+                        default: false
+                answer:
+                  type: string
+                  description: |
+                    The answer for the question.
+                    *Valid if and only if interactivity is `freeform`.
+                  minLength: 1
+                  example: Whale
+      responses:
+        '201':
+          description: The question has been added to the pool.
+          headers:
+            Location:
+              schema:
+                type: string
+              description: The location for the category created.
+              example: /qss/categories/1
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifier of the new category.
+                    example: 1
+                    minimum: 0
+        '409':
+          description: >
+            The category could not be registered due to a conflict.
+
+
+            Possibly, there is another category with same parent association and
+            name.
+          content:
+            application/vnd.error+json:
+              schema:
+                anyOf:
+                  - type: object
+                    required:
+                      - message
+                      - path
+                      - _links
+                    properties:
+                      message:
+                        type: string
+                        description: The localized error message.
+                        example: Validation failed.
+                      path:
+                        type: string
+                        description: The path of the endpoint that released the error.
+                        example: /some-endpoint
+                      logref:
+                        type: string
+                        description: The UUID-based log reference for the error.
+                        example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                      _links:
+                        type: object
+                        description: An object containing hyper-reference to the resources.
+                        example:
+                          about:
+                            href: 'http://path.to/user/resource/1'
+                          describes:
+                            href": 'http://path.to/describes'
+                          help:
+                            href: 'http://path.to/help'
+                  - type: object
+                    required:
+                      - total
+                      - _embedded
+                    properties:
+                      total:
+                        type: integer
+                        description: Number of errors.
+                        example: 1
+                      _embedded:
+                        type: object
+                        description: Contains the objects related to the embedded errors.
+                        required:
+                          - errors
+                        properties:
+                          errors:
+                            type: array
+                            description: Object containing embedded errors.
+                            example: []
+                            items:
+                              type: object
+                              required:
+                                - message
+                                - path
+                                - _links
+                              properties:
+                                message:
+                                  type: string
+                                  description: The localized error message.
+                                  example: Validation failed.
+                                path:
+                                  type: string
+                                  description: >-
+                                    The path of the endpoint that released the
+                                    error.
+                                  example: /some-endpoint
+                                logref:
+                                  type: string
+                                  description: The UUID-based log reference for the error.
+                                  example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                                _links:
+                                  type: object
+                                  description: >-
+                                    An object containing hyper-reference to the
+                                    resources.
+                                  example:
+                                    about:
+                                      href: 'http://path.to/user/resource/1'
+                                    describes:
+                                      href": 'http://path.to/describes'
+                                    help:
+                                      href: 'http://path.to/help'
+        '422':
+          description: |
+            TODO...
+          content:
+            application/vnd.error+json:
+              schema:
+                anyOf:
+                  - type: object
+                    required:
+                      - message
+                      - path
+                      - _links
+                    properties:
+                      message:
+                        type: string
+                        description: The localized error message.
+                        example: Validation failed.
+                      path:
+                        type: string
+                        description: The path of the endpoint that released the error.
+                        example: /some-endpoint
+                      logref:
+                        type: string
+                        description: The UUID-based log reference for the error.
+                        example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                      _links:
+                        type: object
+                        description: An object containing hyper-reference to the resources.
+                        example:
+                          about:
+                            href: 'http://path.to/user/resource/1'
+                          describes:
+                            href": 'http://path.to/describes'
+                          help:
+                            href: 'http://path.to/help'
+                  - type: object
+                    required:
+                      - total
+                      - _embedded
+                    properties:
+                      total:
+                        type: integer
+                        description: Number of errors.
+                        example: 1
+                      _embedded:
+                        type: object
+                        description: Contains the objects related to the embedded errors.
+                        required:
+                          - errors
+                        properties:
+                          errors:
+                            type: array
+                            description: Object containing embedded errors.
+                            example: []
+                            items:
+                              type: object
+                              required:
+                                - message
+                                - path
+                                - _links
+                              properties:
+                                message:
+                                  type: string
+                                  description: The localized error message.
+                                  example: Validation failed.
+                                path:
+                                  type: string
+                                  description: >-
+                                    The path of the endpoint that released the
+                                    error.
+                                  example: /some-endpoint
+                                logref:
+                                  type: string
+                                  description: The UUID-based log reference for the error.
+                                  example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                                _links:
+                                  type: object
+                                  description: >-
+                                    An object containing hyper-reference to the
+                                    resources.
+                                  example:
+                                    about:
+                                      href: 'http://path.to/user/resource/1'
+                                    describes:
+                                      href": 'http://path.to/describes'
+                                    help:
+                                      href: 'http://path.to/help'
+  '/questionbase/categories/{categoryId}/questions/pick-random':
+    head:
+      summary: Pick a random question from the category pool
+      description: |
+        Returns a location for the picked question.
+      tags:
+        - 'Service: Questionbase'
+        - 'Resource: Questions'
+        - 'Stability: 0 - Unavailable'
+      operationId: pickRandom
+      security:
+        - OAuth2:
+            - readQuestion
+      parameters:
+        - in: path
+          name: categoryId
+          description: |
+            The identifier of the category that question is pooled into.
+          required: true
+          schema:
+            type: integer
+          example: 1
+        - in: query
+          name: unique
+          description: |
+            If marked as a truthy value, the question to be dispatched will be
+            guaranteed to be fundamentally unique (per user).
+          schema:
+            type: boolean
+            default: false
+          required: false
+      responses:
+        '204':
+          description: Empty response.
+          headers:
+            Location:
+              description: |
+                Location of the picked question.
+              schema:
+                type: string
+                format: url
+              example: >-
+                https://api.quessly.com/v1/questionbase/categories/{categoryId}/questions
+components:
+  schemas:
+    PermissionSet:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Identifier of the permission set.
+        name:
+          type: string
+          description: Name of the permission set.
+        description:
+          type: string
+          description: Description of the permission set.
+        owner:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: Identifier of the platform user.
+            username:
+              type: string
+              description: Username of the user.
+            inserted_at:
+              type: string
+              description: Registration date of the user in ISO 8601 format.
+          description: Owner of the permission set.
+        permissions:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+                description: Identifier of the permission.
+              controller_name:
+                type: string
+                description: Name of the permission controller.
+                enum:
+                  - index
+                  - show
+                  - create
+                  - update
+                  - delete
+              controller_action:
+                type: string
+                description: Affected action of the permission controller.
+                enum:
+                  - index
+                  - show
+                  - create
+                  - update
+                  - delete
+              severity:
+                type: string
+                description: Severity of the action.
+                enum:
+                  - secure
+                  - mediocre
+                  - severe
+        inserted_at:
+          type: string
+          format: date-time
+          description: An ISO 8601-compatible timestamp format without time zone.
+    QuestionInteractivity:
+      type: string
+      enum:
+        - single_selected
+        - multiple_inclusive
+        - multiple_exclusive
+        - freeform
+        - fill_in_the_blanks
+      description: >
+        Determines the type of the question interactivity.
+
+        ## Options
+
+        * `single_selected`: Questions that have multiple options, but a only
+        one answer is true. This type of the questions are mostly seen in
+        wide-spread exams, such as [SAT](https://en.wikipedia.org/wiki/SAT).
+        Also known as 'test' questions.
+
+        * `multiple_inclusive`: Questions that have multiple options, but
+        everything could be selected. If any correct option is selected by the
+        user, the question will be counted as correct. *Consider using
+        `single_selected` option while preparing question groups instead of this
+        option, since it limits the number of possible answers a user can
+        provide.*
+
+        * `multiple_exclusive`: Similar to `multiple_inclusive`, everything
+        could be selected. However, there is only one correct combination of
+        options set, otherwise, will be counted as failed. *Consider using
+        `single_selected` option while preparing question groups instead of this
+        option, since it limits the number of possible answers a user can
+        provide.*
+
+        * `freeform`: Questions that provide freeform text input, possibly with
+        constraints. Mostly seen in college prep-exams.
+
+        * `fill_in_the_blanks`: Questions that provide partial body, with a
+        collidable answer input.
+  responses:
+    SingletonError:
+      description: |
+        Represents an error occurred during execution of the operation.
+      content:
+        application/vnd.error+json:
+          schema:
+            anyOf:
+              - type: object
+                required:
+                  - message
+                  - path
+                  - _links
+                properties:
+                  message:
+                    type: string
+                    description: The localized error message.
+                    example: Validation failed.
+                  path:
+                    type: string
+                    description: The path of the endpoint that released the error.
+                    example: /some-endpoint
+                  logref:
+                    type: string
+                    description: The UUID-based log reference for the error.
+                    example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                  _links:
+                    type: object
+                    description: An object containing hyper-reference to the resources.
+                    example:
+                      about:
+                        href: 'http://path.to/user/resource/1'
+                      describes:
+                        href": 'http://path.to/describes'
+                      help:
+                        href: 'http://path.to/help'
+              - type: object
+                required:
+                  - total
+                  - _embedded
+                properties:
+                  total:
+                    type: integer
+                    description: Number of errors.
+                    example: 1
+                  _embedded:
+                    type: object
+                    description: Contains the objects related to the embedded errors.
+                    required:
+                      - errors
+                    properties:
+                      errors:
+                        type: array
+                        description: Object containing embedded errors.
+                        example: []
+                        items:
+                          type: object
+                          required:
+                            - message
+                            - path
+                            - _links
+                          properties:
+                            message:
+                              type: string
+                              description: The localized error message.
+                              example: Validation failed.
+                            path:
+                              type: string
+                              description: >-
+                                The path of the endpoint that released the
+                                error.
+                              example: /some-endpoint
+                            logref:
+                              type: string
+                              description: The UUID-based log reference for the error.
+                              example: 1d693c76-1855-4cb6-9bfc-49f5579fedf7
+                            _links:
+                              type: object
+                              description: >-
+                                An object containing hyper-reference to the
+                                resources.
+                              example:
+                                about:
+                                  href: 'http://path.to/user/resource/1'
+                                describes:
+                                  href": 'http://path.to/describes'
+                                help:
+                                  href: 'http://path.to/help'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://api.quessly.io/oauth/authorize'
+          tokenUrl: 'https://api.quessly.io/oauth/token'
+          scopes:
+            readUsers: Grants read access to user base
+            readQuestionContexts: Grants read access to question contexts
+            manageQuestionContexts: Grants write access to question contexts
+            readQuestionCategories: Grants read access to question categories
+            manageQuestionCategories: Grants write access to question categories
+            createQuestion: Grants access to create questions
+

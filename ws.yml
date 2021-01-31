@@ -1,0 +1,113 @@
+asyncapi: 2.0.0-rc1
+id: 'urn:com:smartylighting:streetlights:server'
+info:
+  title: Quessly Streaming API
+  description: >
+    ## API stability
+
+    We stage our APIs from numbers ranging from 0 to 6.
+
+    #### 0 - Unavailable
+
+    This feature was introduced very recently, and it is not implemented in
+    current versions, but may be available in future.
+
+    #### 1 - Experimental
+
+    This feature was introduced recently, and may change or be removed in future
+    versions. Please try it out and provide feedback. If it addresses a use-case
+    that is important to you, tell the core team.
+
+    #### 2 - Unstable
+
+    The API is in the process of settling, but has not yet had sufficient
+    real-world testing to be considered stable. Backwards-compatibility will be
+    maintained if reasonable.
+
+    #### 3 - Stable
+
+    The API has proven satisfactory, but cleanup in the underlying code may
+    cause minor changes. Backwards-compatibility is guaranteed.
+
+    #### 4 - Frozen
+
+    This API has been tested extensively in production and is unlikely to ever
+    have to change.
+
+    #### 5 - Locked
+
+    Unless serious bugs are found, this code will not ever change. Please do not
+    suggest changes in this area, they will be refused.
+
+    #### 6 - Deprecated
+
+    This feature is known to be problematic, and changes are planned. Do not
+    rely on it. Use of the feature may cause warnings. Backwards compatibility
+    should not be expected.
+  termsOfService: 'https://quessly.com/terms-of-service'
+  contact:
+    name: Buğra Ekuklu
+    url: 'https://github.com/Chatatata'
+    email: ekuklu@icloud.com
+  license:
+    name: Proprietary
+    url: 'https://github.com/Quessly'
+  version: 0.0.1-beta
+servers:
+  - url: 'wss://api.quessly.com/v1'
+    protocol: websocket
+    description: Main (production) server
+  - url: 'wss://staging.api.quessly.com'
+    protocol: websocket
+    description: Staging server
+defaultContentType: application/json
+channels:
+  'event/{streetlightId}/lighting/measured':
+    description: The topic on which measured values may be produced and consumed.
+    parameters:
+      - name: streetlightId
+        description: The ID of the streetlight.
+        schema:
+          type: string
+    subscribe:
+      summary: >-
+        Receive information about environmental lighting conditions of a
+        particular streetlight.
+      operationId: receiveLightMeasurement
+      message:
+        name: dimLight
+        title: Dim light
+        summary: Command a particular streetlight to dim the lights.
+        payload:
+          type: object
+          properties:
+            percentage:
+              type: integer
+              description: Percentage to which the light should be dimmed to.
+              minimum: 0
+              maximum: 100
+            sentAt:
+              type: string
+              format: date-time
+              description: An ISO 8601-compatible timestamp format without time zone.
+components:
+  messages:
+    dimLight:
+      name: dimLight
+      title: Dim light
+      summary: Command a particular streetlight to dim the lights.
+      payload:
+        type: object
+        properties:
+          percentage:
+            type: integer
+            description: Percentage to which the light should be dimmed to.
+            minimum: 0
+            maximum: 100
+          sentAt:
+            type: string
+            format: date-time
+            description: An ISO 8601-compatible timestamp format without time zone.
+  schemas: {}
+  securitySchemes: {}
+
