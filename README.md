@@ -2,9 +2,10 @@
 
 Central repository for the server-side installation of Quessly.
 
-![CI status](https://github.com/Chatatata/Legion/workflows/CI/badge.svg)
-[![Docs available](https://img.shields.io/static/v1?label=Docs&message=available&color=informational)](https://chatatata.github.io/legion)
+![CI status](https://github.com/Chatatata/Legion/workflows/build/badge.svg)
 [![codecov](https://codecov.io/gh/Chatatata/Legion/branch/master/graph/badge.svg?token=eQNDGxuPY7)](https://codecov.io/gh/Chatatata/Legion)
+[![Docs available](https://img.shields.io/static/v1?label=docs&message=available&color=informational)](https://chatatata.github.io/legion)
+[![OpenAPI specs available](https://img.shields.io/static/v1?label=openapi&message=available&color=green)](https://github.com/Chatatata/legion/tree/openapi-specs)
 
 ## What is this?
 

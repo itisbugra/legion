@@ -1,4 +1,4 @@
-name: CI
+name: build
 
 on:
   schedule:
@@ -131,7 +131,7 @@ jobs:
           node-version: "12"
       - name: Generate spec files
         working-directory: ./spec
-        run: ./generate-docs
+        run: ./spec/generate-docs
       - name: Push files to the branch
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
