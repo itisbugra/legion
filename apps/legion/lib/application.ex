@@ -1,6 +1,6 @@
 defmodule Legion.Application do
   @moduledoc """
-  The Legion Application Service.
+  Application service for the Legion.
 
   The business domain lives in this application.
 

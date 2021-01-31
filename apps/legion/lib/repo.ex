@@ -1,4 +1,7 @@
 defmodule Legion.Repo do
+  @doc """
+  Provides an `Ecto.Repo` for database connections.
+  """
   use Ecto.Repo,
     otp_app: :legion,
     adapter: Ecto.Adapters.Postgres
