@@ -4,6 +4,7 @@ Central repository for the server-side installation of Quessly.
 
 ![CI status](https://github.com/Chatatata/Legion/workflows/CI/badge.svg)
 [![Docs available](https://img.shields.io/static/v1?label=Docs&message=available&color=informational)](https://chatatata.github.io/legion)
+[![codecov](https://codecov.io/gh/Chatatata/Legion/branch/master/graph/badge.svg?token=eQNDGxuPY7)](https://codecov.io/gh/Chatatata/Legion)
 
 ## What is this?
 
@@ -68,6 +69,10 @@ $ mix coverage.html --umbrella
 
 An HTML-formatted coverage report will be located in the `/coverage` folder after 
 running the command successfully.
+
+#### Sunburst graph
+
+![Current sunburst](https://codecov.io/gh/Chatatata/Legion/branch/master/graphs/sunburst.svg)
 
 ## License
 
