@@ -1,0 +1,18 @@
+{
+  "name": "quessly-openapi-specs",
+  "version": "1.0.0",
+  "description": "OpenAPI specifications for Quessly.",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build:resolve && spectacle build/http.yml && cp build/** public/",
+    "build:resolve": "npm run clean && mkdir build && json-refs resolve -y http.yml > build/http.yml && json-refs resolve -y ws.yml > build/ws.yml",
+    "clean": "rimraf build public"
+  },
+  "author": "Chatatata",
+  "license": "MIT",
+  "dependencies": {
+    "json-refs": "^3.0.15",
+    "rimraf": "^3.0.2",
+    "spectacle-docs": "^1.1.0"
+  }
+}

@@ -129,15 +129,18 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "12"
+      - name: Install NPM packages
+        working-directory: ./spec
+        run: npm install --production
       - name: Generate spec files
         working-directory: ./spec
-        run: ./generate_docs
+        run: npm run build
       - name: Push files to the branch
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           ACCESS_TOKEN: ${{ secrets.GH_PAGES_ACCESS_TOKEN }}
           BRANCH: openapi-specs
-          FOLDER: spec/build
+          FOLDER: spec/public
           CLEAN: false
   dockerize:
     name: Create a Docker image
