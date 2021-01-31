@@ -120,6 +120,25 @@ jobs:
           BRANCH: gh-pages
           FOLDER: doc
           CLEAN: false
+  generate-openapi-specs:
+    name: Generate OpenAPI specs
+    runs-on: ubuntu-latest
+    needs: coverage
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "12"
+      - name: Generate spec files
+        working-directory: ./spec
+        run: ./generate-docs
+      - name: Push files to the branch
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          ACCESS_TOKEN: ${{ secrets.GH_PAGES_ACCESS_TOKEN }}
+          BRANCH: openapi-specs
+          FOLDER: spec/build
+          CLEAN: false
   dockerize:
     name: Create a Docker image
     runs-on: ubuntu-latest
