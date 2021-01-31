@@ -3,7 +3,7 @@
 Central repository for the server-side installation of Quessly.
 
 ![CI status](https://github.com/Chatatata/Legion/workflows/CI/badge.svg)
-![Docs available](https://img.shields.io/static/v1?label=Docs&message=available&color=informational)
+[![Docs available](https://img.shields.io/static/v1?label=Docs&message=available&color=informational)](https://chatatata.github.io/legion)
 
 ## Installation
 
