@@ -1165,14 +1165,6 @@ paths:
         - 'Resource: Users'
         - 'Stability: 0 - Unavailable'
         - 'Authentication scheme: Insecure authentication'
-      parameters:
-        - name: id
-          in: path
-          description: Identifier of the user.
-          required: true
-          schema:
-            type: integer
-            format: int64
       requestBody:
         description: Properties of the password changing operation.
         required: true
@@ -1181,6 +1173,10 @@ paths:
             schema:
               type: object
               properties:
+                id:
+                  type: integer
+                  format: int64
+                  description: Identifier of the user.
                 old_password_hash:
                   type: string
                   description: Old password hash of the user.
