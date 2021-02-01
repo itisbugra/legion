@@ -1,11 +1,13 @@
 # Quessly server-side infrastructure: Legion
 
-Central repository for the server-side installation of Quessly.
+Central repository for the server-side installation of **Quessly**.
 
 ![CI status](https://github.com/Chatatata/Legion/workflows/build/badge.svg)
 [![codecov](https://codecov.io/gh/Chatatata/Legion/branch/master/graph/badge.svg?token=eQNDGxuPY7)](https://codecov.io/gh/Chatatata/Legion)
 [![Docs available](https://img.shields.io/static/v1?label=docs&message=available&color=informational)](https://chatatata.github.io/legion)
 [![OpenAPI specs available](https://img.shields.io/static/v1?label=openapi&message=available&color=orange)](https://github.com/Chatatata/legion/tree/openapi-specs)
+
+Lead maintainer: [Buğra Ekuklu](ekuklu@icloud.com)
 
 ## What is this?
 
@@ -73,8 +75,8 @@ running the command successfully.
 
 #### Sunburst graph
 
-![Current sunburst](https://codecov.io/gh/Chatatata/Legion/branch/master/graphs/sunburst.svg)
+![Current sunburst](https://codecov.io/gh/Chatatata/legion/branch/master/graphs/sunburst.svg)
 
 ## License
 
-Licensed under Apache-2, see [LICENSE](https://github.com/Chatatata/Legion/blob/main/LICENSE).
+Licensed under Apache-2, see [LICENSE](https://github.com/Chatatata/legion/blob/main/LICENSE).
