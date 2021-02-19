@@ -323,14 +323,14 @@ Functions
   <a href="#get_number_type/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">get_number_type</span><span class="p" data-group-id="1412453469-1">(</span><span class="s">&quot;+90 532 111 1111&quot;</span><span class="p" data-group-id="1412453469-1">)</span><span class="w">
-</span><span class="p" data-group-id="1412453469-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="ss">:mobile</span><span class="p" data-group-id="1412453469-2">}</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">get_number_type</span><span class="p" data-group-id="2666929947-1">(</span><span class="s">&quot;+90 532 111 1111&quot;</span><span class="p" data-group-id="2666929947-1">)</span><span class="w">
+</span><span class="p" data-group-id="2666929947-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="ss">:mobile</span><span class="p" data-group-id="2666929947-2">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">get_number_type</span><span class="p" data-group-id="1412453469-3">(</span><span class="s">&quot;+90 216 111 1111&quot;</span><span class="p" data-group-id="1412453469-3">)</span><span class="w">
-</span><span class="p" data-group-id="1412453469-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="ss">:fixed_line</span><span class="p" data-group-id="1412453469-4">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">get_number_type</span><span class="p" data-group-id="2666929947-3">(</span><span class="s">&quot;+90 216 111 1111&quot;</span><span class="p" data-group-id="2666929947-3">)</span><span class="w">
+</span><span class="p" data-group-id="2666929947-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="ss">:fixed_line</span><span class="p" data-group-id="2666929947-4">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">get_number_type</span><span class="p" data-group-id="1412453469-5">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="1412453469-5">)</span><span class="w">
-</span><span class="p" data-group-id="1412453469-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="1412453469-6">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">get_number_type</span><span class="p" data-group-id="2666929947-5">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="2666929947-5">)</span><span class="w">
+</span><span class="p" data-group-id="2666929947-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="2666929947-6">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="humanize/1">
@@ -356,11 +356,11 @@ Functions
   <a href="#humanize/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="1261320415-1">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p" data-group-id="1261320415-1">)</span><span class="w">
-</span><span class="p" data-group-id="1261320415-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;+90 532 111 11 11&quot;</span><span class="p" data-group-id="1261320415-2">}</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="7962533927-1">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p" data-group-id="7962533927-1">)</span><span class="w">
+</span><span class="p" data-group-id="7962533927-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;+90 532 111 11 11&quot;</span><span class="p" data-group-id="7962533927-2">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="1261320415-3">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="1261320415-3">)</span><span class="w">
-</span><span class="p" data-group-id="1261320415-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="1261320415-4">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="7962533927-3">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="7962533927-3">)</span><span class="w">
+</span><span class="p" data-group-id="7962533927-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="7962533927-4">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="humanize/2">
@@ -388,14 +388,14 @@ resulting phone number.</p><h2 id="humanize/2-examples" class="section-heading">
   <a href="#humanize/2-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="9752104639-1">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:international</span><span class="p" data-group-id="9752104639-1">)</span><span class="w">
-</span><span class="p" data-group-id="9752104639-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;+90 532 111 11 11&quot;</span><span class="p" data-group-id="9752104639-2">}</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="3299067238-1">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:international</span><span class="p" data-group-id="3299067238-1">)</span><span class="w">
+</span><span class="p" data-group-id="3299067238-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;+90 532 111 11 11&quot;</span><span class="p" data-group-id="3299067238-2">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="9752104639-3">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:national</span><span class="p" data-group-id="9752104639-3">)</span><span class="w">
-</span><span class="p" data-group-id="9752104639-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;0532 111 11 11&quot;</span><span class="p" data-group-id="9752104639-4">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="3299067238-3">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:national</span><span class="p" data-group-id="3299067238-3">)</span><span class="w">
+</span><span class="p" data-group-id="3299067238-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;0532 111 11 11&quot;</span><span class="p" data-group-id="3299067238-4">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="9752104639-5">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:national</span><span class="p" data-group-id="9752104639-5">)</span><span class="w">
-</span><span class="p" data-group-id="9752104639-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="9752104639-6">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">humanize</span><span class="p" data-group-id="3299067238-5">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:national</span><span class="p" data-group-id="3299067238-5">)</span><span class="w">
+</span><span class="p" data-group-id="3299067238-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="3299067238-6">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="is_possible_number?/1">
@@ -426,10 +426,10 @@ resulting phone number.</p><h2 id="humanize/2-examples" class="section-heading">
 
 <p>Returns a boolean value indicating the possibility of validity of the given phone number.
 Unlike <code class="inline">is_valid_number/2</code>, this function validates the phone number by bare lookup of
-its length.</p><pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">is_possible_number?</span><span class="p" data-group-id="4196170690-1">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p" data-group-id="4196170690-1">)</span><span class="w">
+its length.</p><pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">is_possible_number?</span><span class="p" data-group-id="4829770557-1">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p" data-group-id="4829770557-1">)</span><span class="w">
 </span><span class="no">true</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">is_possible_number?</span><span class="p" data-group-id="4196170690-2">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="4196170690-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">is_possible_number?</span><span class="p" data-group-id="4829770557-2">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="4829770557-2">)</span><span class="w">
 </span><span class="no">false</span></code></pre>
   </section>
 </section>
@@ -459,10 +459,10 @@ its length.</p><pre><code class="nohighlight makeup elixir"><span class="gp unse
 
       </div>
 
-<p>Determines validity of the given phone number.</p><pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">is_valid_number?</span><span class="p" data-group-id="4644479418-1">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p" data-group-id="4644479418-1">)</span><span class="w">
+<p>Determines validity of the given phone number.</p><pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">is_valid_number?</span><span class="p" data-group-id="2193604007-1">(</span><span class="s">&quot;+905321111111&quot;</span><span class="p" data-group-id="2193604007-1">)</span><span class="w">
 </span><span class="no">true</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">is_valid_number?</span><span class="p" data-group-id="4644479418-2">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="4644479418-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">is_valid_number?</span><span class="p" data-group-id="2193604007-2">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="2193604007-2">)</span><span class="w">
 </span><span class="no">false</span></code></pre>
   </section>
 </section>
@@ -489,11 +489,11 @@ its length.</p><pre><code class="nohighlight makeup elixir"><span class="gp unse
   <a href="#to_e164/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">to_e164</span><span class="p" data-group-id="5643145870-1">(</span><span class="s">&quot;+90 532 111 1111&quot;</span><span class="p" data-group-id="5643145870-1">)</span><span class="w">
-</span><span class="p" data-group-id="5643145870-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;+905321111111&quot;</span><span class="p" data-group-id="5643145870-2">}</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">to_e164</span><span class="p" data-group-id="8945382048-1">(</span><span class="s">&quot;+90 532 111 1111&quot;</span><span class="p" data-group-id="8945382048-1">)</span><span class="w">
+</span><span class="p" data-group-id="8945382048-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;+905321111111&quot;</span><span class="p" data-group-id="8945382048-2">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">to_e164</span><span class="p" data-group-id="5643145870-3">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="5643145870-3">)</span><span class="w">
-</span><span class="p" data-group-id="5643145870-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="5643145870-4">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">to_e164</span><span class="p" data-group-id="8945382048-3">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="8945382048-3">)</span><span class="w">
+</span><span class="p" data-group-id="8945382048-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="8945382048-4">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="to_rfc3966/1">
@@ -522,11 +522,11 @@ its length.</p><pre><code class="nohighlight makeup elixir"><span class="gp unse
 
       </div>
 
-<p>Converts given number to RFC 3966-formatted string.</p><pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">to_rfc3966</span><span class="p" data-group-id="5363375697-1">(</span><span class="s">&quot;+90 532 111 1111&quot;</span><span class="p" data-group-id="5363375697-1">)</span><span class="w">
-</span><span class="p" data-group-id="5363375697-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;tel:+90-532-111-11-11&quot;</span><span class="p" data-group-id="5363375697-2">}</span><span class="w">
+<p>Converts given number to RFC 3966-formatted string.</p><pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">to_rfc3966</span><span class="p" data-group-id="6064026923-1">(</span><span class="s">&quot;+90 532 111 1111&quot;</span><span class="p" data-group-id="6064026923-1">)</span><span class="w">
+</span><span class="p" data-group-id="6064026923-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;tel:+90-532-111-11-11&quot;</span><span class="p" data-group-id="6064026923-2">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">to_rfc3966</span><span class="p" data-group-id="5363375697-3">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="5363375697-3">)</span><span class="w">
-</span><span class="p" data-group-id="5363375697-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="5363375697-4">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Telephony.PhoneNumber</span><span class="o">.</span><span class="n">to_rfc3966</span><span class="p" data-group-id="6064026923-3">(</span><span class="s">&quot;test&quot;</span><span class="p" data-group-id="6064026923-3">)</span><span class="w">
+</span><span class="p" data-group-id="6064026923-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid</span><span class="p" data-group-id="6064026923-4">}</span></code></pre>
   </section>
 </section>
 
