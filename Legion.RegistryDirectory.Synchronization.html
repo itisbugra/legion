@@ -92,7 +92,7 @@ Legion.RegistryDirectory.Synchronization <small class="app-vsn">(legion vdev)</s
 </h3>
 <p>A synchronization module can help for creating keys, and checking them at
 the time of the migration. If all keys do exist, running the task should be
-no-op.</p><pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Mix.Tasks.Foo.Reg.Birds</span><span class="w"> </span><span class="k" data-group-id="0619003538-1">do</span><span class="w">
+no-op.</p><pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">Mix.Tasks.Foo.Reg.Birds</span><span class="w"> </span><span class="k" data-group-id="1977760516-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Legion.RegistryDirectory.Synchronization</span><span class="p">,</span><span class="w"> </span><span class="ss">site</span><span class="p">:</span><span class="w"> </span><span class="nc">Foo.Birds</span><span class="p">,</span><span class="w"> </span><span class="ss">repo</span><span class="p">:</span><span class="w"> </span><span class="nc">Foo.Repo</span><span class="w">
 
   </span><span class="na">@shortdoc</span><span class="w"> </span><span class="s">&quot;Synchronizes bird registers&quot;</span><span class="w">
@@ -102,10 +102,10 @@ no-op.</p><pre><code class="nohighlight makeup elixir"><span class="kd">defmodul
   </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Foo.Repo</span><span class="w">
   </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Foo.Birds.Register</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">register</span><span class="p" data-group-id="0619003538-2">(</span><span class="n">key</span><span class="p" data-group-id="0619003538-2">)</span><span class="p">,</span><span class="w">
-    </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="nc">Repo</span><span class="o">.</span><span class="n">insert</span><span class="p" data-group-id="0619003538-3">(</span><span class="p" data-group-id="0619003538-4">%</span><span class="nc" data-group-id="0619003538-4">Register</span><span class="p" data-group-id="0619003538-4">{</span><span class="ss">key</span><span class="p">:</span><span class="w"> </span><span class="n">key</span><span class="p" data-group-id="0619003538-4">}</span><span class="p" data-group-id="0619003538-3">)</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">register</span><span class="p" data-group-id="1977760516-2">(</span><span class="n">key</span><span class="p" data-group-id="1977760516-2">)</span><span class="p">,</span><span class="w">
+    </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="nc">Repo</span><span class="o">.</span><span class="n">insert</span><span class="p" data-group-id="1977760516-3">(</span><span class="p" data-group-id="1977760516-4">%</span><span class="nc" data-group-id="1977760516-4">Register</span><span class="p" data-group-id="1977760516-4">{</span><span class="ss">key</span><span class="p">:</span><span class="w"> </span><span class="n">key</span><span class="p" data-group-id="1977760516-4">}</span><span class="p" data-group-id="1977760516-3">)</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">sync</span><span class="w"> </span><span class="k" data-group-id="0619003538-5">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">sync</span><span class="w"> </span><span class="k" data-group-id="1977760516-5">do</span><span class="w">
     </span><span class="n">register</span><span class="w"> </span><span class="s">&quot;hummingbird&quot;</span><span class="w">
     </span><span class="n">register</span><span class="w"> </span><span class="s">&quot;auk&quot;</span><span class="w">
     </span><span class="n">register</span><span class="w"> </span><span class="s">&quot;blackbird&quot;</span><span class="w">
@@ -114,8 +114,8 @@ no-op.</p><pre><code class="nohighlight makeup elixir"><span class="kd">defmodul
     </span><span class="n">register</span><span class="w"> </span><span class="s">&quot;duck&quot;</span><span class="w">
     </span><span class="n">register</span><span class="w"> </span><span class="s">&quot;nuthatch&quot;</span><span class="w">
     </span><span class="n">register</span><span class="w"> </span><span class="s">&quot;seabird&quot;</span><span class="w">
-  </span><span class="k" data-group-id="0619003538-5">end</span><span class="w">
-</span><span class="k" data-group-id="0619003538-1">end</span></code></pre>
+  </span><span class="k" data-group-id="1977760516-5">end</span><span class="w">
+</span><span class="k" data-group-id="1977760516-1">end</span></code></pre>
         </section>
 
 
