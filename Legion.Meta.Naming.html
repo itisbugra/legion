@@ -188,25 +188,25 @@ Functions
       </div>
 
 <p>Converts String to camel case.</p><p>Takes an optional <code class="inline">:lower</code> option to return <code class="inline">lowerCamelCase</code>.</p><p>In addition to the implementation of <a href="https://hexdocs.pm/phoenix/1.5.7/Phoenix.Naming.html"><code class="inline">Phoenix.Naming</code></a>, this function
-also accepts <code class="inline">atom()</code> inputs.</p><pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="6003835773-1">(</span><span class="s">&quot;some_fixture&quot;</span><span class="p" data-group-id="6003835773-1">)</span><span class="w">
+also accepts <code class="inline">atom()</code> inputs.</p><pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="4336436896-1">(</span><span class="s">&quot;some_fixture&quot;</span><span class="p" data-group-id="4336436896-1">)</span><span class="w">
 </span><span class="s">&quot;SomeFixture&quot;</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="6003835773-2">(</span><span class="ss">:some_fixture</span><span class="p" data-group-id="6003835773-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="4336436896-2">(</span><span class="ss">:some_fixture</span><span class="p" data-group-id="4336436896-2">)</span><span class="w">
 </span><span class="s">&quot;SomeFixture&quot;</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="6003835773-3">(</span><span class="s">&quot;SomeFixture&quot;</span><span class="p" data-group-id="6003835773-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="4336436896-3">(</span><span class="s">&quot;SomeFixture&quot;</span><span class="p" data-group-id="4336436896-3">)</span><span class="w">
 </span><span class="s">&quot;SomeFixture&quot;</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="6003835773-4">(</span><span class="ss">:&quot;SomeFixture&quot;</span><span class="p" data-group-id="6003835773-4">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="4336436896-4">(</span><span class="ss">:&quot;SomeFixture&quot;</span><span class="p" data-group-id="4336436896-4">)</span><span class="w">
 </span><span class="s">&quot;SomeFixture&quot;</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="6003835773-5">(</span><span class="s">&quot;some_fixture&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:lower</span><span class="p" data-group-id="6003835773-5">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="4336436896-5">(</span><span class="s">&quot;some_fixture&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:lower</span><span class="p" data-group-id="4336436896-5">)</span><span class="w">
 </span><span class="s">&quot;someFixture&quot;</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="6003835773-6">(</span><span class="ss">:some_fixture</span><span class="p">,</span><span class="w"> </span><span class="ss">:lower</span><span class="p" data-group-id="6003835773-6">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="4336436896-6">(</span><span class="ss">:some_fixture</span><span class="p">,</span><span class="w"> </span><span class="ss">:lower</span><span class="p" data-group-id="4336436896-6">)</span><span class="w">
 </span><span class="s">&quot;someFixture&quot;</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="6003835773-7">(</span><span class="ss">:&quot;SomeFixture&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:lower</span><span class="p" data-group-id="6003835773-7">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Legion.Meta.Naming</span><span class="o">.</span><span class="n">camelize</span><span class="p" data-group-id="4336436896-7">(</span><span class="ss">:&quot;SomeFixture&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:lower</span><span class="p" data-group-id="4336436896-7">)</span><span class="w">
 </span><span class="s">&quot;someFixture&quot;</span></code></pre>
   </section>
 </section>
